@@ -17,6 +17,7 @@ export const saveOrders = (orders) => saveSharedCollection('orders', orders);
 export const loadCustomers = () => getSharedCollection('customers', SEED_CUSTOMERS);
 export const saveCustomers = (customers) => saveSharedCollection('customers', customers);
 export const loadPaymentBills = () => getSharedCollection('paymentBills', SEED_PAYMENT_BILLS);
+export const savePaymentBills = (bills) => saveSharedCollection('paymentBills', bills);
 
 export const nowIso = () => toIso(new Date());
 
