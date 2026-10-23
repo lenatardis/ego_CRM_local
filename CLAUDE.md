@@ -77,7 +77,7 @@ Catalog, cart and calculator as mocked (steps 6.5–6.7, `src/mocks/data/{catalo
 - Calculator: missing prices are `0` (the frontend disables zero-priced kits / components / options); kit component `image` is a string in kits, an array in the additional list and split groups; fabric consumption is posted in cm, returned in m. `kit/templates/` answers 404 when the fabric's type has no kits (→ "За вибраними даними комплекту не існує").
 - `orderProducts` (CRM-private): `{id, order_id, created, warehouse_item | kit}`; the kit id is the order-product id. The server prices a kit on save (template price, or component sum when split, + added components + options); an unpriced part → 400 `{errors: {component_price}}`. Fabric with no remainder → 404.
 - Seed carts: `SEED_ORDER_PRODUCTS` from the shared seed, with real prices for each order's source; the seed orders' amounts, bills and bank lines are derived from them (workspace `CLAUDE.md`, "Money follows the carts"). `Products.jsx` recomputes and saves the amount from the cart on every visit, so the two must agree — they do, and re-saving a seed kit unchanged keeps its price.
-- Frontend quirk: in kit edit, after "Розформувати комплект" the displayed price leaves out already-selected kit options (`Calculator.jsx` subtracts the initial options from a component-sum base); the saved price includes them.
+- Fixed (2026-10-23, with the user's go-ahead): `Calculator.jsx` built the displayed kit price as "saved price − options it started with + options selected now", which broke once a kit was split (and paired added components' options with the wrong form entries). It now adds up the parts in every mode — template `starting_price` (or the split components' prices) + added components + options selected now — the same sum the mock saves.
 
 Other hardcoded external URLs: `getBaseUrl` (`src/store/selectors.js`; only used for the "copy link" buttons in `FabricItem` / `StorageItem` → now the demo's own `<origin><PUBLIC_URL>`), ERP link in `MainMenu.jsx:466`, Nova Poshta tracking link in `ClientPage/Status/InvoiceInfo/Input/SearchInput.jsx` (a public tracking page opened in a new tab — fine to keep).
 
@@ -86,6 +86,7 @@ Quirks of the original code that affect mocking (don't "fix" unless asked):
 - `getSearchParams` drops falsy values (`false`, `0`), so e.g. `is_general=false` is never sent.
 - Retry-after-refresh bugs: `getSuborders` retries `getOrders`, `getProductDetail` retries `getStorageProducts`, `updateUserInfo` calls itself without args, `approveReceipt` doesn't return the retry.
 - `POST orders/`, `POST customers/`, `POST payments/`, `POST delivery/nova_poshta/item/` are upserts keyed by order.
+- `Products.jsx` compares the cart total (number) with `payment.amount` (string), so it re-saves the payment on every visit — intentional per the user: a last-minute fix for a 0 that appeared in a freshly created suborder. Keep it.
 - `Profile.jsx` calls `updateUserInfo(accessToken, user.id)` without the password, so the password change never sends it; the mock just answers with the user.
 - `npm run build` must run with `CI=false` on CI: CRA treats the existing lint warnings as errors when `CI=true`.
 

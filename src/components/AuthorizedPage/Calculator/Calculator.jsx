@@ -443,24 +443,12 @@ const Calculator = () => {
         }, 0);
     };
 
-    const getSelectedOptionsSum = (options = []) => {
-        return options.reduce((sum, option) => {
-            return option?.selected
-                ? sum + Number(option.price || 0)
-                : sum;
-        }, 0);
-    };
-
     const currentKitOptionsTotal = useMemo(() => {
         return getOptionsSumByIds(
             selectedOptionIds,
             product?.kit_options || []
         );
     }, [selectedOptionIds, product]);
-
-    const initialKitOptionsTotal = useMemo(() => {
-        return getSelectedOptionsSum(product?.kit_options || []);
-    }, [product]);
 
     const currentTemplateComponentsOptionsTotal = useMemo(() => {
         return (form?.template_components || []).reduce((sum, formItem, index) => {
@@ -471,28 +459,15 @@ const Calculator = () => {
         }, 0);
     }, [form, components]);
 
-    const initialTemplateComponentsOptionsTotal = useMemo(() => {
-        return (components?.components || []).reduce((sum, item) => {
-            return sum + getSelectedOptionsSum(item?.options || []);
-        }, 0);
-    }, [components]);
-
+    // custom components and form.additional_components share their order (saved ones first, then added ones),
+    // the same pairing FabricSetItem uses when it changes a component's options
     const currentCustomComponentsOptionsTotal = useMemo(() => {
-        const additionalOnly = (form?.additional_components || []).filter(item => !item?.is_main);
+        return (customComponents || []).reduce((sum, component, index) => {
+            const selectedIds = form?.additional_components?.[index]?.option || [];
 
-        return additionalOnly.reduce((sum, formItem, index) => {
-            const selectedIds = formItem?.option || [];
-            const options = customComponents?.[index]?.options || [];
-
-            return sum + getOptionsSumByIds(selectedIds, options);
+            return sum + getOptionsSumByIds(selectedIds, component?.options || []);
         }, 0);
     }, [form, customComponents]);
-
-    const initialCustomComponentsOptionsTotal = useMemo(() => {
-        return (customComponents || []).reduce((sum, item) => {
-            return sum + getSelectedOptionsSum(item?.options || []);
-        }, 0);
-    }, [customComponents]);
 
     const splitTemplateComponentsBasePrice = useMemo(() => {
         return (components?.components || []).reduce((sum, component, index) => {
@@ -514,18 +489,21 @@ const Calculator = () => {
         }, 0);
     }, [customComponents]);
 
+    // The price is built from its parts in every mode, so it is what gets saved: the template's price (a saved
+    // kit's own `price` already includes its options, so it can't be the base) or, once the kit is split, its
+    // components' prices; plus added components and the options selected now.
     const basePrice = useMemo(() => {
         if (isKitSplitted) {
             return splitTemplateComponentsBasePrice + customComponentsBasePrice;
         }
 
-        return Number(components?.price || 0) + customComponentsBasePrice;
+        return Number(components?.starting_price ?? components?.price ?? 0) + customComponentsBasePrice;
     }, [isKitSplitted, splitTemplateComponentsBasePrice, customComponentsBasePrice, components]);
 
     const displayPrice = basePrice
-        + (currentKitOptionsTotal - initialKitOptionsTotal)
-        + (currentTemplateComponentsOptionsTotal - initialTemplateComponentsOptionsTotal)
-        + (currentCustomComponentsOptionsTotal - initialCustomComponentsOptionsTotal);
+        + currentKitOptionsTotal
+        + currentTemplateComponentsOptionsTotal
+        + currentCustomComponentsOptionsTotal;
 
     const hasPositivePrice = Number.isFinite(displayPrice) && displayPrice > 0;
 
