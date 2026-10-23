@@ -1,0 +1,60 @@
+.weight button {
+  height: 36px;
+  width: 100%;
+  background-color: #fff;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+}
+
+.weightText {
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 16px;
+  color: #888;
+}
+
+.weightInputWrap {
+  display: flex;
+
+  input {
+    &::placeholder {
+      color: #30223B
+    }
+  }
+
+  input:first-of-type {
+    text-align: right;
+  }
+
+  input:nth-of-type(2) {
+    text-align: left;
+  }
+
+  span {
+    display: block;
+    padding: 0 5px;
+    width: auto;
+    font-size: 48px;
+    line-height: 100px;
+    font-weight: 600;
+    color: #30223B;
+  }
+
+  .focus {
+    /*outline: 1px solid #767676;*/
+    background: #d9d1e0;
+  }
+}
+
+.errorText {
+  color: #201827;
+}
+
+@media screen and (min-width: 1024px) {
+  .weightInputWrap {
+    width: 80%;
+    margin: 0 auto;
+  }
+}

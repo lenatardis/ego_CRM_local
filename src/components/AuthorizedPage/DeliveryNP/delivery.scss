@@ -1,0 +1,55 @@
+.MuiInputBase-root.MuiOutlinedInput-root.MuiInputBase-colorPrimary.MuiInputBase-fullWidth.MuiInputBase-formControl {
+  background-color: #FFFFFF;
+  height: 36px;
+  border: none;
+}
+
+.MuiAutocomplete-root.MuiAutocomplete-hasPopupIcon,
+.MuiAutocomplete-root.MuiAutocomplete-hasPopupIcon * {
+  border: none;
+}
+
+.MuiAutocomplete-root.baseInputError .MuiInputBase-root.MuiOutlinedInput-root.MuiInputBase-colorPrimary.MuiInputBase-fullWidth.MuiInputBase-formControl {
+  border: 1px solid #ED1C24;
+}
+
+.MuiButtonBase-root.MuiIconButton-root.MuiIconButton-sizeMedium.MuiAutocomplete-clearIndicator {
+  display: none;
+}
+
+.MuiInputBase-root.MuiOutlinedInput-root.MuiInputBase-colorPrimary.MuiInputBase-fullWidth.MuiInputBase-formControl.MuiInputBase-adornedEnd {
+  padding-right: 36px;
+  color: #888;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 16px;
+}
+
+.MuiFormLabel-root.MuiInputLabel-root.MuiInputLabel-formControl.MuiInputLabel-animated.MuiInputLabel-sizeMedium.MuiInputLabel-outlined.MuiFormLabel-colorPrimary.MuiInputLabel-root.MuiInputLabel-formControl.MuiInputLabel-animated {
+  top: -7px;
+  color: #888;
+  font-weight: 400;
+  font-size: 1rem;
+  font-family: 'Inter', serif;
+}
+
+.MuiFormLabel-root.Mui-focused,
+.MuiFormLabel-root.MuiFormLabel-filled {
+  display: none;
+}
+
+.MuiInputLabel-shrink {
+  display: none;
+}
+
+.css-1q964xs-MuiFormLabel-root-MuiInputLabel-root.MuiFormLabel-root.MuiInputLabel-shrink {
+  display: none;
+}
+
+.deliveryNP .MuiInputBase-root.MuiOutlinedInput-root.MuiInputBase-colorPrimary.MuiInputBase-fullWidth.MuiInputBase-formControl.MuiInputBase-adornedEnd.MuiAutocomplete-inputRoot.css-1wgn40h-MuiInputBase-root-MuiOutlinedInput-root {
+  padding-left: 7px;
+}
+
+.deliveryNP .MuiFormLabel-root.MuiInputLabel-root.MuiInputLabel-formControl.MuiInputLabel-animated.MuiInputLabel-sizeMedium.MuiInputLabel-outlined.MuiFormLabel-colorPrimary.MuiInputLabel-root.MuiInputLabel-formControl.MuiInputLabel-animated {
+  left: -2px;
+}

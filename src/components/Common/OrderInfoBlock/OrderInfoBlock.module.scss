@@ -1,0 +1,46 @@
+.order {
+  padding-bottom: 20px;
+  font-size: 10px;
+  line-height: 12px;
+  color: #201827;
+  text-align: center;
+
+  &__instaLink {
+    display: inline-block;
+    position: relative;
+    padding-right: 15px;
+    text-decoration: underline;
+    margin-bottom: 5px;
+    color: #201827;
+
+    &:before {
+      content: '';
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      background: url('../../../assets/icons/instagram.svg') no-repeat left top;
+      width: 11px;
+      height: 10px;
+    }
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    & + p {
+      margin-bottom: 5px;
+    }
+  }
+
+  &__invoice {
+
+    span {
+      padding-right: 4px;
+    }
+
+    img {
+      display: block;
+    }
+  }
+}
+

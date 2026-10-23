@@ -1,0 +1,98 @@
+.hint {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.icon {
+  width: 18px;
+  height: 18px;
+  min-width: 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  background: transparent;
+  font-size: 12px;
+  line-height: 18px;
+  padding: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tooltip {
+  position: absolute;
+  right: 0;
+
+  display: block;
+  min-width: 220px;
+  width: 320px;
+  max-width: min(320px, calc(100vw - 24px));
+
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+  font-size: 12px;
+  line-height: 1.35;
+  z-index: 50;
+
+  white-space: pre-line;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+.hint[data-placement="top"] .tooltip {
+  bottom: calc(100% + 8px);
+  top: auto;
+  transform: translateY(4px);
+}
+
+.hint[data-placement="bottom"] .tooltip {
+  top: calc(100% + 8px);
+  bottom: auto;
+  transform: translateY(-4px);
+}
+
+.hint[data-open="true"] .tooltip {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.hint[data-open="true"][data-placement="top"] .tooltip,
+.hint[data-open="true"][data-placement="bottom"] .tooltip {
+  transform: translateY(0);
+}
+
+@media (max-width: 768px) {
+  .tooltip {
+    left: 50%;
+    right: auto;
+    min-width: 0;
+    width: min(320px, calc(100vw - 32px));
+    max-width: calc(100vw - 32px);
+  }
+
+  .hint[data-placement="top"] .tooltip {
+    bottom: calc(100% + 8px);
+    top: auto;
+    transform: translateX(-50%) translateY(4px);
+  }
+
+  .hint[data-placement="bottom"] .tooltip {
+    top: calc(100% + 8px);
+    bottom: auto;
+    transform: translateX(-50%) translateY(-4px);
+  }
+
+  .hint[data-open="true"][data-placement="top"] .tooltip,
+  .hint[data-open="true"][data-placement="bottom"] .tooltip {
+    transform: translateX(-50%) translateY(0);
+  }
+}

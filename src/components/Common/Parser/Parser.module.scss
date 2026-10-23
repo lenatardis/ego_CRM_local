@@ -1,0 +1,197 @@
+.parser {
+  position: sticky;
+  width: 100%;
+  bottom: 32px;
+  background-color: #F1EEF3;
+  padding: 14px 14px 30px;
+  margin-top: 20px;
+  border-radius: 4px;
+
+  &:has(.parserBody.parserOpen) .parserHead .arrowImg {
+    transform: rotate(180deg);
+  }
+
+  .parserHead {
+    position: relative;
+    padding-bottom: 11px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+
+    h3 {
+      font-size: 18px;
+      font-weight: 600;
+      line-height: 24px;
+      text-align: center;
+      color: #201827;
+    }
+
+    .arrowImg {
+      height: 12px;
+      position: absolute;
+      top: 0;
+      right: 0;
+      transition: transform .5s;
+
+    }
+  }
+
+  .parserBody {
+
+    .label {
+      padding: 3px 10px;
+      line-height: 22px;
+      border-radius: 4px;
+    }
+
+    .label:has(input[type="checkbox"]) {
+      background-color: #e7e7e7;
+    }
+
+    .label:has(input:checked) {
+      color: white;
+      background-color: #573971;
+    }
+
+    .disabled {
+      opacity: .8;
+    }
+
+    .parsedValues {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 16px;
+
+      .parsedValue {
+        min-width: 60px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        column-gap: 8px;
+        color: #2D3745;
+        font-size: 12px;
+
+        .plusSign {
+          width: 9px;
+          height: 9px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .crossSign {
+          width: 14px;
+          height: 14px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+    }
+
+    .textarea {
+      position: relative;
+      background-color: white;
+      border-radius: 4px;
+      overflow: hidden;
+
+      textarea {
+        width: 100%;
+        height: 150px;
+        padding: 20px;
+        font-size: 1rem;
+        line-height: 20px;
+        color: #888888;
+      }
+
+      .pasteEditBtn {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+      }
+
+      .applyBtn {
+        position: absolute;
+        right: 6px;
+        bottom: 8px;
+      }
+    }
+
+    .wordButtons {
+      height: 150px;
+      padding: 20px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      align-content: flex-start;
+      gap: 8px;
+      overflow-y: auto;
+
+      .wordButton {
+        font-size: 12px;
+        line-height: 20px;
+        color: #888888;
+        transition: all .2s;
+        user-select: none;
+
+        input {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+.parserHeadLeft {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.parser:has(.parserOpen) {
+  position: static;
+}
+
+@media screen and (min-width: 1024px) {
+  .parser {
+    &.closeParser {
+      padding-bottom: 14px;
+
+      .parserHead {
+        padding-bottom: 0;
+
+        .arrowImg {
+          top: 6px;
+        }
+      }
+    }
+
+    &:has(.parserBody.parserOpen) .parserHead .arrowImg {
+      top: 6px;
+    }
+
+    .parserOpen {
+      display: flex;
+      column-gap: 24px;
+    }
+
+    .parsedValues {
+      width: 130%;
+      order:2;
+      margin-bottom: 0;
+      height: 28px;
+    }
+
+    .textarea {
+      width: 100%;
+      order: 1;
+    }
+
+    .parsedValue {
+      flex: 0 0 auto;
+      height: 28px;
+    }
+  }
+}

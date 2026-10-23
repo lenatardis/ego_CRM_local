@@ -1,0 +1,93 @@
+.calculator {
+  background-color: #D9D1E0;
+  width: 100vw;
+  min-height: 100vh;
+  max-width: 768px;
+  padding: 10px 16px;
+
+  .kitSplitButton {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 10px;
+
+    button {
+      height: 24px;
+      padding-inline: 10px;
+      font-size: 9px;
+      line-height: 16px;
+      font-weight: 500;
+      color: white;
+      background-color: #573971;
+      border-radius: 6px;
+    }
+  }
+
+  h2 {
+    font-size: 14px;
+    line-height: 24px;
+    color: #201827;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 5px;
+  }
+
+  .bottomKitButtons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  .fabricInputWrap {
+    display: flex;
+
+    input {
+      text-align: right;
+    }
+
+    span {
+      width: 150px;
+      display: block;
+      padding: 0;
+      font-size: 35px;
+      line-height: 100px;
+      font-weight: 600;
+      color: #30223B;
+    }
+  }
+
+  .kitWrapper {
+    margin-bottom: 15px;
+  }
+
+  .templateKitWrapper {
+    padding: 4px 2px 0;
+    border: 1px solid #573971;
+    border-radius: 4px;
+  }
+
+  .noKitBanner {
+    margin-bottom: 20px;
+  }
+
+  .backendError {
+    color: #DC6666;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .calculator {
+    max-width: 1920px;
+    width: 100%;
+    padding-left: 150px;
+
+    .templateKitWrapper {
+      border: none;
+    }
+  }
+
+  .calcWrap {
+    width: 75%;
+    margin: 0 auto;
+  }
+}

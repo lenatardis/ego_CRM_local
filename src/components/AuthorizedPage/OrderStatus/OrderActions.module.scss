@@ -1,0 +1,163 @@
+.orderActions {
+  /* margin-bottom: 30px;*/
+  position: fixed;
+  width: calc(100vw - 32px);
+  height: 65px;
+  bottom: 74px;
+  left: 16px;
+  background: #D9D1E0;
+
+  >.row {
+    display: flex;
+    justify-content: space-between;
+
+    &:first-of-type {
+      padding-top: 5px;
+    }
+
+    >* {
+      margin-bottom: 15px;
+    }
+
+    a,
+    span {
+      display: block;
+      font-size: 11px;
+      line-height: 16px;
+      color: #201827;
+    }
+
+    button,
+    a {
+      display: flex;
+      align-items: center;
+    }
+
+  }
+
+  .copyButton {
+    span {
+      padding-left: 7px;
+    }
+
+    img {
+      width: 17px;
+      height: 19px;
+    }
+  }
+
+  .checkLink,
+  .orderLink {
+    position: relative;
+    padding-left: 25px;
+
+    &:before {
+      position: absolute;
+      content: '';
+      left: 0;
+      top: 50%;
+      width: 18px;
+      height: 18px;
+      transform: translate(0, -50%);
+      background: url('../../../assets/icons/paperclip.svg') no-repeat left top;
+    }
+  }
+
+  .checkLink.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+  }
+
+  .prodLink {
+    position: relative;
+    padding-left: 30px;
+
+    &:before {
+      position: absolute;
+      content: '';
+      left: 0;
+      top: 50%;
+      width: 22px;
+      height: 17px;
+      transform: translate(0, -50%);
+      background: url('../../../assets/icons/sew.svg') no-repeat left top;
+    }
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .orderActions {
+    width: 736px;
+    left: calc((100vw - 768px) / 2 + 16px);
+  }
+}
+
+
+@media screen and (min-width: 1024px) {
+  .orderActions {
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+    padding: 30px 20px;
+    background: #F1EEF3;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    position: static;
+    height: auto;
+    width: auto;
+
+    .row {
+      flex-direction: column;
+      margin-bottom: 0;
+      row-gap: 20px;
+
+      span {
+        text-align: left;
+      }
+    }
+
+    >.row>* {
+      margin-bottom: 0;
+    }
+
+    >.row {
+      &:first-of-type {
+        padding-top: 0;
+      }
+    }
+  }
+
+  .ttnLoader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    padding: 24px 0;
+
+    p {
+      font-size: 16px;
+      font-weight: 500;
+      text-align: center;
+    }
+  }
+
+  .ttnError {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 24px 0;
+
+    p {
+      font-size: 16px;
+      font-weight: 500;
+      line-height: 1.4;
+      text-align: center;
+    }
+
+    button {
+      justify-content: center;
+      width: 100%;
+    }
+  }
+}

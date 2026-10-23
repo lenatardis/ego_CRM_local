@@ -1,0 +1,72 @@
+.options {
+  background: #F1EEF3;
+  border-radius: 4px;
+  padding: 15px 15px 10px;
+  margin-bottom: 10px;
+
+  &__row {
+    display: flex;
+    column-gap: 20px;
+    align-items: center;
+  }
+
+  &__fabricAmount {
+    display: flex;
+    align-items: center;
+    column-gap: 8px;
+    font-size: 10px;
+    color: #201827;
+    font-weight: 500;
+    margin-top: 16px;
+
+    input {
+      width: 70px;
+      padding: 2px 6px;
+      font-size: 12px;
+      text-align: center;
+      border-radius: 4px;
+    }
+  }
+
+  &__itemWrap {
+    display: flex;
+    flex-direction: column;
+    row-gap: 5px;
+    align-items: center;
+
+    input[type="checkbox"] {
+      display: none;
+    }
+
+    &:has(input:checked) {
+      .options__placeholder {
+        outline: 2px solid #573971;
+      }
+    }
+
+    p {
+      font-size: 10px;
+      line-height: 16px;
+      color: #201827;
+      font-weight: 500;
+    }
+  }
+
+  &__placeholder {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 62px;
+    height: 62px;
+    background: #FFFFFF;
+    border: 2px solid transparent;
+    border-radius: 4px;
+  }
+
+  &__itemImg {
+    display: block;
+    width: 62px;
+    height: 62px;
+    border-radius: 4px;
+  }
+}

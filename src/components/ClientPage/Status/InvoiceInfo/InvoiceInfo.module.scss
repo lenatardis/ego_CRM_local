@@ -1,0 +1,31 @@
+.invoiceInfo {
+  margin-bottom: 20px;
+
+  &__status {
+    background: #F5E97B;
+    border-radius: 4px 4px 0 0;
+
+    p {
+      text-align: center;
+      font-size: 12px;
+      line-height: 1em;
+      padding: 6px 0;
+    }
+
+    &_paid {
+      background: #07FA64;
+    }
+
+    &_notPaid {
+      background: #DC6666;
+    }
+  }
+
+
+
+  &__search {
+    padding: 10.5px 15px 15px;
+    background: #F1EEF3;
+    border-radius: 0 0 4px 4px;
+  }
+}

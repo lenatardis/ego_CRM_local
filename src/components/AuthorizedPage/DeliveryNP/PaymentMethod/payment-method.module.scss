@@ -1,0 +1,40 @@
+.payChanger {
+    font-size: 0.75rem;
+    color: #888;
+
+    .labelRow {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        margin-bottom: 4px;
+        color: #888;
+    }
+
+    .items {
+        display: flex;
+        column-gap: 5px;
+
+        .item {
+            padding: 2px 6px;
+            line-height: 1.5rem;
+            color: #30223B;
+            background-color: #D9D1E0;
+            border-radius: 4px;
+
+            &:has(input:checked) {
+                background-color: #30223B;
+                color: white;
+            }
+
+            span {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            input {
+                display: none;
+            }
+        }
+    }
+}

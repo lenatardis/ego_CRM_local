@@ -1,0 +1,27 @@
+.price {
+  padding-top: 5px;
+
+  .info {
+    padding-top: 6px;
+    border-top: 1px solid #A494B2;
+    margin-bottom: 30px;
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+
+      &:not(:last-of-type) {
+        margin-bottom: 4px;
+      }
+
+      span {
+        font-size: 12px;
+      }
+
+      .value {
+        font-weight: 700;
+      }
+    }
+  }
+}

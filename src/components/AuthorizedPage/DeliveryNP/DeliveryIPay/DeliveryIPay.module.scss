@@ -1,0 +1,75 @@
+.iPay {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 12px;
+  background-color: #fff;
+  border-radius: 4px;
+  height: 36px;
+
+
+  span,
+  label {
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16px;
+    color: #888;
+    white-space: nowrap;
+  }
+
+  span {
+    font-size: 1rem;
+  }
+
+  &__customCheckbox {
+    display: inline-flex;
+    align-items: center;
+    column-gap: 11px;
+    position: relative;
+
+    input {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 100%;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    span {
+      width: 16px;
+      height: 16px;
+      border-radius: 4px;
+      background-color: #DDDFE3;
+      pointer-events: none;
+      transition: all .15s;
+    }
+
+    p {
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 16px;
+      color: #888888;
+    }
+  }
+
+  &__customCheckbox:has(input:checked) {
+    span {
+      background-color: #573971;
+      position: relative;
+
+      &:after {
+        position: absolute;
+        content: '';
+        left: 50%;
+        top: 45%;
+        transform: translateX(-50%) translateY(-50%) rotateZ(-45deg);
+        width: 10px;
+        height: 6px;
+        border-bottom: 2px solid #fff;
+        border-left: 2px solid #fff;
+      }
+    }
+  }
+}

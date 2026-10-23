@@ -1,0 +1,36 @@
+.contacts {
+  background-color: #D9D1E0;
+  min-height: 100vh;
+  padding: 0 16px 100px;
+
+  &__logo {
+    text-align: center;
+    padding: 20px 0;
+  }
+
+  h2 {
+    font-size: 18px;
+    font-weight: 600;
+    line-height: 24px;
+    text-align: center;
+  }
+
+  &__about {
+    margin-top: 20px;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 18px;
+    color: #201827;
+
+    p {
+      margin-top: 10px;
+    }
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .contacts {
+    padding-left: 216px;
+  }
+}
+

@@ -1,0 +1,124 @@
+.productActions {
+  padding-top: 10px;
+  position: fixed;
+  width: calc(100vw - 32px);
+  height: 75px;
+  bottom: 74px;
+  left: 16px;
+  background: #D9D1E0;
+
+
+  .row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+
+    a, span {
+      display: block;
+      font-size: 11px;
+      line-height: 16px;
+      color: #201827;
+    }
+
+    button, a {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  .copyButton {
+    span {
+      padding-left: 7px;
+    }
+
+    img {
+      width: 17px;
+      height: 19px;
+    }
+  }
+
+  .addItem {
+    position: relative;
+    padding-left: 28px;
+
+    &:before {
+      position: absolute;
+      content: '';
+      left: 0;
+      top: 50%;
+      width: 21px;
+      height: 21px;
+      transform: translate(0, -50%);
+      background: url('../../../../assets/icons/add.svg') no-repeat left top;
+    }
+  }
+
+  .addSet {
+    position: relative;
+    padding-left: 28px;
+
+    &:before {
+      position: absolute;
+      content: '';
+      left: 0;
+      top: 50%;
+      width: 20px;
+      height: 20px;
+      transform: translate(0, -50%);
+      background: url('../../../../assets/icons/add2.svg') no-repeat left top;
+    }
+  }
+  .disabled {
+    pointer-events: none;
+    opacity: 0.5;
+  }
+
+  .prodLink {
+    position: relative;
+    padding-left: 30px;
+
+    &:before {
+      position: absolute;
+      content: '';
+      left: 0;
+      top: 50%;
+      width: 22px;
+      height: 17px;
+      transform: translate(0, -50%);
+      background: url('../../../../assets/icons/sew.svg') no-repeat left top;
+    }
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .productActions {
+    width: 736px;
+    left: calc((100vw - 768px) / 2 + 16px);
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .productActions {
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+    padding: 30px 20px;
+    background: #F1EEF3;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    position: static;
+    height: auto;
+    width: auto;
+  /*  background: none;*/
+
+    .row {
+      flex-direction: column;
+      margin-bottom: 0;
+      row-gap: 20px;
+
+      span {
+        text-align: left;
+      }
+    }
+  }
+}

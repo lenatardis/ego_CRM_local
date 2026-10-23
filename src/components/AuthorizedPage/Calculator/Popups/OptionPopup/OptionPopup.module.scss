@@ -1,0 +1,14 @@
+.optionPopup {
+  display: flex;
+  flex-direction: column;
+}
+
+.appliedMessage {
+  margin-bottom: 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(46, 204, 113, 0.12);
+  color: #2ECC71;
+  font-size: 14px;
+  font-weight: 500;
+}

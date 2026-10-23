@@ -1,0 +1,130 @@
+.discountField {
+  height: 38px;
+  padding: 3px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  column-gap: 26px;
+  margin-bottom: 30px;
+
+  &__wrapper {
+    display: flex;
+    align-items: center;
+    column-gap: 5px;
+    height: 100%;
+    width: 100%;
+
+    div {
+      width: 100%;
+    }
+
+    p {
+      padding-top: 2px;
+    }
+  }
+
+  .field {
+    width: 100%;
+    padding: 2px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #D9D1E0;
+    border: 1px solid #30223B;
+    border-radius: 4px;
+
+    &:has(input:checked) {
+      background-color: #30223B;
+
+      span {
+        color: white;
+      }
+    }
+
+    input {
+      display: none;
+    }
+  }
+
+  span {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 24px;
+    color: #201827;
+    white-space: nowrap;
+  }
+
+  .percentInputWrap, .UAHInputWrap {
+    display: flex;
+    align-items: center;
+
+    span {
+      display: block;
+      padding: 0;
+      width: 100%;
+      font-size: 48px;
+      line-height: 100px;
+      font-weight: 600;
+      color: #30223B;
+    }
+
+    input {
+      text-align: end;
+    }
+  }
+
+  .UAHInputWrap {
+    span {
+      width: 150px;
+      font-size: 35px;
+    }
+  }
+}
+
+.disabled {
+  opacity: 0.5;
+}
+
+@media screen and (min-width: 1024px) {
+  .discountField {
+    height: auto;
+    flex-direction: column;
+    align-items: flex-start;
+    row-gap: 5px;
+    margin-bottom: 75px;
+    &__wrapper {
+      height: auto;
+      padding: 0;
+      flex-direction: column;
+      align-items: flex-start;
+      row-gap: 8px;
+    }
+
+    .percentInputWrap {
+      span {
+        font-size: 80px;
+      }
+    }
+
+    .UAHInputWrap {
+      span {
+        font-size: 40px;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .discountField {
+    margin-bottom: 10px;
+  }
+}
+
+.discountError {
+  width: 100%;
+  margin-top: 8px;
+  color: #e00000;
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: 600;
+}

@@ -1,0 +1,72 @@
+.pinForm {
+  display: flex;
+  flex-direction: column;
+  row-gap: 24px;
+  touch-action: manipulation;
+}
+
+.form {
+  input {
+    width: 100%;
+    height: auto;
+    padding: 0;
+    font-size: 48px;
+    line-height: 100px;
+    font-weight: 600;
+    color: #30223B;
+    text-align: center;
+    background: #F1EEF3;
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: repeat(4, auto);
+  gap: 14px;
+
+  button {
+    display: flex;
+    height: 53px;
+    background: #ffffff;
+    border-radius: 6px;
+    justify-content: center;
+    align-items: center;
+    font-size: 32px;
+    line-height: 32px;
+    font-weight: 600;
+    color: #30223B;
+
+    &.deleteBtn {
+      background: #573971;
+    }
+
+    &.confirmBtn {
+      background: #008137;
+
+      img {
+        width: 28px;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .pinForm {
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .form, .grid {
+    width: 100%;
+  }
+
+  .form {
+    input {
+      font-size: 80px;
+    }
+  }
+}
+
+
+

@@ -1,0 +1,23 @@
+.addCommentBtn {
+    height: 31px;
+    display: flex;
+    align-items: center;
+    column-gap: 4px;
+    padding-inline: 6px;
+    font-size: 9px;
+    line-height: 16px;
+    font-weight: 500;
+    color: white;
+    background-color: #573971;
+    border-radius: 6px;
+
+    .plus {
+        width: 6px;
+        height: 6px;
+    }
+
+    .comment {
+        width: 9px;
+        height: 9px;
+    }
+}

@@ -1,0 +1,75 @@
+.imagePopup, .imagePopupActive {
+  position: fixed;
+  width: fit-content;
+  max-width: 300px;
+  height: fit-content;
+  max-height: 90vh;
+  background-color: #F1EEF3;
+  z-index: 10;
+  transition: all .15s;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: auto;
+  top: -100vh;
+  border-radius: 8px;
+}
+
+.imagePopupActive {
+  bottom: 0;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.image {
+  display: block;
+  border-radius: 8px;
+  max-width: 300px;
+  width: auto;
+  max-height: 90vh;
+}
+
+.popupWrap {
+  position: relative;
+}
+
+.closeBtn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  right: -30px;
+  top: -32px;
+  width: 30px;
+  height: 30px;
+  background: #F1EEF3;
+  border-radius: 50%;
+  z-index: 10;
+
+  img {
+    transform: scale(1.5);
+  }
+}
+
+.outer {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  pointer-events: none;
+  background-color: transparent;
+  z-index: 9;
+  transition: all .15s;
+  pointer-events: all;
+  background-color: rgba(48, 34, 59, 0.5);
+}
+
+@media screen and (min-width: 1024px) {
+  .imagePopup, .imagePopupActive, .image {
+    max-width: 700px;
+  }
+
+  .image {
+    min-width: 220px;
+  }
+}

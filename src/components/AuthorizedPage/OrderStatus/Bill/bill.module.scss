@@ -1,0 +1,307 @@
+.bill {
+    background-color: #F1EEF3;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    overflow: hidden;
+
+    &__content {
+        padding: 10px 10px 0;
+        overflow: hidden;
+    }
+
+    .head {
+
+        &__top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 6px;
+
+            .number {
+                font-size: 1rem;
+            }
+
+            .sum {
+                font-size: 1.25rem;
+            }
+        }
+
+        .link {
+            display: flex;
+            align-items: center;
+            column-gap: 6px;
+            font-size: 0.75rem;
+            color: inherit;
+
+            img {
+                width: 16px;
+                height: 16px;
+            }
+        }
+
+        &__comment {
+            margin-bottom: 10px;
+
+            textarea {
+                width: 100%;
+                height: auto;
+                height: 60px;
+                padding: 5px;
+                font-size: 1rem;
+                border-radius: 4px;
+
+                &:disabled {
+                    opacity: 0.7;
+                    background-color: white;
+                }
+            }
+        }
+    
+        &__status {
+            padding: 4px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            margin-bottom: 10px;
+        }
+    }
+
+    .body {
+        max-height: 0;
+        transition: max-height .1s;
+
+
+
+        .deleteBtn {
+            display: flex;
+            align-items: center;
+
+            &:disabled {
+                opacity: 0.5;
+            }
+
+            span {
+                padding-left: 5px;
+                font-size: 12px;
+                line-height: 20px;
+                color: #201827;
+                font-weight: 600;
+            }
+        }
+    }
+    .body.open {
+        max-height: 400px;
+        padding-bottom: 10px;
+    }
+
+    .sum {
+        margin-bottom: 10px;
+
+        input {
+            width: 100%;
+            font-size: 0.75rem;
+            background-color: #fff;
+        }
+    }
+
+    .status {
+        margin-bottom: 20px;
+    }
+
+    .customerReceipt {
+
+        .link {
+            padding: 8px 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 6px;
+            background-color: #D9D1E0;
+            border-radius: 4px;
+            margin-bottom: 10px;
+
+            a {
+                font-size: 14px;
+                color: inherit;
+            }
+            img {
+                width: 14px;
+                height: 14px;
+            }
+        }
+
+        .approveBtn {
+            width: 100%;
+            padding: 8px 10px;
+            border-radius: 4px;
+            background-color: #573971;
+            color: white;
+            margin-bottom: 20px;
+        }
+    }
+
+    .openBtn {
+        width: 100%;
+        padding: 7px 0 7px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: white;
+
+        img {
+            transition: transform .15s;
+        }
+    }
+    .openBtn.open {
+        img {
+            transform: rotate(180deg);
+        }
+    }
+}
+
+.approve {
+
+    p {
+        font-size: 1.375rem;
+        font-weight: 600;
+        text-align: center;
+        line-height: 28px;
+        margin-bottom: 20px;
+    }
+
+    .actions {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        button {
+            width: 100%;
+            padding: 14px 0;
+            font-weight: 600;
+            border-radius: 6px;
+        }
+
+        .submit {
+            background-color: #573971;
+            color: white;
+        }
+
+        .cancel {
+            background-color: #D9D1E0;
+        }
+    }
+}
+
+.payChanger {
+    padding: 3px 3px 3px 12px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    column-gap: 12px;
+    row-gap: 8px;
+    font-size: 0.75rem;
+    background-color: white;
+    border-radius: 4px;
+    margin-bottom: 10px;
+
+    .items {
+        display: flex;
+        column-gap: 5px;
+
+        .item {
+            padding: 2px 6px;
+            line-height: 1.5rem;
+            color: #30223B;
+            background-color: #D9D1E0;
+            border-radius: 4px;
+
+            &:has(input:checked) {
+                background-color: #30223B;
+                color: white;
+            }
+
+            span {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            input {
+                display: none;
+            }
+        }
+    }
+
+}
+
+.sumInputWrap {
+    position: relative;
+    display: flex;
+
+    p {
+        position: absolute;
+        left: 0;
+        top: -10px;
+        font-size: 12px;
+        color: #888;
+    }
+
+    input {
+        text-align: right;
+    }
+
+    span {
+        width: 150px;
+        display: block;
+        padding: 0;
+        font-size: 35px;
+        line-height: 100px;
+        font-weight: 600;
+        color: #30223B;
+    }
+}
+
+.disabled {
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.checkIcon {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    position: relative;
+    margin-right: 6px;
+}
+
+.checkIcon::after {
+    content: '';
+    position: absolute;
+    left: 2px;
+    top: -4px;
+    width: 8px;
+    height: 15px;
+    border: solid black;
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg);
+}
+
+.receiptBar {
+    display: flex;
+    margin-bottom: 10px;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.checkText {
+    font-size: 0.75rem;
+}
+
+@media screen and (min-width: 1024px) {
+    .checkText {
+        font-size: 16px;
+    }
+}

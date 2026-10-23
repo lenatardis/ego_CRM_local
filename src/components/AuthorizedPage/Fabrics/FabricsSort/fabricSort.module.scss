@@ -1,0 +1,59 @@
+.fabricSortList {
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+
+    .optionLabel {
+        display: flex;
+        align-items: center;
+        column-gap: 15px;
+
+        .name {
+            font-size: 1rem;
+            line-height: 22px;
+            color: #535353;
+            pointer-events: none;
+        }
+
+        .checkbox {
+            display: block;
+            width: 21px;
+            height: 21px;
+            border-radius: 4px;
+            background-color: #fff;
+            pointer-events: none;
+            transition: all 0.15s;
+        }
+
+        input {
+            display: none;
+        }
+
+        input:checked + .checkbox {
+            background-color: #573971;
+            position: relative;
+        
+            &:after {
+                position: absolute;
+                content: '';
+                left: 50%;
+                top: 45%;
+                transform: translateX(-50%) translateY(-50%) rotateZ(-45deg);
+                width: 10px;
+                height: 6px;
+                border-bottom: 2px solid #fff;
+                border-left: 2px solid #fff;
+            }
+        }
+    }
+}
+
+.appliedMessage {
+  margin-bottom: 12px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: rgba(46, 204, 113, 0.12);
+  color: #2ECC71;
+  font-size: 14px;
+  font-weight: 500;
+}

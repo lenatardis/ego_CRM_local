@@ -1,0 +1,60 @@
+.fabrics {
+  background-color: #D9D1E0;
+  width: 100vw;
+  min-height: 100vh;
+  max-width: 768px;
+  padding: 10px 16px;
+  position: relative;
+
+  .searchWrapper {
+    display: flex;
+    column-gap: 8px;
+
+    .openSortBtn {
+      flex-basis: 50px;
+      margin: 10px 0 10px;
+      border-radius: 4px;
+      background-color: #F1EEF3;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .eye {
+
+      &:has(input:checked) {
+        background-color: #573971;
+      }
+
+      input {
+        display: none;
+      }
+
+      img {
+        width: 16px;
+        height: 16px;
+      }
+    }
+  }
+
+  .warning {
+    padding-top: 20px;
+  }
+
+  .openSortBtn {
+    cursor: pointer;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .fabrics {
+    max-width: 1920px;
+    width: 100%;
+    padding-left: 150px;
+  }
+
+  .fabricsWrap {
+    width: 75%;
+    margin: 0 auto;
+  }
+}

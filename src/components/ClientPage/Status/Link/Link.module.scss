@@ -1,0 +1,20 @@
+.link {
+  display: inline-block;
+  position: relative;
+  padding-left: 25px;
+  font-size: 11px;
+  line-height: 16px;
+  color: #201827;
+  font-weight: 500;
+  margin-bottom: 20px;
+
+  &:before {
+    position: absolute;
+    content: '';
+    left: 0;
+    top: -2px;
+    width: 18px;
+    height: 18px;
+    background: url('../../../../assets/icons/paperclip.svg') no-repeat left top;
+  }
+}

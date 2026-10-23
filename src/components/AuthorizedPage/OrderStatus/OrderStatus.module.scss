@@ -1,0 +1,155 @@
+.orderStatus {
+  width: 100vw;
+  min-height: 100vh;
+  max-width: 768px;
+  padding: 10px 16px;
+  color: #201827;
+
+  h2 {
+    padding-top: 10px;
+    padding-bottom: 5px;
+    font-size: 18px;
+    line-height: 24px;
+    font-weight: 600;
+    color: #201827;
+    text-align: center;
+  }
+
+  h3 {
+    font-size: 1rem;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  .statusBar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 22px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    background: #F5E97B;
+
+    &.paid {
+        background: #07FA64;
+      }
+    
+      &.notPaid {
+        background: #DC6666;
+      }
+    span {
+      font-size: 12px;
+      line-height: 12px;
+    }
+  }
+
+  .priceBlock {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 12px;
+    border-radius: 4px;
+    background: #F1EEF3;
+    margin-bottom: 30px;
+
+    span {
+      font-size: 14px;
+      line-height: 24px;
+
+      &.totalPrice {
+        font-size: 24px;
+        font-weight: 700;
+      }
+    }
+  }
+
+  .bills {
+    margin-bottom: 30px;
+  }
+
+  .newBillBtn {
+    width: 100%;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #573971;
+    border-radius: 4px;
+    margin-bottom: 75px;
+
+    &.disabledMargin {
+      margin-bottom: 10px;
+    }
+
+    span {
+      color: #fff;
+      font-size: 0.875rem;
+      font-weight: 600;
+      line-height: 20px;
+    }
+  }
+}
+
+.caption {
+  margin-top: 10px;
+  margin-bottom: 65px;
+}
+
+@media screen and (min-width: 1024px) {
+  .orderStatus {
+    max-width: 1920px;
+    width: 100%;
+    padding-left: 150px;
+
+    .statusWrap {
+      margin: 0 auto;
+      width: 90%;
+    }
+
+    h2 {
+      padding: 20px 0;
+
+      &.desktopSpecialPadding {
+        padding-bottom: 5px;
+      }
+    }
+
+    .newBillBtn {
+      margin-bottom: 0;
+    }
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: 5fr 1fr;
+    column-gap: 24px;
+  }
+
+  .desktopListTitle {
+    margin-top: 52px;
+  }
+
+  .caption {
+    margin-bottom: 5px;
+  }
+}
+
+.syncOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.syncOverlay__box {
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px 20px;
+  font-weight: 600;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+

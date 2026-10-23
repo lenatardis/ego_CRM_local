@@ -1,0 +1,33 @@
+.search-wrapper {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 36px;
+
+  input {
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 10px 28px 10px 12px;
+    font-size: 12px;
+    line-height: 16px;
+    color: #5C5C5C;
+    background: #FFFFFF;
+    border-radius: 4px;
+
+    &::placeholder {
+      color: #5C5C5C;
+    }
+  }
+
+  img {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    width: 18px;
+    height: 18px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    z-index: 2;
+  }
+}

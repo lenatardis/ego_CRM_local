@@ -1,0 +1,155 @@
+.fabricsContent {
+  display: flex;
+  flex-direction: column;
+  row-gap: 20px;
+  margin: 20px 0 10px;
+}
+
+.fabric {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: transparent;
+  transition: all 0.15s;
+
+  &__left {
+    display: flex;
+    align-items: center;
+    column-gap: 16px;
+  }
+
+  &__image {
+    width: 50px;
+    height: 50px;
+    border-radius: 4px;
+
+    img {
+      width: 50px;
+      height: 50px;
+    }
+  }
+
+  &__info {
+    h5 {
+      color: #535353;
+      font-size: 10px;
+      font-weight: 400;
+    }
+
+    p {
+      color: #201827;
+      font-size: 16px;
+      font-weight: 400;
+    }
+  }
+
+  &__remainder {
+    font-size: 12px;
+    font-weight: 400;
+    color: #535353;
+  }
+
+  &__right {
+    display: flex;
+    align-items: center;
+    column-gap: 24px;
+  }
+
+  &__rightCalculator {
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+
+    p {
+      width: 31px;
+      height: 31px;
+      background-color: #D9D1E0;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      span {
+        color: #573971;
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 13px;
+      }
+    }
+  }
+
+  &__category {
+    display: flex;
+    justify-content: flex-end;
+    column-gap: 8px;
+
+    span {
+      color: #573971;
+      font-size: 12px;
+      font-weight: 700;
+      line-height: 14px;
+    }
+  }
+}
+
+.blockA, .blockAActive {
+  position: relative;
+  p {
+    border: 2px solid #F1EEF3;
+    width: 36px;
+    height: 36px;
+  }
+}
+
+.blockAActive {
+  p {
+    border: 2px solid #573971;
+  }
+}
+
+.blockAActive, .blockBActive {
+  p {
+    background-color: #573971;
+
+    span {
+      color: #fff;
+    }
+  }
+}
+
+.blockB, .blockBActive {
+  p {
+    margin-left: -6px;
+  }
+}
+
+.blockAActive {
+  p {
+    width: 31px;
+    height: 31px;
+  }
+}
+
+.red {
+  color: #DA4444;
+}
+
+.fabricsContentPopup {
+  overflow: auto;
+}
+
+.chosenFabric {
+  background: rgba(87, 57, 113, 0.05);
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+@media screen and (min-width: 1024px) {
+  .grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 24px;
+  }
+}

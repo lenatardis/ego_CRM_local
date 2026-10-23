@@ -1,0 +1,88 @@
+.filters {
+    display: flex;
+    column-gap: 8px;
+    margin-bottom: 20px;
+
+    .filter {
+        width: 100%;
+
+        &__label {
+            height: 100%;
+            padding: 4px 2px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background-color: #fff;
+            transition: all 0.15s;
+            border-radius: 3px;
+
+            &:has(input:checked) {
+                background-color: #573971;
+
+                span {
+                    color: white;
+                }
+            }
+
+            input {
+                display: none;
+            }
+
+            span {
+                color: #201827;
+                font-size: 10px;
+                font-weight: 400;
+                display: -webkit-box;
+                line-clamp: 1;
+                -webkit-line-clamp: 1;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+    }
+
+    &__removeFilters {
+        height: 20px;
+        width: 20px;
+        min-width: 20px;
+        border-radius: 4px;
+        background-color: #F1EEF3;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        img {
+            width: 18px;
+            height: 16px;
+        }
+    }
+
+    .filters__eye {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        position: relative;
+        border-radius: 4px;
+        background-color: #F1EEF3;
+
+        &:has(input:checked) {
+            background-color: #573971;
+        }
+
+        img {
+            width: 20px;
+            height: 20px;
+            display: block;
+        }
+
+        input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+        }
+    }
+
+}

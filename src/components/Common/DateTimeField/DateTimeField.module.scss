@@ -1,0 +1,46 @@
+.dateTimeField {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  column-gap: 16px;
+  margin-bottom: 10px;
+
+  button {
+    width: 100%;
+    background-color: #fff;
+    border-radius: 4px;
+    padding: 10px 8px 10px 12px;
+    display: flex;
+    justify-content: space-between;
+
+    span {
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 16px;
+      color: #888;
+    }
+  }
+}
+
+.timeInputWrap {
+  display: flex;
+
+  span {
+    display: block;
+    padding: 0;
+    width: auto;
+    font-size: 48px;
+    line-height: 100px;
+    font-weight: 600;
+    color: #30223B;
+  }
+
+  input {
+    text-align: center;
+  }
+
+  .focus {
+   /* outline: 1px solid #767676;*/
+    background: #d9d1e0;
+  }
+}

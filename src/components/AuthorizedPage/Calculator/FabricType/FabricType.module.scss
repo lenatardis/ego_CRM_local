@@ -1,0 +1,44 @@
+.type {
+  padding: 10px 15px;
+  margin-bottom: 20px;
+  background: #F1EEF3;
+  border-radius: 4px;
+
+  h3 {
+    font-size: 10px;
+    line-height: 12px;
+    color: #201827;
+    text-align: center;
+  }
+
+  .searchWrapper {
+    display: flex;
+    column-gap: 8px;
+
+    .openSortBtn {
+      flex-basis: 50px;
+      margin: 10px 0 10px;
+      background-color: #fff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 4px;
+    }
+
+    .eye {
+
+      &:has(input:checked) {
+        background-color: #573971;
+      }
+
+      input {
+        display: none;
+      }
+
+      img {
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+}

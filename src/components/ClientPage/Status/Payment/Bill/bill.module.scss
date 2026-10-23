@@ -1,0 +1,121 @@
+.bill {
+    position: relative;
+    padding: 10px;
+    background-color: #F1EEF3;
+    border-radius: 4px;
+    margin-bottom: 20px;
+
+    &__head {
+
+        .sum {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 6px;
+
+            .number {
+                font-size: 1rem;
+            }
+
+            .amount {
+                font-size: 1.25rem;
+            }
+        }
+
+        .link {
+            display: flex;
+            align-items: center;
+            column-gap: 6px;
+            font-size: 0.75rem;
+            color: inherit;
+            margin-bottom: 10px;
+
+            img {
+                width: 16px;
+                height: 16px;
+            }
+        }
+
+        .comment {
+            margin-bottom: 10px;
+
+            textarea {
+                width: 100%;
+                height: auto;
+                height: 50px;
+                padding: 5px;
+                font-size: 0.875rem;
+                border-radius: 4px;
+            }
+        }
+
+        .status {
+            padding: 4px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 4px;
+            font-size: 0.75rem;
+        }
+    }
+
+    &__body {
+        padding-top: 15px;
+
+        h4 {
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .openBtn {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 7px 0 7px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: white;
+
+            img {
+                transform: rotate(0);
+            }
+        }
+
+        .openBtn.open {
+
+            img {
+                transform: rotate(180deg);
+            }
+        }
+    }
+
+        .paymentWarning {
+            margin-top: 10px;
+            padding: 10px 12px;
+            border-radius: 4px;
+            background: #F5E97B;
+    
+            h3 {
+                text-align: center;
+                color: #DC6666;
+                font-size: 16px;
+                text-transform: uppercase;
+                font-weight: 800;
+            }
+    
+            p {
+                font-size: 12px;
+                line-height: 18px;
+                color: #201827;
+                font-weight: 600;
+            }
+    
+            span {
+                font-weight: 700;
+                 color: #DC6666;
+            }
+        }
+        }

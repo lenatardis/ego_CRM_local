@@ -1,0 +1,36 @@
+.articles {
+  margin-bottom: 2px;
+  display: flex;
+  justify-content: center;
+}
+
+.article,
+.articleActive {
+  padding: 5px 25px;
+  position: relative;
+  border-bottom: 2px solid #FFFFFF;
+
+  span {
+    color: #201827;
+    font-size: 12px;
+    font-weight: 600;
+  }
+}
+
+.articleActive {
+  border-color: #573971;
+}
+
+.articleActive span {
+  color: #573971;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.line {
+  display: block;
+  margin: 0 auto;
+  height: 2px;
+  width: 70%;
+  background-color: #fff;
+}

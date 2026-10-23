@@ -1,0 +1,18 @@
+.info {
+  padding: 0;
+  text-align: center;
+
+  &__customer {
+    font-size: 12px;
+    line-height: 16px;
+    color: #201827;
+
+    span {
+      color: #888888;
+    }
+
+    p:not(:last-child) {
+      margin-bottom: 12px;
+    }
+  }
+}

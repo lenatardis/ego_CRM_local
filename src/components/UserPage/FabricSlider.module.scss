@@ -1,0 +1,86 @@
+.fabricSlider {
+
+  :global(.slick-dots) {
+    display: flex !important;
+    bottom: -90px;
+    overflow: auto;
+
+    li {
+      width: 107px;
+      height: 80px;
+      flex: 0 0 auto;
+
+      &:first-of-type {
+        margin-left: 0;
+      }
+
+      &:last-of-type {
+        margin-right: 0;
+      }
+
+      a {
+        display: block;
+
+        img {
+          width: 100%;
+          border-radius: 4px;
+          height: 80px;
+          object-fit: cover;
+          border: 1px solid transparent;
+        }
+      }
+
+    }
+  }
+
+  :global(.slick-slide) .sliderImg {
+    width: 100%;
+    border-radius: 4px;
+    border: 1px solid #573971;
+    height: 40vh;
+    max-height: 450px;
+    object-fit: contain;
+  }
+
+  .sliderItem {
+    position: relative;
+    border-radius: 4px;
+
+    .copyButton {
+      position: absolute;
+      right: 15px;
+      bottom: 15px;
+      padding: 5px;
+      margin-left: -5px;
+      margin-bottom: -5px;
+      background-color: rgb(158 158 158 / 0.8);
+      border-radius: 4px;
+    }
+  }
+
+  :global(.slick-dots.slick-thumb .slick-active) {
+    a {
+      img {
+        border: 1px solid #573971;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .fabricSlider {
+    &.columnSlider {
+      :global(.slick-slide) .sliderImg {
+        height: 450px;
+      }
+    }
+  }
+
+  .productPageSlider {
+    :global(.slick-slide) .sliderImg {
+      height: 180px;
+    }
+  }
+
+
+}

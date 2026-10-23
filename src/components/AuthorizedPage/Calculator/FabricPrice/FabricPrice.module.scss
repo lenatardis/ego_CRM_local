@@ -1,0 +1,18 @@
+.price {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 10px;
+  color: #201827;
+
+  p {
+    font-size: 14px;
+    line-height: 24px;
+  }
+
+  .price {
+    font-size: 24px;
+    line-height: 24px;
+    font-weight: 700;
+  }
+}
