@@ -9,7 +9,7 @@ npm install     # install dependencies
 npm start       # dev server (Create React App, http://localhost:3000)
 npm run build   # production build into build/
 npm test        # CRA test runner
-npm run check:shared        # shared seed / catalog / media / scripts identical with ../ego_ERP_local
+npm run check:shared        # shared seed / catalog / mswRecovery / media / scripts identical with ../ego_ERP_local
 npm run fetch:np-directory  # refresh the Nova Poshta directory snapshot (manual, calls NP's public API)
 npm run same-origin         # ERP + CRM on one origin, http://localhost:8080/ (see the workspace CLAUDE.md, "Both apps on one origin")
 ```
