@@ -32,8 +32,8 @@ const DetailsContent = () => {
                 <div className={styles.content__box}>
                     <span className={styles.content__label}>Назва отримувача:</span>
                     <div className={styles.content__field}>
-                        <p>Адаменко Анжеліка Миколаївна</p>
-                        <CopyToClipboard text={'Адаменко Анжеліка Миколаївна'} className="click-effect">
+                        <p>ФОП Демо Ego Textile</p>
+                        <CopyToClipboard text={'ФОП Демо Ego Textile'} className="click-effect">
                             <button tabIndex={0}>
                                 <img src={copyIcon} alt=""/>
                             </button>
@@ -43,8 +43,8 @@ const DetailsContent = () => {
                 <div className={styles.content__box}>
                     <span className={styles.content__label}>Код ЄДРПОУ:</span>
                     <div className={styles.content__field}>
-                        <p>3653509001</p>
-                        <CopyToClipboard text={'3653509001'} className="click-effect">
+                        <p>0000000000</p>
+                        <CopyToClipboard text={'0000000000'} className="click-effect">
                             <button tabIndex={0}>
                                 <img src={copyIcon} alt=""/>
                             </button>
@@ -54,8 +54,8 @@ const DetailsContent = () => {
                 <div className={styles.content__box}>
                     <span className={styles.content__label}>Рахунок отримувача:</span>
                     <div className={styles.content__field}>
-                        <p>UA323052990000026007026000240</p>
-                        <CopyToClipboard text={'UA323052990000026007026000240'} className="click-effect">
+                        <p>UA000000000000000000000000000</p>
+                        <CopyToClipboard text={'UA000000000000000000000000000'} className="click-effect">
                             <button tabIndex={0}>
                                 <img src={copyIcon} alt=""/>
                             </button>
@@ -65,8 +65,8 @@ const DetailsContent = () => {
                 <div className={styles.content__box}>
                     <span className={styles.content__label}>Код ЄДРПОУ:</span>
                     <div className={styles.content__field}>
-                        <p>05299000002600702600</p>
-                        <CopyToClipboard text={'05299000002600702600'} className="click-effect">
+                        <p>00000000000000000000</p>
+                        <CopyToClipboard text={'00000000000000000000'} className="click-effect">
                             <button tabIndex={0}>
                                 <img src={copyIcon} alt=""/>
                             </button>
