@@ -45,7 +45,7 @@ export const Suborder = ({ item, onDelete }) => {
                         <img src={removeIcon} width={12} alt="Remove" />
                         <span>Видалити</span>
                     </button>
-                    <a href={`/products/${item.id}`} className={styles.btn} alt="Edit">
+                    <a href={`${process.env.PUBLIC_URL}/products/${item.id}`} className={styles.btn} alt="Edit">
                         <img src={editIcon} width={12} alt="Edit" />
                         <span>Змінити</span>
                     </a>

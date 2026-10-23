@@ -62,6 +62,15 @@ Record shapes the components read (to be detailed per page while restoring):
 - Payment bill: `id, type (IBAN|ONLINE|TAX), method (PREPAYMENT|FULL|POSTPAID), status (PAY_WAIT|PAID|NOT_PAID), prepayment_amount, prepayment_datetime, receipt_url, customer_receipt, customer_receipt_approved` — same fields as the ERP's `paymentBills`.
 - Order statuses seen: `NEW`, `OPENED`; fabric/template statuses `ACTIVE`, `DEPRECATED`.
 
+Orders as mocked (steps 6.3–6.4, `src/mocks/data/orders.js` + `handlers/{orders,customers,payments,delivery}.js`):
+- Shared collections `orders`, `customers`, `paymentBills` (keys `ego-demo:shared:<name>`), seed shape from `shared/seed.js`; `serializeOrder` expands them into the list/detail shape above plus `modified, comment, order_hash, general_order{id,status,payment}` and `payment.already_paid_amount` (sum of the order's `PAID` bills). `warehouse_item_count` / `kit_count` are still 0 (TODO steps 6.6 / 6.7).
+- `GET orders/` and `orders/recent-views/` answer `{orders, total_pages}` (not DRF `{count, results}`; `Main.jsx` reads these), page size 10; `GET orders/sub-orders/` answers a plain array.
+- A new order (`POST orders/` without `id`) has `customer: null, payment: null`; `OrderWrapper.jsx` then creates both through `POST customers/` / `POST payments/`. New payment defaults: `status 'NONE'`, `discount_type 'NONE'`, amounts null. Every `updateOrder` call also sends `manager` (the current user), so editing an order re-assigns it — original frontend behaviour, kept.
+- Validation the UI shows: unknown `source` → `{source: ['Invalid pk "…" - object does not exist.']}` (Order.jsx maps it to its suborder message); phone not `+380XXXXXXXXX` → `{phone: [message]}`.
+- Duplicate copies customer, source, comment, urgency and payment totals (status `NONE`), manager = current user. Delete cascades to suborders, their bills and CRM-private data keyed by the order (new ids are max + 1, so ids can be reused).
+- CRM-private: `recentViews` (`{[managerId]: [orderId]}`, max 10, recorded on `GET orders/:id/`, seeded with each manager's 6 newest orders) and `npItems` — a minimal Nova Poshta item store (`GET …/item/?order_id` → `[item]` or 404 `{detail}`, `POST` upsert of raw fields) because `OrderCreate.jsx` creates and updates it; its real shape is step 6.8.
+- Original-code quirk seen while testing: "Дублювати замовлення" navigates to the original order, not the copy (`Order.onEditOrder` ignores the id `OrderMenu` passes) — left as is.
+
 Other hardcoded external URLs: `getBaseUrl` (`src/store/selectors.js`, prefix for fabric/warehouse images in `FabricsContent`, `FabricItem`, `StorageItem`), ERP link in `MainMenu.jsx:466`, Nova Poshta tracking link in `ClientPage/Status/InvoiceInfo/Input/SearchInput.jsx` (a public tracking page opened in a new tab — fine to keep).
 
 Quirks of the original code that affect mocking (don't "fix" unless asked):
