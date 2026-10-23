@@ -9,10 +9,10 @@ import {
     DEMO_COMPONENT_OPTION_TEMPLATES, DEMO_COMPONENT_TEMPLATES, DEMO_COMPONENT_TYPES, DEMO_KIT_OPTION_TEMPLATES,
     DEMO_KIT_SIZES, DEMO_KIT_TEMPLATES,
 } from '../shared/catalog/calculatorTemplates';
-import { DEMO_PRICELISTS, DEMO_SOURCES } from '../shared/catalog/pricelists';
 // prices.js also runs the fabric arrivals seed, which adds rolls / units to the fabrics and products above,
 // so the remainders here are the ones the ERP demo starts with
-import { COMPONENT_WORK, DEMO_PRICES } from '../shared/catalog/prices';
+import { COMPONENT_WORK } from '../shared/catalog/prices';
+import { fabricTotalLength, priceFor, productTypeOfFabric } from '../shared/catalog/pricing';
 
 export { DEMO_FABRICS, DEMO_PRODUCTS, DEMO_KIT_TEMPLATES, DEMO_COMPONENT_TEMPLATES, DEMO_KIT_SIZES };
 
@@ -24,44 +24,12 @@ const findKitSize = (id) => DEMO_KIT_SIZES.find((s) => s.id === id) || null;
 const findComponentType = (id) => DEMO_COMPONENT_TYPES.find((t) => t.id === id) || null;
 
 // --- prices ----------------------------------------------------------------------------------
-// The price of a catalog record for an order comes from the pricelist of the order's source (ERP "Джерела"
-// -> prices_list_id) while that list is active; a record the list has no price for, or an order without a
-// source, takes the price of the default list ("Стандартний список ... з якого будуть братись ціни якщо немає
-// іншого активного списку"). No price in either -> null: the CRM pages show it as "no price".
+// priceFor(owner, id, sourceId): source pricelist -> default list -> null; and the fabric -> product type link
+// for kits. Both shared with the seed, which prices the seed orders' carts the same way (../shared/catalog/pricing.js).
 
-const isActiveList = (list) => list && list.status === 'ACTIVE' && !list.deleted_at;
-const DEFAULT_LIST = DEMO_PRICELISTS.find((pl) => pl.is_default && isActiveList(pl));
-
-const listPrice = (owner, ownerId, listId) => {
-    const p = DEMO_PRICES.find((x) => x.owner === owner && x.owner_id === Number(ownerId) && x.prices_list_id === listId);
-    return p ? Number(p.price) : null;
-};
-
-/** Sell price (number) of a catalog record for an order source, or null. */
-export const priceFor = (owner, ownerId, sourceId) => {
-    const source = DEMO_SOURCES.find((s) => String(s.id) === String(sourceId));
-    const list = source && DEMO_PRICELISTS.find((pl) => pl.id === source.prices_list_id);
-    const fromSource = isActiveList(list) ? listPrice(owner, ownerId, list.id) : null;
-    return fromSource ?? (DEFAULT_LIST ? listPrice(owner, ownerId, DEFAULT_LIST.id) : null);
-};
+export { priceFor, productTypeOfFabric, fabricTotalLength };
 
 // --- fabrics ---------------------------------------------------------------------------------
-
-// Kit templates are made for the CRM product types (сатин, бязь, полікотон — kit / component templates'
-// fabric_type_id), while fabrics carry the ERP warehouse types. The calculator needs one from the other:
-// which product type's kits a fabric of a warehouse type is sewn into. Types without an entry (Перкаль,
-// Муслін) have no kit templates, so the calculator shows "За вибраними даними комплекту не існує" for them.
-const PRODUCT_TYPE_OF_FABRIC_TYPE = {
-    1: 2, // Бязь -> бязь
-    2: 1, // Страйп-сатин -> сатин
-    3: 1, // Сатин -> сатин
-    4: 1, // LUX Digital Sateen -> сатин
-    5: 3, // Поплін -> полікотон
-    6: 2, // Ранфорс -> бязь
-};
-export const productTypeOfFabric = (fabric) => PRODUCT_TYPE_OF_FABRIC_TYPE[fabric?.type?.id] ?? null;
-
-export const fabricTotalLength = (f) => f.opened_length_remainder + f.new_length_remainder;
 
 const fabricTypeImage = (typeId) => DEMO_FABRICS.find((f) => f.type.id === typeId)?.images[0] ?? '';
 

@@ -8,76 +8,20 @@
 //                     components: [{ component_template_id, option, comment, custom_size, mono_fabric_type, is_custom }] }
 // The kit's own id is the order product id (calculator/kit/:id/, ?kit_id=).
 //
-// Seed: every shared seed order gets a cart whose prices add up to its payment.amount — the Products page
-// recomputes the order's amount from its cart (Products.jsx), so an empty cart would zero seed orders.
+// Seed: SEED_ORDER_PRODUCTS from the shared seed — the seed orders' amounts, bills and bank payments are
+// derived from these carts, priced like the CRM prices them (the Products page recomputes the order's
+// amount from its cart, Products.jsx, so they must agree).
 
 import { getCollection, saveCollection, nextId } from '../db';
-import { SEED_ORDERS, SEED_SOURCES, mulberry32 } from '../shared/seed';
+import { SEED_ORDER_PRODUCTS, SEED_SOURCES } from '../shared/seed';
 import {
-    DEMO_FABRICS, DEMO_PRODUCTS, componentOptions, componentPrice, fabricTotalLength, findComponentTemplate,
-    findFabric, findKitTemplate, findProduct, findVariant, kitOptions, kitSizeName, kitTemplatePrice,
-    priceFor, productTypeOfFabric, serializeComponent, serializeFabric, sizeLabel, DEMO_KIT_TEMPLATES,
+    componentOptions, componentPrice, findComponentTemplate, findFabric, findKitTemplate, findProduct, findVariant,
+    kitOptions, kitSizeName, kitTemplatePrice, serializeComponent, serializeFabric, sizeLabel,
 } from './catalog';
 
-// --- seed ------------------------------------------------------------------------------------
+// --- seed: the carts of the shared seed orders (../shared/seed.js), whose totals the order amounts are --
 
-const buildSeed = () => {
-    const rand = mulberry32(24102026);
-    const pick = (arr) => arr[Math.floor(rand() * arr.length)];
-    const roundTo10 = (n) => Math.round(n / 10) * 10;
-
-    const kitFabrics = DEMO_FABRICS.filter((f) => productTypeOfFabric(f) && fabricTotalLength(f) > 0);
-    const variants = DEMO_PRODUCTS.flatMap((p) => p.types.filter((t) => t.quantity > 0).map((t) => ({ product: p, type: t })));
-
-    const items = [];
-    const add = (order, fields) => items.push({ id: items.length + 1, order_id: order.id, created: order.created, warehouse_item: null, kit: null, ...fields });
-
-    const makeKit = (price) => {
-        const fabric = pick(kitFabrics);
-        const template = pick(DEMO_KIT_TEMPLATES.filter((t) => t.fabric_type_id === productTypeOfFabric(fabric)));
-        return {
-            fabric_id: fabric.id,
-            kit_template_id: template.id,
-            is_split: false,
-            price,
-            comment: null,
-            custom_size: null,
-            option: rand() < 0.2 ? [pick([1, 2, 4])] : [],
-            additional_fabric_consumption_count: Number(template.additional_fabric_consumption_price || 0) / 10,
-            components: template.component_ids.map((id) => ({
-                component_template_id: id, option: [], comment: null, custom_size: null, mono_fabric_type: null, is_custom: false,
-            })),
-        };
-    };
-
-    SEED_ORDERS.forEach((order) => {
-        let left = Math.round(Number(order.payment?.amount) || 0);
-        if (left <= 0) return;
-
-        // a pillow / blanket from the warehouse now and then, at its price for the order's source
-        if (rand() < 0.3) {
-            const { product, type } = pick(variants);
-            const price = priceFor('warehouse_item_type', type.id, order.source_id);
-            if (price && price <= left - 500) {
-                add(order, { warehouse_item: { product_id: product.id, type_id: type.id, price, source_id: order.source_id } });
-                left -= price;
-            }
-        }
-        // the rest is bedding: one kit, or two for bigger orders; kit prices include options and custom work
-        if (left > 3000 && rand() < 0.35) {
-            const first = roundTo10(left * (0.4 + rand() * 0.2));
-            add(order, { kit: makeKit(first) });
-            left -= first;
-        }
-        add(order, { kit: makeKit(left) });
-    });
-    return items;
-};
-
-let seedCache = null;
-const seed = () => (seedCache ??= buildSeed());
-
-export const loadOrderProducts = () => getCollection('orderProducts', seed());
+export const loadOrderProducts = () => getCollection('orderProducts', SEED_ORDER_PRODUCTS);
 export const saveOrderProducts = () => saveCollection('orderProducts');
 
 export const findOrderProduct = (id) => loadOrderProducts().find((p) => String(p.id) === String(id)) || null;
