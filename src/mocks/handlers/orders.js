@@ -4,6 +4,7 @@ import {
     SOURCES, addRecentView, byNewest, deleteOrderCascade, findSource, getRecentViewIds, loadOrders, makeOrder,
     nextPaymentId, nowIso, saveOrders, serializeOrder, serializeOrders,
 } from '../data/orders';
+import { copyOrderProducts } from '../data/orderProducts';
 
 // Response shapes follow src/api/ordersApi.js and the components using it:
 //   GET    orders/?page&manager&is_general&is_favourite -> { orders, total_pages } (Main.jsx)
@@ -99,8 +100,7 @@ export const orderHandlers = [
         const original = findOrder(orders, order_id);
         if (!original) return notFound();
 
-        // a copy for the same customer and source, taken by the manager who duplicates it; not paid yet.
-        // TODO step 6.6: copy the order products too.
+        // a copy for the same customer, source and products, taken by the manager who duplicates it; not paid yet
         const copy = makeOrder(orders, {
             is_immediate: original.is_immediate,
             comment: original.comment,
@@ -124,6 +124,7 @@ export const orderHandlers = [
         }
         orders.push(copy);
         saveOrders(orders);
+        copyOrderProducts(original.id, copy.id, copy.created);
         return HttpResponse.json(serializeOrder(copy, { orders }), { status: 201 });
     })),
 

@@ -13,7 +13,7 @@
 // Bump when CRM-private seed data or record shapes change: previously stored CRM demo data is then discarded.
 const DATA_VERSION = 1;
 // Bump together with the ERP (same value in both repos) when shared seed data or record shapes change.
-const SHARED_DATA_VERSION = 1;
+const SHARED_DATA_VERSION = 2;
 
 // localStorage can be unavailable (blocked storage, some private modes): fall back to memory only.
 const storage = {

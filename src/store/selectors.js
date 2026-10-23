@@ -1,4 +1,5 @@
-export const getBaseUrl = 'https://dev.egodevelopment.pp.ua';
+// Public base of this demo (was the original site): "copy link" buttons build /product/?id=… links from it.
+export const getBaseUrl = `${window.location.origin}${process.env.PUBLIC_URL}`;
 
 export const getIsAuth = (state) => state.account.isAuth;
 export const getUser = (state) => state.account.user;

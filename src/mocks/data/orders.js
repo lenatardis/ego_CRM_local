@@ -6,6 +6,7 @@
 // Collections are re-read on every request because the ERP may change them in another tab.
 
 import { getCollection, getSharedCollection, saveCollection, saveSharedCollection, nextId } from '../db';
+import { deleteOrderProductsOf, itemCountsOf, loadOrderProducts } from './orderProducts';
 import {
     SEED_CUSTOMERS, SEED_MANAGERS, SEED_ORDERS, SEED_PAYMENT_BILLS, SEED_SOURCES, money, toIso,
 } from '../shared/seed';
@@ -61,14 +62,15 @@ const alreadyPaid = (orderId, bills) => money(
 export const serializePayment = (order, bills = loadPaymentBills()) =>
     order.payment ? { ...order.payment, already_paid_amount: alreadyPaid(order.id, bills) } : null;
 
-/** Item counts of an order's cart. TODO steps 6.6 / 6.7: count order products and kits once they are mocked. */
-const itemCounts = () => ({ warehouse_item_count: 0, kit_count: 0 });
+/** The order's link for the customer (ProductActions.jsx "Скопіювати посилання"; App.jsx opens ?order=<hash>). */
+const clientUrl = (order) => `${window.location.origin}${process.env.PUBLIC_URL}/?order=${order.order_hash}`;
 
 /** An order as GET orders/, GET orders/:id/ and POST orders/ return it. */
 export const serializeOrder = (order, ctx = {}) => {
     const orders = ctx.orders ?? loadOrders();
     const customers = ctx.customers ?? loadCustomers();
     const bills = ctx.bills ?? loadPaymentBills();
+    const products = ctx.products ?? loadOrderProducts();
 
     const manager = findManager(order.manager_id);
     const customer = customers.find((c) => c.id === order.customer_id) ?? null;
@@ -84,11 +86,12 @@ export const serializeOrder = (order, ctx = {}) => {
         is_favourite: order.is_favourite,
         comment: order.comment,
         order_hash: order.order_hash,
+        url: clientUrl(order),
         general_order: general
             ? { id: general.id, status: general.status, payment: serializePayment(general, bills) }
             : null,
         sub_orders_count: order.is_general ? orders.filter((o) => o.general_order_id === order.id).length : 0,
-        ...itemCounts(order),
+        ...itemCountsOf(order.id, products),
         source: findSource(order.source_id),
         manager: manager
             ? { id: manager.id, username: manager.username, first_name: manager.first_name, last_name: manager.last_name, middle_name: '' }
@@ -100,7 +103,7 @@ export const serializeOrder = (order, ctx = {}) => {
 
 /** Serializes several orders, reading the shared collections once. */
 export const serializeOrders = (list, orders = loadOrders()) => {
-    const ctx = { orders, customers: loadCustomers(), bills: loadPaymentBills() };
+    const ctx = { orders, customers: loadCustomers(), bills: loadPaymentBills(), products: loadOrderProducts() };
     return list.map((o) => serializeOrder(o, ctx));
 };
 
@@ -150,7 +153,8 @@ export const deleteOrderCascade = (orderId) => {
         views[managerId] = views[managerId].filter((id) => !removed.has(id));
     });
     saveCollection('recentViews');
-    // TODO steps 6.6–6.8: also drop the order products, kits and delivery data of removed orders
+    deleteOrderProductsOf(removed);
+    // TODO step 6.8: also drop other delivery data of removed orders (waybills)
     const npItems = getCollection('npItems', []);
     npItems.splice(0, npItems.length, ...npItems.filter((i) => !removed.has(i.order_id)));
     saveCollection('npItems');
