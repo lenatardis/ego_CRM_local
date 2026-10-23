@@ -7,6 +7,7 @@ import { productHandlers } from './products';
 import { calculatorHandlers } from './calculator';
 import { clientHandlers } from './client';
 import { generalHandlers } from './general';
+import { searchHandlers } from './search';
 
 // clientHandlers first: their public paths (orders/free-access/, …) would otherwise match orders/:id/
 export const handlers = [
@@ -19,4 +20,5 @@ export const handlers = [
     ...productHandlers,
     ...calculatorHandlers,
     ...generalHandlers,
+    ...searchHandlers,
 ];
