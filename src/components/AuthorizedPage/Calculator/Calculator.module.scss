@@ -31,6 +31,13 @@
     margin-bottom: 5px;
   }
 
+  // a kit already in production: shown, but nothing in it can be changed (the global disabled look, App.scss)
+  .readOnly {
+    opacity: 0.5;
+    pointer-events: none;
+    user-select: none;
+  }
+
   .bottomKitButtons {
     display: flex;
     justify-content: space-between;

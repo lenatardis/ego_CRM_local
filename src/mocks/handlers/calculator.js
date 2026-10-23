@@ -10,6 +10,7 @@ import {
 import {
     computeKitPrice, findOrderProduct, loadOrderProducts, saveOrderProducts, serializeKitForEdit,
 } from '../data/orderProducts';
+import { manufacturingOf } from '../data/production';
 
 // Kit calculator (src/api/calculatorApi.js, components/AuthorizedPage/Calculator/):
 //   GET    calculator/kit/templates/size/[?order_product_id]
@@ -46,6 +47,9 @@ const toComponent = (c, isCustom, previous = null) => ({
     mono_fabric_type: c.mono_fabric_type !== undefined ? c.mono_fabric_type || null : previous?.mono_fabric_type ?? null,
     is_custom: isCustom,
 });
+
+// a kit the ERP is already making can't be changed (data/production.js); Calculator.jsx shows `errors.detail`
+const inProduction = () => badRequest({ errors: { detail: 'Комплект у виробництві: змінити його не можна.' } });
 
 const kitResponse = (record, status = 200) =>
     HttpResponse.json({ order_product_id: record.id, kit_id: record.id, price: record.kit.price }, { status });
@@ -168,6 +172,7 @@ export const calculatorHandlers = [
     http.patch(`${API}/calculator/kit/:id/`, withAuth(async ({ params, request }) => {
         const record = findKitRecord(params.id);
         if (!record) return notFound();
+        if (manufacturingOf(record.id)) return inProduction();
         const body = await request.json();
         const order = findOrder(record.order_id);
 
@@ -208,6 +213,7 @@ export const calculatorHandlers = [
     http.delete(`${API}/calculator/kit/components/:id/`, withAuth(({ params, request }) => {
         const record = findKitRecord(new URL(request.url).searchParams.get('kit_id'));
         if (!record) return notFound();
+        if (manufacturingOf(record.id)) return inProduction();
         const index = record.kit.components.findIndex((c) => String(c.component_template_id) === String(params.id));
         if (index === -1) return notFound();
 

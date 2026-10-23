@@ -9,6 +9,7 @@ import FabricPrice from "./FabricPrice/FabricPrice";
 import { getAccessToken } from "../../../utils/authTokens";
 import { getFabricTemplate, getMonoFabricTypeTemplates, setKit, setSplitKit, setUpdateKit } from "../../../api/calculatorApi";
 import {getOrderInfo} from "../../../api/ordersApi";
+import { getCartOrder } from "../../../api/productsApi";
 import {useAppDispatch} from "../../../hooks/redux";
 import {setIsActivePopup} from "../../../store/main-slice";
 import GlobalPopup from "../../Common/GlobalPopup/GlobalPopup";
@@ -51,6 +52,8 @@ const Calculator = () => {
     const [sourceID, setSourceID] = useState(null);
     const [noKitBanner, setNoKitBanner] = useState(null);
     const [backendErrorText, setBackendErrorText] = useState("");
+    // the edited kit is already being made (cart line `manufacturing`): it can't be changed any more
+    const [manufacturing, setManufacturing] = useState(null);
 
     const isDesktop = useIsDesktop();
 
@@ -79,6 +82,17 @@ const Calculator = () => {
                 });
         }
     }, [fabric, size, sourceID]);
+
+    useEffect(() => {
+        if (!orderId || !id) return;
+
+        getCartOrder(getAccessToken(), orderId)
+            .then((resp) => {
+                const line = Array.isArray(resp) ? resp.find((item) => String(item.id) === String(id)) : null;
+                setManufacturing(line?.manufacturing ?? null);
+            })
+            .catch((err) => console.error(err));
+    }, [orderId, id]);
 
     useEffect(() => {
         if (!orderId) return;
@@ -511,6 +525,8 @@ const Calculator = () => {
         <div className={styles.calculator}>
             <div className={styles.calcWrap}>
                  {isDesktop && <ArrBack />}
+                {/* a kit in production is read-only: nothing in it can be clicked or focused (see the caption below) */}
+                <div className={manufacturing ? styles.readOnly : undefined} {...(manufacturing ? { inert: '' } : {})}>
                 <h2>Тип тканини</h2>
                 <FabricType
                     setTemplate={setTemplate}
@@ -647,15 +663,22 @@ const Calculator = () => {
                     </>
                 )}
 
+                </div>
+
                 <CalcButton
                     action={calcSave}
                     isDisabled={
                         !components ||
                         (components?.components?.length === 0 && customComponents?.length === 0) ||
-                        !hasPositivePrice
+                        !hasPositivePrice ||
+                        !!manufacturing
                     }
                     buttonName="Обрахувати і Зберегти"
                 />
+
+                {manufacturing && (
+                    <p>*Комплект уже у виробництві (статус: {manufacturing.status}), змінити його не можна</p>
+                )}
 
                 {backendErrorText && (
                     <p className={styles.backendError}>*{backendErrorText}</p>
