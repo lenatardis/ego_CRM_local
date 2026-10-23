@@ -38,19 +38,55 @@ The original backend no longer exists. This repository is intentionally **fronte
 
 Components are grouped as `AuthorizedPage/*` (Main, OrderCreate, OrderStatus, Calculator, Products, Fabrics, Storage, DeliveryNP, DeliveryUKR, Profile), `ClientPage/*` and reusable `Common/*`. Styling: SCSS modules colocated with components, global styles in `src/App.scss`.
 
+## Survey findings (step 3 of `../CLAUDE.md`)
+
+Routes — staff (`AuthorizedPage.jsx`): `/*` Main (order list, tabs, search), `/fabrics/[:id]`, `/storage/[:id]`, `/order/:id/*` (create/edit order), `/products/:id/*`, `/deliveryNP/:id/*`, `/deliveryUKR/:id/*`, `/order_status/:id/*`, `/calculator/:orderId[/:id]/*`, `/profile/`, `/product/*` (public fabric/product card, `UserPage/Fabric.jsx`). Client (`ClientPage.jsx`): `/*` Auth, `/orders/*?order=<hash>` order status, `/contacts/`, `/details_payment`, `/callback/`, `/product/*`, `/{monobank,wayforpay}/finish-order/*`. Only `sessionStorage` key besides tokens: `client_order_hash`.
+
+Endpoints (all relative to `baseUrl`, `src/api/apiConfig.js`; "public" = sent without a token):
+
+| Area | Endpoints |
+|---|---|
+| auth | `POST users/token/` {username,password}→{access,refresh} or {user\|detail: error}; `POST users/token/refresh/`; `GET users/` (current user: `id, first_name, photo, url`, …); `PATCH users/:id/` {password} |
+| orders | `GET orders/?page&manager&is_general&…` (paginated `{count,results}`); `GET orders/recent-views/?manager=`; `POST orders/` (create **and** update — body has `id` when updating); `GET/DELETE orders/:id/`; `POST orders/duplicate/` {order_id}; `GET orders/sub-orders/?…`; `GET orders/source/`; public: `GET orders/free-access/?order_hash=` → `{order:{id,…}}`, `POST orders/free-access-customer/` {order_id, phone_last_digits} |
+| customers | `POST customers/` {order_id, …fields} |
+| products | `GET products/warehouse-items/?page_size=10&source&…`, public `GET products/warehouse-items/:id/`; `GET products/fabric/?…`, public `GET products/fabric/:id/`; `GET/POST products/order-product/` (`?order=` / {order, warehouse_item}), `DELETE products/order-product/:id/` |
+| calculator | `GET calculator/kit/templates/size/[?order_product_id]`; `GET calculator/kit/templates/?fabric_id&kit_template_size_id[&source_id]`; `GET calculator/kit/components/additional/?…`; `GET calculator/kit/components/type_templates/`; `POST calculator/kit/`; `PATCH calculator/kit/:id/`; `POST calculator/kit/split/`; `DELETE calculator/kit/components/:id/?kit_id=`; (`GET calculator/templates/` — unused) |
+| payments | `GET payments/?order_id=`; `POST payments/` {order_id, …} (create/update); `GET/POST payments_types/payment_bill/[?payment_id]`, `PATCH/DELETE payments_types/payment_bill/:id/`; public: `POST payments_types/{monobank,wayforpay}/` {payment_bill_id}, `POST payments_types/:type/:id/successful/` |
+| receipts | public `POST checkbox/receipt/` {payment_id, payment_type}; public `POST receipt/` (multipart, customer's transfer screenshot); `POST receipt/approved/` (multipart, staff) |
+| delivery | `GET/POST delivery/nova_poshta/item/` (`?order_id=` / {order_id, …}); `POST delivery/nova_poshta/waybill/` and `…/waybill/update/` {nova_poshta_id}; `GET delivery/nova_poshta/waybill/:id/pdf/`; `DELETE delivery/nova_poshta/:id/` (unused); `GET delivery/nova_poshta/location/city/?city=`, `…/location/warehouse/?city_ref&find_by_string`. Ukrposhta pages have no API of their own — they reuse `getCities` and save through `setDeliverNP` |
+| search | `GET search/?query&is_order&is_fabric&is_warehouse_item&page` |
+| general (public) | `GET general/work_schedule/`, `general/company/`, `general/call_order/reason/`, `general/payment_details/?order=`; `POST general/call_order/` {name, phone, reason} |
+
+Record shapes the components read (to be detailed per page while restoring):
+- Order list item: `id, created, status, is_general, is_immediate, is_favourite, general_order{id}, sub_orders_count, kit_count, warehouse_item_count, source{id,name}, manager{first_name,last_name,middle_name,username}, customer{id,first_name,last_name,middle_name,username,phone,url}, payment{amount, final_amount, discount_amount, discount_type, status}`.
+- Payment bill: `id, type (IBAN|ONLINE|TAX), method (PREPAYMENT|FULL|POSTPAID), status (PAY_WAIT|PAID|NOT_PAID), prepayment_amount, prepayment_datetime, receipt_url, customer_receipt, customer_receipt_approved` — same fields as the ERP's `paymentBills`.
+- Order statuses seen: `NEW`, `OPENED`; fabric/template statuses `ACTIVE`, `DEPRECATED`.
+
+Other hardcoded external URLs: `getBaseUrl` (`src/store/selectors.js`, prefix for fabric/warehouse images in `FabricsContent`, `FabricItem`, `StorageItem`), ERP link in `MainMenu.jsx:466`, Nova Poshta tracking link in `ClientPage/Status/InvoiceInfo/Input/SearchInput.jsx` (a public tracking page opened in a new tab — fine to keep).
+
+Quirks of the original code that affect mocking (don't "fix" unless asked):
+- 401 detection mostly checks `response.statusText === 'Unauthorized'`, some modules `response.status === 401` — mock 401s must set both.
+- `getSearchParams` drops falsy values (`false`, `0`), so e.g. `is_general=false` is never sent.
+- Retry-after-refresh bugs: `getSuborders` retries `getOrders`, `getProductDetail` retries `getStorageProducts`, `updateUserInfo` calls itself without args, `approveReceipt` doesn't return the retry.
+- `POST orders/`, `POST customers/`, `POST payments/`, `POST delivery/nova_poshta/item/` are upserts keyed by order.
+- `Profile.jsx` calls `updateUserInfo(accessToken, user.id)` without the password, so the password change never sends it; the mock just answers with the user.
+- `npm run build` must run with `CI=false` on CI: CRA treats the existing lint warnings as errors when `CI=true`.
+
 ## Mock backend approach (use this for every restored page)
 
 Follow the approach already proven in the ERP (`../ego_ERP_local/src/mocks/`):
 
 - `src/api/*Api.js` keep making real `fetch` calls, but to **same-origin** paths (`/api/v1/...`) instead of the dead host. Do not replace API functions with direct mock imports.
-- Requests are answered in the browser by **MSW** (`src/mocks/browser.js`, started in `src/index.jsx` before render; worker file in `public/`, registered relative to the base path).
+- Requests are answered in the browser by **MSW 2** (`msw@2.15`, devDependency; `src/mocks/browser.js`, started in `src/index.jsx` before render; worker `public/mockServiceWorker.js`, registered under `process.env.PUBLIC_URL`). Not MSW 3 like the ERP: v3 declares a `typescript >= 5` peer that conflicts with CRA 5's TypeScript 4.9; the handler API (`http`, `HttpResponse`) is the same. After upgrading msw, refresh the worker with `npx msw init public`.
+- Handler helpers in `src/mocks/handlers/utils.js`: `API = '/api/v1'`, `withAuth` (passes the demo `user` to the resolver), `withLatency` for public endpoints, `unauthorized()` (401 **with** `statusText: 'Unauthorized'`), `notFound()`, `paginate()` → `{count, next, previous, results}`.
 - `src/mocks/data/<entity>.js` — deterministic seed data (seeded PRNG, e.g. `mulberry32`); record shapes mirror what the components read.
 - `src/mocks/handlers/<entity>.js` — MSW handlers (wrapped in an auth check), implementing the filters/pagination the API layer sends and the original response shape; registered in `src/mocks/handlers/index.js`.
-- `src/mocks/db.js` — persist changed collections to `localStorage` under a CRM prefix (proposal: `ego-demo:crm:`); bump a `DATA_VERSION` when seed data or record shapes change. Data shared with the ERP follows the contract in `../CLAUDE.md`.
+- `src/mocks/db.js` — CRM-private collections: `getCollection` / `saveCollection` under `ego-demo:crm:` (bump `DATA_VERSION`). Collections shared with the ERP (orders, customers, payment bills — contract in `../CLAUDE.md`): `getSharedCollection` / `saveSharedCollection(name, items)` under `ego-demo:shared:`, re-read on every access because the ERP may change them in another tab (bump `SHARED_DATA_VERSION` together with the ERP).
+- `src/mocks/shared/seed.js` — seed of the data shared with the ERP (orders, customers, payment bills, managers, sources); **identical copy in both repos**, don't edit it here without copying it to the ERP; run `npm run check:shared`. Record shapes and rules: `../CLAUDE.md` → "Cross-app contract".
 - Related records are stored by id and expanded into nested objects when a response is built, so edits propagate.
 - Lists sort newest-created first, so a record created through a form appears at the top of page 1.
 - External services (Nova Poshta, monobank, WayForPay, Checkbox) are mocked the same way — never call the real services.
-- Demo login: demo users in `src/mocks/data/demoUsers.js` with a shared demo password (align with the ERP if login is shared).
+- Demo login: managers in `src/mocks/data/demoUsers.js` (ids 21–24, `demo_manager`…`demo_manager4`, password `DemoPass123` as in the ERP; names = the managers on the ERP's CRM orders). Tokens `demo-crm-{access,refresh}-<id>`. The login form has a demo-manager picker that fills in the credentials (like the ERP's demo-role picker).
 
 ## Sub-path hosting
 

@@ -463,7 +463,7 @@ const MainMenu = () => {
 
                 {isDesktop && (
                     <div className={styles.btnWrap}>
-                        <a className={`${styles.userMenu__link} ${styles.ERP}`} href="https://erp.egodevelopment.pp.ua/">
+                        <a className={`${styles.userMenu__link} ${styles.ERP}`} href="/ego_ERP_local/">
                             <span>Перейти в ERP</span>
                         </a>
 

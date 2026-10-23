@@ -2,6 +2,7 @@
   "name": "ego-textile",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://lenatardis.github.io/ego_CRM_local",
   "dependencies": {
     "@emotion/react": "^11.13.3",
     "@emotion/styled": "^11.13.0",
@@ -30,7 +31,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "check:shared": "node scripts/check-shared-seed.mjs"
   },
   "eslintConfig": {
     "extends": [
@@ -49,5 +51,13 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "msw": {
+    "workerDirectory": [
+      "public"
+    ]
+  },
+  "devDependencies": {
+    "msw": "^2.15.0"
   }
 }

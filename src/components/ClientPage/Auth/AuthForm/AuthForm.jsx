@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import styles from './AuthForm.module.scss';
 import { login } from "../../../../api/authApi";
+import { DEMO_USERS } from "../../../../mocks/data/demoUsers";
 
 const AuthForm = () => {
     const [authLogin, setAuthLogin] = useState('');
@@ -8,6 +9,19 @@ const AuthForm = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [errors, setErrors] = useState(null);
     const [authError, setAuthError] = useState('');
+    const [demoUserId, setDemoUserId] = useState('');
+
+    // Demo build: fills in the credentials of a demo manager (see src/mocks/data/demoUsers.js)
+    const onDemoUserChange = (e) => {
+        const user = DEMO_USERS.find((u) => String(u.id) === e.target.value);
+        setDemoUserId(e.target.value);
+        setErrors(null);
+        setAuthError('');
+        if (user) {
+            setAuthLogin(user.username);
+            setPassword(user.password);
+        }
+    };
 
     const submitForm = (e) => {
         e.preventDefault();
@@ -43,6 +57,23 @@ const AuthForm = () => {
     return (
         <form onSubmit={submitForm} className={styles.authForm}>
             <div className={styles.form}>
+                <div className={styles.form__field}>
+                    <label htmlFor="demoUser">Демо-користувач:</label>
+                    <select
+                        id={'demoUser'}
+                        value={demoUserId}
+                        className={'baseInput'}
+                        onChange={onDemoUserChange}
+                    >
+                        <option value="" disabled>Оберіть менеджера</option>
+                        {DEMO_USERS.map((u) => (
+                            <option key={u.id} value={u.id}>
+                                {`${u.profile.last_name} ${u.profile.first_name}`}
+                            </option>
+                        ))}
+                    </select>
+                </div>
+
                 <div className={styles.form__field}>
                     <label htmlFor="login">Логін:</label>
                     <input

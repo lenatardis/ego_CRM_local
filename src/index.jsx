@@ -5,6 +5,7 @@ import App from './App';
 import {BrowserRouter} from "react-router-dom"
 
 import {store} from './store/store';
+import {startMockBackend} from './mocks/browser';
 
 if (process.env.NODE_ENV === "production") {
     console.log = () => {};
@@ -12,11 +13,16 @@ if (process.env.NODE_ENV === "production") {
     console.error = () => {};
 }
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-    <BrowserRouter>
-        <Provider store={store}>
-            <App/>
-        </Provider>
-    </BrowserRouter>
-);
+// Demo mode: the mock backend must be running before the app's first request (user check in App.jsx)
+startMockBackend()
+    .catch((error) => console.error('Mock backend failed to start:', error))
+    .then(() => {
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(
+            <BrowserRouter basename={process.env.PUBLIC_URL}>
+                <Provider store={store}>
+                    <App/>
+                </Provider>
+            </BrowserRouter>
+        );
+    });
