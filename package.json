@@ -32,7 +32,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "check:shared": "node scripts/check-shared-seed.mjs"
+    "check:shared": "node scripts/check-shared-seed.mjs",
+    "fetch:np-directory": "node scripts/fetch-np-directory.mjs"
   },
   "eslintConfig": {
     "extends": [

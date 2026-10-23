@@ -162,9 +162,9 @@ export const orderHandlers = [
         return HttpResponse.json(serializeOrder(order, { orders }), { status: 201 });
     })),
 
-    http.delete(`${API}/orders/:id/`, withAuth(({ params }) => {
+    http.delete(`${API}/orders/:id/`, withAuth(async ({ params }) => {
         if (!findOrder(loadOrders(), params.id)) return notFound();
-        deleteOrderCascade(Number(params.id));
+        await deleteOrderCascade(Number(params.id));
         return new HttpResponse(null, { status: 204 });
     })),
 ];

@@ -11,7 +11,7 @@
 //     Shared collections are re-read from localStorage on every access: the ERP may change them in another tab.
 
 // Bump when CRM-private seed data or record shapes change: previously stored CRM demo data is then discarded.
-const DATA_VERSION = 2;
+const DATA_VERSION = 3;
 // Bump together with the ERP (same value in both repos) when shared seed data or record shapes change.
 const SHARED_DATA_VERSION = 3;
 

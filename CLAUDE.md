@@ -9,6 +9,8 @@ npm install     # install dependencies
 npm start       # dev server (Create React App, http://localhost:3000)
 npm run build   # production build into build/
 npm test        # CRA test runner
+npm run check:shared        # shared seed / catalog / media identical with ../ego_ERP_local
+npm run fetch:np-directory  # refresh the Nova Poshta directory snapshot (manual, calls NP's public API)
 ```
 
 Package manager is **npm** (`package-lock.json`); the app is built with **Create React App** (`react-scripts` 5). Switching to pnpm or Vite is not planned — only do it if the user asks.
@@ -68,8 +70,16 @@ Orders as mocked (steps 6.3–6.4, `src/mocks/data/orders.js` + `handlers/{order
 - A new order (`POST orders/` without `id`) has `customer: null, payment: null`; `OrderWrapper.jsx` then creates both through `POST customers/` / `POST payments/`. New payment defaults: `status 'NONE'`, `discount_type 'NONE'`, amounts null. Every `updateOrder` call also sends `manager` (the current user), so editing an order re-assigns it — original frontend behaviour, kept.
 - Validation the UI shows: unknown `source` → `{source: ['Invalid pk "…" - object does not exist.']}` (Order.jsx maps it to its suborder message); phone not `+380XXXXXXXXX` → `{phone: [message]}`.
 - Duplicate copies customer, source, comment, urgency and payment totals (status `NONE`), manager = current user. Duplicate also copies the cart. Delete cascades to suborders, their bills and CRM-private data keyed by the order (recent views, cart, NP item) (new ids are max + 1, so ids can be reused).
-- CRM-private: `recentViews` (`{[managerId]: [orderId]}`, max 10, recorded on `GET orders/:id/`, seeded with each manager's 6 newest orders) and `npItems` — a minimal Nova Poshta item store (`GET …/item/?order_id` → `[item]` or 404 `{detail}`, `POST` upsert of raw fields) because `OrderCreate.jsx` creates and updates it; its real shape is step 6.8.
+- CRM-private: `recentViews` (`{[managerId]: [orderId]}`, max 10, recorded on `GET orders/:id/`, seeded with each manager's 6 newest orders). Delivery items: see "Delivery as mocked".
 - Original-code quirk seen while testing: "Дублювати замовлення" navigates to the original order, not the copy (`Order.onEditOrder` ignores the id `OrderMenu` passes) — left as is.
+
+Delivery as mocked (step 6.8, `src/mocks/data/novaPoshta.js` + `handlers/delivery.js`):
+- Nova Poshta directory: a snapshot of the real one (`src/mocks/data/npDirectory.json`, ~560 KB) — 30 cities with their real refs and all their working branches (1668, cargo ones included, no parcel lockers; real addresses, postal codes, weight limits, `null` = no limit). Made with `npm run fetch:np-directory` (`scripts/fetch-np-directory.mjs`, NP's public JSON API, no key) — run by hand to refresh; the app never calls Nova Poshta. Loaded lazily (`loadDirectory()`, a separate ~63 KB gzipped chunk) by the delivery handlers and the order-delete cascade, so the first page load doesn't carry it (main bundle stays ~435 KB gzipped). `location/city/?city=` matches the start of the name or of a word; `location/warehouse/?city_ref&find_by_string` by number or address text.
+- Delivery item (`npItems`, CRM-private) stored in the nested shape `DeliveryNP.jsx` reads (`receiver.delivery_receiver.*`, `receiver.city_identifier / address / address_identifier / max_weight_allowed / department_number`, `specified_weight`, `delivery.{payer, payment_method, estimate_order_price, estimate_delivery_price, ttn, comment}`, `delivery_date`, `with_backward_delivery`, `backward_amount`); the flat POST fields are mapped onto it (`paid_by_the_sender` → `payer` `Sender` / `Recipient`). Keyed by the general order. `postpaid_amount` is computed: declared value − paid bills of the order and its suborders.
+- A new item starts from the order's customer and its total (+ suborders); the Products / order-status pages keep `estimate_order_price` current themselves. Weight before a branch, or above the branch limit → 400 `{errors: {specified_weight}}` (the messages `NovaPoshtaWeight.jsx` maps).
+- Waybill: required fields (names, phone, city, branch, weight, declared value > 0) → 400 `{errors}`; TTN `2045…` (14 digits), shipping estimate = weight tariff (80 / 110 / 160 UAH …) + 0.5% of declared value + cash-on-delivery fee (20 UAH + 2%); update keeps the TTN and recalculates. The "PDF" is a printable HTML waybill handed over as a blob URL (a real PDF would need an embedded font for Cyrillic).
+- Seed: seed orders that are `SHIPMENT_READY` / `DELIVERED` have a filled item with a waybill (receiver = customer, weight from the cart, cash on delivery when the order is postpaid and unpaid).
+- Ukrposhta: the original page is an unfinished stub (submit only logs, nothing saved); its city / region lookups use `location/city/` (`cities`), area / index read `areas` / `indexes`, which the city endpoint never had — left as is.
 
 Catalog, cart and calculator as mocked (steps 6.5–6.7, `src/mocks/data/{catalog,orderProducts}.js` + `handlers/{products,calculator}.js`):
 - Catalog data comes from `src/mocks/shared/catalog/` (the ERP's seed modules, identical in both repos — workspace `CLAUDE.md`, "Cross-app contract"); demo media in `public/demo/media/`. Read-only; prices via `priceFor(owner, id, sourceId)` (`shared/catalog/pricing.js`: source pricelist → default list → none).

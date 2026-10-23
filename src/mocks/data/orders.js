@@ -7,6 +7,7 @@
 
 import { getCollection, getSharedCollection, saveCollection, saveSharedCollection, nextId } from '../db';
 import { deleteOrderProductsOf, itemCountsOf, loadOrderProducts } from './orderProducts';
+import { deleteNpItemsOf } from './novaPoshta';
 import {
     SEED_CUSTOMERS, SEED_MANAGERS, SEED_ORDERS, SEED_PAYMENT_BILLS, SEED_SOURCES, money, toIso,
 } from '../shared/seed';
@@ -139,7 +140,7 @@ export const nextPaymentId = (orders) => orders.reduce((max, o) => Math.max(max,
  * Drops an order, its suborders and their payment bills from the shared store, and the CRM-private records
  * keyed by them (new ids are max + 1, so a later order may get a deleted order's id).
  */
-export const deleteOrderCascade = (orderId) => {
+export const deleteOrderCascade = async (orderId) => {
     const orders = loadOrders();
     const removed = new Set(orders.filter((o) => o.id === orderId || o.general_order_id === orderId).map((o) => o.id));
     saveOrders(orders.filter((o) => !removed.has(o.id)));
@@ -154,8 +155,5 @@ export const deleteOrderCascade = (orderId) => {
     });
     saveCollection('recentViews');
     deleteOrderProductsOf(removed);
-    // TODO step 6.8: also drop other delivery data of removed orders (waybills)
-    const npItems = getCollection('npItems', []);
-    npItems.splice(0, npItems.length, ...npItems.filter((i) => !removed.has(i.order_id)));
-    saveCollection('npItems');
+    await deleteNpItemsOf(removed);
 };
