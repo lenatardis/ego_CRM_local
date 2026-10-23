@@ -1,11 +1,11 @@
 import { http, HttpResponse } from 'msw';
 import { API, withAuth, notFound } from './utils';
 import {
-    loadOrders, loadPaymentBills, nextPaymentId, nowIso, saveOrders, savePaymentBills, serializePayment, toMoney,
+    loadOrders, loadPaymentBills, nextPaymentId, nowIso, saveOrders, savePaymentBills, serializeBill, serializePayment,
+    toMoney, updatePaidStatus,
 } from '../data/orders';
 import { nextId } from '../db';
-import { resolveDemoAsset, toIso } from '../shared/seed';
-import { APP_BASE_URL } from '../appBaseUrl';
+import { toIso } from '../shared/seed';
 
 // POST payments/ { order_id, ...fields } (src/api/paymentApi.js updatePayment) — an upsert of the order's
 // payment, which is embedded in the shared order record. OrderWrapper.jsx creates it for a new order with
@@ -32,31 +32,6 @@ const badRequest = (errors) => HttpResponse.json(errors, { status: 400, statusTe
 
 const findOrderByPaymentId = (orders, paymentId) =>
     orders.find((o) => o.payment && String(o.payment.id) === String(paymentId));
-
-const serializeBill = (bill, order) => ({
-    id: bill.id,
-    payment: order?.payment?.id ?? null,
-    order: bill.order_id,
-    type: bill.type,
-    method: bill.method,
-    status: bill.status,
-    prepayment_amount: bill.prepayment_amount === null ? null : Number(bill.prepayment_amount),
-    prepayment_datetime: bill.prepayment_datetime,
-    paid_datetime: bill.paid_datetime,
-    comment: bill.comment ?? null,
-    receipt_url: bill.receipt_url,
-    customer_receipt: resolveDemoAsset(bill.customer_receipt, APP_BASE_URL),
-    customer_receipt_approved: bill.customer_receipt_approved,
-});
-
-/** An order is paid once all its bills are paid and they cover its total (the seed's rule for PAID). */
-const updatePaidStatus = (order, bills) => {
-    const own = bills.filter((b) => b.order_id === order.id);
-    const paid = own.filter((b) => b.status === 'PAID').reduce((sum, b) => sum + Number(b.prepayment_amount), 0);
-    if (own.length && own.every((b) => b.status === 'PAID') && paid >= Number(order.payment.final_amount)) {
-        order.payment.status = 'PAID';
-    }
-};
 
 export const paymentHandlers = [
     http.get(`${API}/payments/`, withAuth(({ request }) => {

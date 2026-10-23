@@ -9,8 +9,9 @@ import { getCollection, getSharedCollection, saveCollection, saveSharedCollectio
 import { deleteOrderProductsOf, itemCountsOf, loadOrderProducts } from './orderProducts';
 import { deleteNpItemsOf } from './novaPoshta';
 import {
-    SEED_CUSTOMERS, SEED_MANAGERS, SEED_ORDERS, SEED_PAYMENT_BILLS, SEED_SOURCES, money, toIso,
+    SEED_CUSTOMERS, SEED_MANAGERS, SEED_ORDERS, SEED_PAYMENT_BILLS, SEED_SOURCES, money, resolveDemoAsset, toIso,
 } from '../shared/seed';
+import { APP_BASE_URL } from '../appBaseUrl';
 
 export const loadOrders = () => getSharedCollection('orders', SEED_ORDERS);
 export const saveOrders = (orders) => saveSharedCollection('orders', orders);
@@ -64,8 +65,37 @@ const alreadyPaid = (orderId, bills) => money(
 export const serializePayment = (order, bills = loadPaymentBills()) =>
     order.payment ? { ...order.payment, already_paid_amount: alreadyPaid(order.id, bills) } : null;
 
-/** The order's link for the customer (ProductActions.jsx "Скопіювати посилання"; App.jsx opens ?order=<hash>). */
-const clientUrl = (order) => `${window.location.origin}${process.env.PUBLIC_URL}/?order=${order.order_hash}`;
+/**
+ * The order's link for the customer ("Посилання на замовлення"): the client status page `/orders/?order=<hash>`
+ * (ClientPage.jsx); for a logged-in manager App.jsx turns the same link into the staff order page.
+ */
+export const clientUrl = (order) => `${window.location.origin}${process.env.PUBLIC_URL}/orders/?order=${order.order_hash}`;
+
+/** A payment bill as the bill endpoints and the client status page return it (amounts as numbers: Bill.jsx adds them). */
+export const serializeBill = (bill, order) => ({
+    id: bill.id,
+    payment: order?.payment?.id ?? null,
+    order: bill.order_id,
+    type: bill.type,
+    method: bill.method,
+    status: bill.status,
+    prepayment_amount: bill.prepayment_amount === null ? null : Number(bill.prepayment_amount),
+    prepayment_datetime: bill.prepayment_datetime,
+    paid_datetime: bill.paid_datetime,
+    comment: bill.comment ?? null,
+    receipt_url: bill.receipt_url,
+    customer_receipt: resolveDemoAsset(bill.customer_receipt, APP_BASE_URL),
+    customer_receipt_approved: bill.customer_receipt_approved,
+});
+
+/** An order is paid once all its bills are paid and they cover its total (the seed's rule for PAID). */
+export const updatePaidStatus = (order, bills) => {
+    const own = bills.filter((b) => b.order_id === order.id);
+    const paid = own.filter((b) => b.status === 'PAID').reduce((sum, b) => sum + Number(b.prepayment_amount), 0);
+    if (own.length && own.every((b) => b.status === 'PAID') && paid >= Number(order.payment.final_amount)) {
+        order.payment.status = 'PAID';
+    }
+};
 
 /** An order as GET orders/, GET orders/:id/ and POST orders/ return it. */
 export const serializeOrder = (order, ctx = {}) => {
