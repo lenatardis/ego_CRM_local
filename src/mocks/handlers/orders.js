@@ -1,7 +1,7 @@
 import { http, HttpResponse } from 'msw';
 import { API, withAuth, isSet, toBoolOrUndefined, notFound } from './utils';
 import {
-    SOURCES, addRecentView, byNewest, deleteOrderCascade, findSource, getRecentViewIds, loadOrders, makeOrder,
+    SOURCES, addRecentView, byNewest, deleteBlocker, deleteOrderCascade, findSource, getRecentViewIds, loadOrders, makeOrder,
     nextPaymentId, nowIso, saveOrders, serializeOrder, serializeOrders,
 } from '../data/orders';
 import { copyOrderProducts } from '../data/orderProducts';
@@ -14,7 +14,7 @@ import { copyOrderProducts } from '../data/orderProducts';
 //   GET    orders/:id/                                  -> order (also recorded as a recent view)
 //   POST   orders/                                      -> order; creates, or updates when the body has `id`
 //   POST   orders/duplicate/ { order_id }               -> the new order
-//   DELETE orders/:id/                                  -> 204
+//   DELETE orders/:id/                                  -> 204; 400 { detail } when the ERP depends on it (deleteBlocker)
 
 const PAGE_SIZE = 10;
 
@@ -163,7 +163,9 @@ export const orderHandlers = [
     })),
 
     http.delete(`${API}/orders/:id/`, withAuth(async ({ params }) => {
-        if (!findOrder(loadOrders(), params.id)) return notFound();
+        const blocker = deleteBlocker(Number(params.id));
+        if (blocker === null) return notFound();
+        if (blocker) return HttpResponse.json({ detail: blocker }, { status: 400, statusText: 'Bad Request' });
         await deleteOrderCascade(Number(params.id));
         return new HttpResponse(null, { status: 204 });
     })),

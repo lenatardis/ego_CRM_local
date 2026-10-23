@@ -19,7 +19,7 @@ import { toIso } from '../shared/seed';
 //   GET    payments_types/payment_bill/?payment_id=     -> [bill], oldest first (bill №1 is the first one)
 //   POST   payments_types/payment_bill/ { payment, method[, prepayment_amount] } -> the new bill
 //   PATCH  payments_types/payment_bill/:id/ { payment, ...fields }              -> the bill
-//   DELETE payments_types/payment_bill/:id/                                     -> 204
+//   DELETE payments_types/payment_bill/:id/                                     -> 204 (400 for a paid bill)
 //   POST   receipt/approved/ (multipart: payment = bill id, is_approved)        -> the bill
 // Bill amounts go out as numbers: Bill.jsx adds them to the available sum.
 
@@ -125,8 +125,11 @@ export const paymentHandlers = [
 
     http.delete(`${API}/payments_types/payment_bill/:id/`, withAuth(({ params }) => {
         const bills = loadPaymentBills();
-        if (!bills.some((b) => String(b.id) === params.id)) return notFound();
-        savePaymentBills(bills.filter((b) => String(b.id) !== params.id));
+        const bill = bills.find((b) => String(b.id) === params.id);
+        if (!bill) return notFound();
+        // a paid bill is money received (the ERP may have a Privat payment linked to it): Bill.jsx disables its delete
+        if (bill.status === 'PAID') return badRequest({ detail: 'Оплачений рахунок не можна видалити.' });
+        savePaymentBills(bills.filter((b) => b.id !== bill.id));
         return new HttpResponse(null, { status: 204 });
     })),
 

@@ -21,12 +21,16 @@ import arrowIcon from "../../../../assets/icons/arrowDown.svg";
 import linkIcon from "../../../../assets/icons/paperclip.svg";
 import { useIsDesktop } from "../../../../hooks/useIsDesktop";
 
+// the server refuses to delete an order the ERP depends on (money received or production started)
+const DELETE_ERROR_TEXT = 'Замовлення не можна видалити: по ньому вже є оплата або воно у виробництві.';
+
 const Order = ({ item, tabName }) => {
     const navigate = useNavigate();
     const [showMenu, setShowMenu] = useState(false);
     const [isShowPopup, setIsShowPopup] = useState(false);
     const [suborders, setSuborders] = useState([]);
     const [suborderCreateError, setSuborderCreateError] = useState('');
+    const [deleteError, setDeleteError] = useState('');
     const [subordersCount, setSubordersCount] = useState(item.sub_orders_count || 0);
     const [isSubordersOpen, setIsSubordersOpen] = useState(false);
     const [isSuborderLoading, setIsSuborderLoading] = useState(false);
@@ -56,6 +60,8 @@ const Order = ({ item, tabName }) => {
         removeOrder(accessToken, item.id).then((result) => {
             if (result && result === 204) {
                 dispatch(removeStateOrder(item.id));
+            } else if (result === 400) {
+                setDeleteError(DELETE_ERROR_TEXT);
             }
         })
     }
@@ -167,6 +173,8 @@ const Order = ({ item, tabName }) => {
                 }
 
                 await updateDeliveryEstimateAfterSuborderDelete(accessToken);
+            } else if (status === 400) {
+                setDeleteError(DELETE_ERROR_TEXT);
             }
         }).catch(error => {
             console.error('Failed to delete suborder and update estimate_order_price', error);
@@ -329,13 +337,14 @@ const Order = ({ item, tabName }) => {
                     )}
                 </div>
             )}
-            {suborderCreateError && (
+            {(suborderCreateError || deleteError) && (
                 <>
                     <span
                         className={styles.shadowActive}
                         onClick={(e) => {
                             e.stopPropagation();
                             setSuborderCreateError('');
+                            setDeleteError('');
                         }}
                     />
                     <div
@@ -343,8 +352,8 @@ const Order = ({ item, tabName }) => {
                         onClick={(e) => e.stopPropagation()}
                     >
                         <div className={styles.header}>
-                            <p className={styles.header__title}>Створення підзамовлення</p>
-                            <div className={styles.header__close} onClick={() => setSuborderCreateError('')}>
+                            <p className={styles.header__title}>{deleteError ? 'Видалення замовлення' : 'Створення підзамовлення'}</p>
+                            <div className={styles.header__close} onClick={() => { setSuborderCreateError(''); setDeleteError(''); }}>
                                 <span>Закрити</span>
                                 <button>
                                     <img src={closeIcon} alt="" />
@@ -352,7 +361,7 @@ const Order = ({ item, tabName }) => {
                             </div>
                         </div>
                         <div className={styles.globalPopup__content}>
-                            <p>{suborderCreateError}</p>
+                            <p>{deleteError || suborderCreateError}</p>
                         </div>
                     </div>
                 </>

@@ -6,7 +6,7 @@ import CartProducts from "./CartProducts/CartProducts";
 import TotalPrice from "../../Common/TotalPrice/TotalPrice";
 import Preloader from "../../Common/Preloader/Preloader";
 import ArrBack from "../../Common/ArrBack/ArrBack";
-import { setGeneralOrderId, setIsNotFound } from "../../../store/main-slice";
+import { setGeneralOrderId, setIsActivePopup, setIsNotFound } from "../../../store/main-slice";
 import { useParams } from "react-router-dom";
 import NotFound from "../../Common/NotFound/NotFound";
 import { useAppDispatch } from "../../../hooks/redux";
@@ -19,6 +19,7 @@ import { setDeliverNP } from "../../../api/novaPoshtaApi";
 import { getPriceWithDiscount } from "../../../utils/getPriceWithDiscount";
 import { Suborder } from "../Main/Order/Suborder";
 import { useIsDesktop } from "../../../hooks/useIsDesktop";
+import GlobalPopup from "../../Common/GlobalPopup/GlobalPopup";
 
 const Products = () => {
     const { id } = useParams();
@@ -31,6 +32,7 @@ const Products = () => {
     const [percentInputValue, setPercentInputValue] = useState(0);
     const [UAHInputValue, setUAHInputValue] = useState(0);
     const [popup, setPopup] = useState(null);
+    const [deleteError, setDeleteError] = useState('');
     const [sourceID, setSourceID] = useState(null);
     const [sourceName, setSourceName] = useState(null);
     const isDisabled = order?.payment?.status === 'PAID' || order?.payment?.status === 'PAY_WAIT';
@@ -328,6 +330,10 @@ const Products = () => {
                 setSuborders(newSuborders);
 
                 await updateDeliveryEstimateAfterSuborderDelete(accessToken);
+            } else if (status === 400) {
+                // the server refuses to delete a suborder the ERP depends on (money received or production started)
+                setDeleteError('Підзамовлення не можна видалити: по ньому вже є оплата або воно у виробництві.');
+                dispatch(setIsActivePopup(true));
             }
         }).catch(error => {
             console.error('Failed to delete suborder and update estimate_order_price', error);
@@ -426,6 +432,12 @@ const Products = () => {
                         </div>}
                     </div>
                 </div>
+
+                {deleteError && (
+                    <GlobalPopup title={'Видалення замовлення'} onClose={() => setDeleteError('')} centeredPopup={isDesktop}>
+                        <p>{deleteError}</p>
+                    </GlobalPopup>
+                )}
 
                 {isEstimateSyncing && (
                     <div className={styles.syncOverlay}>

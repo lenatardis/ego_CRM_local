@@ -168,6 +168,19 @@ export const makeOrder = (orders, fields) => {
 export const nextPaymentId = (orders) => orders.reduce((max, o) => Math.max(max, o.payment?.id ?? 0), 0) + 1;
 
 /**
+ * Why an order can't be deleted, or '' when it can (null: no such order). The ERP keeps records that point at CRM
+ * orders and bills (../../../CLAUDE.md, step 7.4): money received — any paid bill of the order or its suborders (a
+ * linked Privat payment, an approved receipt, an online payment) — makes it undeletable; neither app has a
+ * "cancelled" order, so such an order is finished, not erased.
+ */
+export const deleteBlocker = (orderId, orders = loadOrders(), bills = loadPaymentBills()) => {
+    if (!orders.some((o) => o.id === orderId)) return null;
+    const ids = new Set(orders.filter((o) => o.id === orderId || o.general_order_id === orderId).map((o) => o.id));
+    if (bills.some((b) => ids.has(b.order_id) && b.status === 'PAID')) return 'По замовленню вже є оплата.';
+    return '';
+};
+
+/**
  * Drops an order, its suborders and their payment bills from the shared store, and the CRM-private records
  * keyed by them (new ids are max + 1, so a later order may get a deleted order's id).
  */
