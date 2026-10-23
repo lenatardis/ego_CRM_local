@@ -33,6 +33,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "check:shared": "node scripts/check-shared-seed.mjs",
+    "same-origin": "node scripts/same-origin.mjs",
     "fetch:np-directory": "node scripts/fetch-np-directory.mjs"
   },
   "eslintConfig": {
