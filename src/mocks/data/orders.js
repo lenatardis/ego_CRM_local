@@ -8,6 +8,7 @@
 import { getCollection, getSharedCollection, saveCollection, saveSharedCollection, nextId } from '../db';
 import { deleteOrderProductsOf, itemCountsOf, loadOrderProducts } from './orderProducts';
 import { deleteNpItemsOf } from './novaPoshta';
+import { loadProduction } from './production';
 import {
     SEED_CUSTOMERS, SEED_MANAGERS, SEED_ORDERS, SEED_PAYMENT_BILLS, SEED_SOURCES, money, resolveDemoAsset, toIso,
 } from '../shared/seed';
@@ -169,14 +170,15 @@ export const nextPaymentId = (orders) => orders.reduce((max, o) => Math.max(max,
 
 /**
  * Why an order can't be deleted, or '' when it can (null: no such order). The ERP keeps records that point at CRM
- * orders and bills (../../../CLAUDE.md, step 7.4): money received — any paid bill of the order or its suborders (a
- * linked Privat payment, an approved receipt, an online payment) — makes it undeletable; neither app has a
- * "cancelled" order, so such an order is finished, not erased.
+ * orders and bills (../../../CLAUDE.md, steps 7.4 / 7.5): money received — any paid bill of the order or its
+ * suborders (a linked Privat payment, an approved receipt, an online payment) — or production — an ERP manufacturing
+ * order for it — makes it undeletable; neither app has a "cancelled" order, so such an order is finished, not erased.
  */
 export const deleteBlocker = (orderId, orders = loadOrders(), bills = loadPaymentBills()) => {
     if (!orders.some((o) => o.id === orderId)) return null;
     const ids = new Set(orders.filter((o) => o.id === orderId || o.general_order_id === orderId).map((o) => o.id));
     if (bills.some((b) => ids.has(b.order_id) && b.status === 'PAID')) return 'По замовленню вже є оплата.';
+    if (loadProduction().some((p) => ids.has(p.order_id))) return 'Замовлення у виробництві.';
     return '';
 };
 

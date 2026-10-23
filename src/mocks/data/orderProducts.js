@@ -18,6 +18,7 @@ import {
     componentOptions, componentPrice, findComponentTemplate, findFabric, findKitTemplate, findProduct, findVariant,
     kitOptions, kitSizeName, kitTemplatePrice, serializeComponent, serializeFabric, sizeLabel,
 } from './catalog';
+import { manufacturingOf } from './production';
 
 // --- seed: the carts of the shared seed orders (../shared/seed.js), whose totals the order amounts are --
 
@@ -93,7 +94,8 @@ const sourceRef = (id) => {
 
 /** A cart line as GET products/order-product/ returns it (Common/ProductItem/ProductItem.jsx). */
 export const serializeOrderProduct = (p) => {
-    const base = { id: p.id, order: p.order_id, created: p.created, warehouse_item: null, kit: null, manufacturing: null };
+    // `manufacturing`: the ERP's production of this line, if any (./production.js)
+    const base = { id: p.id, order: p.order_id, created: p.created, warehouse_item: null, kit: null, manufacturing: manufacturingOf(p.id) };
 
     if (p.warehouse_item) {
         const product = findProduct(p.warehouse_item.product_id);

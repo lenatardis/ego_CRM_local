@@ -7,6 +7,7 @@ import {
     serializeWarehouseItem,
 } from '../data/catalog';
 import { findOrderProduct, loadOrderProducts, saveOrderProducts, serializeOrderProduct } from '../data/orderProducts';
+import { manufacturingOf } from '../data/production';
 
 // Catalog (read-only, from the seed shared with the ERP) and order carts, following src/api/productsApi.js:
 //   GET    products/fabric/?page&search&type&tags&order_by&is_hide_out_of_stock&is_available
@@ -147,6 +148,10 @@ export const productHandlers = [
     http.delete(`${API}/products/order-product/:id/`, withAuth(({ params }) => {
         const record = findOrderProduct(params.id);
         if (!record) return notFound();
+        // the ERP is making it (data/production.js)
+        if (manufacturingOf(record.id)) {
+            return HttpResponse.json({ detail: 'Товар у виробництві.' }, { status: 400, statusText: 'Bad Request' });
+        }
         const items = loadOrderProducts();
         items.splice(items.indexOf(record), 1);
         saveOrderProducts();
