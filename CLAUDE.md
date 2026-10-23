@@ -140,6 +140,10 @@ Follow the approach already proven in the ERP (`../ego_ERP_local/src/mocks/`):
 - External services (Nova Poshta, monobank, WayForPay, Checkbox) are mocked the same way — never call the real services.
 - Demo login: managers in `src/mocks/data/demoUsers.js` (ids 21–24, `demo_manager`…`demo_manager4`, password `DemoPass123` as in the ERP; names = the managers on the ERP's CRM orders). Tokens `demo-crm-{access,refresh}-<id>`. The login form has a demo-manager picker that fills in the credentials (like the ERP's demo-role picker).
 
+## Deployment
+
+Live at https://lenatardis.github.io/ego_CRM_local/ — `.github/workflows/deploy.yml` builds and deploys on every push to `master` (npm ci, `npm run build` with `CI=false`, `404.html` = `index.html` for deep links, `actions/deploy-pages`). So every push to `master` changes the live demo; bump `DATA_VERSION` / `SHARED_DATA_VERSION` when stored demo data would no longer fit.
+
 ## Sub-path hosting
 
 - `package.json` `homepage` must point to the Pages URL so CRA builds asset URLs under `/ego_CRM_local/`.
