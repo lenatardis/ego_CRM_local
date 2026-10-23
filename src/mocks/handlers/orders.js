@@ -1,10 +1,11 @@
 import { http, HttpResponse } from 'msw';
 import { API, withAuth, isSet, toBoolOrUndefined, notFound } from './utils';
 import {
-    SOURCES, addRecentView, byNewest, deleteBlocker, deleteOrderCascade, findSource, getRecentViewIds, loadOrders, makeOrder,
+    addRecentView, byNewest, deleteBlocker, deleteOrderCascade, getRecentViewIds, loadOrders, makeOrder,
     nextPaymentId, nowIso, saveOrders, serializeOrder, serializeOrders,
 } from '../data/orders';
 import { copyOrderProducts } from '../data/orderProducts';
+import { activeSources, isActiveSource } from '../data/sources';
 
 // Response shapes follow src/api/ordersApi.js and the components using it:
 //   GET    orders/?page&manager&is_general&is_favourite -> { orders, total_pages } (Main.jsx)
@@ -42,15 +43,18 @@ const ORDER_FIELDS = {
 };
 const ID_FIELDS = ['manager_id', 'customer_id', 'source_id', 'general_order_id'];
 
-/** Stored field values from a request body, or { errors } as DRF would answer them. */
-const parseOrderBody = (body, orders) => {
+/**
+ * Stored field values from a request body, or { errors } as DRF would answer them. A source deleted in the ERP can't
+ * be given to an order any more; an order that already has it keeps it (`current`: the order being updated).
+ */
+const parseOrderBody = (body, orders, current = null) => {
     const fields = {};
     Object.entries(ORDER_FIELDS).forEach(([key, field]) => {
         if (!(key in body)) return;
         const value = body[key];
         fields[field] = ID_FIELDS.includes(field) ? (isSet(value) ? Number(value) : null) : value;
     });
-    if (fields.source_id && !findSource(fields.source_id)) {
+    if (fields.source_id && !isActiveSource(fields.source_id) && fields.source_id !== current?.source_id) {
         return { errors: { source: [`Invalid pk "${body.source}" - object does not exist.`] } };
     }
     if (fields.general_order_id && !findOrder(orders, fields.general_order_id)) {
@@ -92,7 +96,7 @@ export const orderHandlers = [
         return HttpResponse.json(serializeOrders(list, orders));
     })),
 
-    http.get(`${API}/orders/source/`, withAuth(() => HttpResponse.json(SOURCES))),
+    http.get(`${API}/orders/source/`, withAuth(() => HttpResponse.json(activeSources()))),
 
     http.post(`${API}/orders/duplicate/`, withAuth(async ({ request, user }) => {
         const { order_id } = await request.json();
@@ -139,7 +143,8 @@ export const orderHandlers = [
     http.post(`${API}/orders/`, withAuth(async ({ request }) => {
         const body = await request.json();
         const orders = loadOrders();
-        const { fields, errors } = parseOrderBody(body, orders);
+        const current = isSet(body.id) ? findOrder(orders, body.id) : null;
+        const { fields, errors } = parseOrderBody(body, orders, current);
         if (errors) return HttpResponse.json(errors, { status: 400, statusText: 'Bad Request' });
 
         if (isSet(body.id)) {

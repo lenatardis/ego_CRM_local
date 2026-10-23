@@ -13,12 +13,13 @@
 // amount from its cart, Products.jsx, so they must agree).
 
 import { getCollection, saveCollection, nextId } from '../db';
-import { SEED_ORDER_PRODUCTS, SEED_SOURCES } from '../shared/seed';
+import { SEED_ORDER_PRODUCTS } from '../shared/seed';
 import {
     componentOptions, componentPrice, findComponentTemplate, findFabric, findKitTemplate, findProduct, findVariant,
     kitOptions, kitSizeName, kitTemplatePrice, serializeComponent, serializeFabric, sizeLabel,
 } from './catalog';
 import { manufacturingOf } from './production';
+import { findSource } from './sources';
 
 // --- seed: the carts of the shared seed orders (../shared/seed.js), whose totals the order amounts are --
 
@@ -87,10 +88,8 @@ export const computeKitPrice = (kit, sourceId) => {
 
 // --- response shapes -------------------------------------------------------------------------
 
-const sourceRef = (id) => {
-    const s = SEED_SOURCES.find((x) => String(x.id) === String(id));
-    return s ? { id: s.id, name: s.name } : null;
-};
+// the source a line was priced for ("Ціну було взято зі списку ..."): live, a deleted one included (./sources.js)
+const sourceRef = (id) => findSource(id);
 
 /** A cart line as GET products/order-product/ returns it (Common/ProductItem/ProductItem.jsx). */
 export const serializeOrderProduct = (p) => {

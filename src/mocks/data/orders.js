@@ -9,8 +9,9 @@ import { getCollection, getSharedCollection, saveCollection, saveSharedCollectio
 import { deleteOrderProductsOf, itemCountsOf, loadOrderProducts } from './orderProducts';
 import { deleteNpItemsOf } from './novaPoshta';
 import { loadProduction } from './production';
+import { findSource } from './sources';
 import {
-    SEED_CUSTOMERS, SEED_MANAGERS, SEED_ORDERS, SEED_PAYMENT_BILLS, SEED_SOURCES, money, resolveDemoAsset, toIso,
+    SEED_CUSTOMERS, SEED_MANAGERS, SEED_ORDERS, SEED_PAYMENT_BILLS, money, resolveDemoAsset, toIso,
 } from '../shared/seed';
 import { APP_BASE_URL } from '../appBaseUrl';
 
@@ -23,9 +24,7 @@ export const savePaymentBills = (bills) => saveSharedCollection('paymentBills', 
 
 export const nowIso = () => toIso(new Date());
 
-// order sources are owned by the ERP; the CRM serves them read-only (GET orders/source/)
-export const SOURCES = SEED_SOURCES.map(({ id, name }) => ({ id, name }));
-export const findSource = (id) => SOURCES.find((s) => String(s.id) === String(id)) || null;
+// order sources are owned by the ERP and read live from the shared store: ./sources.js
 
 const findManager = (id) => SEED_MANAGERS.find((m) => String(m.id) === String(id)) || null;
 

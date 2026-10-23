@@ -1,6 +1,7 @@
 import { http, HttpResponse } from 'msw';
 import { API, withAuth } from './utils';
-import { SOURCES, byNewest, loadCustomers, loadOrders, serializeOrders } from '../data/orders';
+import { byNewest, loadCustomers, loadOrders, serializeOrders } from '../data/orders';
+import { findSource, loadSources } from '../data/sources';
 import { loadOrderProducts } from '../data/orderProducts';
 import { findFabric, findKitTemplate, findProduct } from '../data/catalog';
 
@@ -11,17 +12,18 @@ import { findFabric, findKitTemplate, findProduct } from '../data/catalog';
 // The results are always orders (they replace the order list); the three toggles choose where the query is
 // looked for: the order itself ("Замовлення": number, customer, phone, comment, source), its kits
 // ("Тканини": fabric code, fabric type, kit name — the cart shows kits by name) and the stock items in its
-// cart ("Склад"). `filter` echoes the toggles back — the page shows the toggle buttons from it. Every word of the query must match; phone numbers match by digits
-// (the query arrives unencoded, so a typed "+" reaches the server as a space).
+// cart ("Склад"). `filter` echoes the toggles back — the page shows the toggle buttons from it. Every word of the
+// query must match; phone numbers match by digits (the query arrives unencoded, so a typed "+" reaches the server
+// as a space).
 
 const PAGE_SIZE = 10;
 
 const normalize = (text) => String(text ?? '').toLowerCase().replace(/ё/g, 'е');
 const digits = (text) => String(text ?? '').replace(/\D/g, '');
 
-const orderText = (order, customers) => {
+const orderText = (order, customers, sources) => {
     const customer = customers.find((c) => c.id === order.customer_id);
-    const source = SOURCES.find((s) => s.id === order.source_id);
+    const source = findSource(order.source_id, sources);
     return [
         `#${order.id}`, order.id, order.comment, source?.name,
         customer && [customer.first_name, customer.last_name, customer.middle_name, customer.username, customer.phone, digits(customer.phone)],
@@ -50,10 +52,11 @@ export const searchHandlers = [
 
         const orders = loadOrders();
         const customers = loadCustomers();
+        const sources = loadSources();
         const cart = loadOrderProducts();
         const found = words.length === 0 ? [] : orders.filter((order) => {
             const text = normalize([
-                filter.is_order && orderText(order, customers),
+                filter.is_order && orderText(order, customers, sources),
                 filter.is_fabric && cartText(order.id, cart, 'fabric'),
                 filter.is_warehouse_item && cartText(order.id, cart, 'warehouse'),
             ].filter(Boolean).join(' '));

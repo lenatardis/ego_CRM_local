@@ -12,7 +12,8 @@ import {
 // prices.js also runs the fabric arrivals seed, which adds rolls / units to the fabrics and products above,
 // so the remainders here are the ones the ERP demo starts with
 import { COMPONENT_WORK } from '../shared/catalog/prices';
-import { fabricTotalLength, priceFor, productTypeOfFabric } from '../shared/catalog/pricing';
+import { fabricTotalLength, priceFor as basePriceFor, productTypeOfFabric } from '../shared/catalog/pricing';
+import { loadSources } from './sources';
 
 export { DEMO_FABRICS, DEMO_PRODUCTS, DEMO_KIT_TEMPLATES, DEMO_COMPONENT_TEMPLATES, DEMO_KIT_SIZES };
 
@@ -27,7 +28,9 @@ const findComponentType = (id) => DEMO_COMPONENT_TYPES.find((t) => t.id === id) 
 // priceFor(owner, id, sourceId): source pricelist -> default list -> null; and the fabric -> product type link
 // for kits. Both shared with the seed, which prices the seed orders' carts the same way (../shared/catalog/pricing.js).
 
-export { priceFor, productTypeOfFabric, fabricTotalLength };
+// prices follow the live sources (a source moved to another pricelist in the ERP is priced from it): ./sources.js
+export const priceFor = (owner, id, sourceId) => basePriceFor(owner, id, sourceId, loadSources());
+export { productTypeOfFabric, fabricTotalLength };
 
 // --- fabrics ---------------------------------------------------------------------------------
 
