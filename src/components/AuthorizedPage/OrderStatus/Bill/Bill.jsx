@@ -66,7 +66,7 @@ export const Bill = ({ bill, number, updateBill, onSubmitPayment, onDelete, isDi
                                 {bill.prepayment_amount || 0} грн
                             </p>
                         </div>
-                        {(bill.receipt_url || bill.customer_receipt) && (
+                        {(bill.receipt_url || (bill.customer_receipt && bill.customer_receipt_approved === 'APPROVED')) && (
                             <div className={styles.receiptBar}>
                                 <div>
                                     <span className={styles.checkIcon}></span>
