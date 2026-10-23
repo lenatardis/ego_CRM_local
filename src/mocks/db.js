@@ -85,6 +85,23 @@ export const saveCollection = (name) => {
 const SHARED_PREFIX = 'ego-demo:shared:';
 ensureVersion(SHARED_PREFIX, SHARED_DATA_VERSION);
 
+// Private data follows the shared data it was built on (CRM carts, delivery items, recent views point at shared
+// orders): whenever the shared store is (re)created it gets a new generation id — here or in the ERP — and private
+// data built on another generation is dropped, or a new order would inherit a deleted order's cart through a reused id.
+// Private data that has no generation yet (stored before this check existed) adopts the current one.
+const SHARED_GENERATION_KEY = `${SHARED_PREFIX}generation`;
+const BUILT_ON_KEY = `${PREFIX}sharedGeneration`;
+if (!storage.get(SHARED_GENERATION_KEY)) {
+    storage.set(SHARED_GENERATION_KEY, `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`);
+}
+const sharedGeneration = storage.get(SHARED_GENERATION_KEY);
+const builtOn = storage.get(BUILT_ON_KEY);
+if (builtOn && sharedGeneration && builtOn !== sharedGeneration) {
+    storage.removeAll(PREFIX);
+    storage.set(`${PREFIX}version`, String(DATA_VERSION));
+}
+if (sharedGeneration) storage.set(BUILT_ON_KEY, sharedGeneration);
+
 /** A fresh copy of a shared collection (stored state, otherwise the seed); change it, then saveSharedCollection. */
 export const getSharedCollection = (name, seed) => readJson(SHARED_PREFIX + name) ?? structuredClone(seed);
 
