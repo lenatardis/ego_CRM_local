@@ -7,6 +7,23 @@ import PopupCheckboxes from "../../../Common/PopupCheckboxes/PopupCheckboxes";
 import InputMask from "react-input-mask";
 import { getReason, setCallOrder } from "../../../../api/generalApi";
 
+// Reasons in the instrumental case, as they read after "у зв'язку з"; an unknown reason is shown as it is, in lower case
+const REASONS_INSTRUMENTAL = {
+    'Нове замовлення': 'новим замовленням',
+    'Статус замовлення': 'статусом замовлення',
+    'Оплата': 'оплатою',
+    'Доставка': 'доставкою',
+    'Обмін або повернення': 'обміном або поверненням',
+    'Інше': 'іншим',
+};
+
+// "з" becomes "зі" before з, с, ш, щ followed by a consonant ("зі статусом")
+const reasonCaption = (reasons) => {
+    const text = reasons.map((item) => REASONS_INSTRUMENTAL[item.title] ?? item.title.toLowerCase()).join(', ');
+    const preposition = /^[зсшщ][^аеєиіїоуюяь]/i.test(text) ? 'зі' : 'з';
+    return `Звернення у зв'язку ${preposition} ${text}`;
+};
+
 const initialCallbackData = {
     name: '',
     phone: '',
@@ -84,7 +101,11 @@ const CallbackForm = () => {
             </InputMask>
             <button className={styles.buttonField} onClick={handleOpenOptionsPopup}
                     type='button'>
-                <span>{'Звернення у зв\'язку з'}</span>
+                <span>
+                    {callbackData.reason.length
+                        ? reasonCaption(callbackData.reason)
+                        : 'Звернення у зв\'язку з'}
+                </span>
             </button>
             <button onClick={() => onSubmit()} type='submit' className={styles.action}
                     disabled={!callbackData.name.length || validPhone.length !== 13 || !callbackData.phone.length || isLoading}>

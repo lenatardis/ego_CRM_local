@@ -6,6 +6,8 @@ import contactsIcon from '../../assets/icons/contacts.svg';
 import contactsIconBrown from '../../assets/icons/contactsBrown.svg';
 import callbackIcon from '../../assets/icons/callback.svg';
 import callbackIconBrown from '../../assets/icons/callbackBrown.svg';
+import authIcon from '../../assets/icons/auth.svg';
+import authIconBrown from '../../assets/icons/authBrown.svg';
 import {useIsDesktop} from "../../hooks/useIsDesktop";
 
 const UserMenu = ({ savedOrderHash }) => {
@@ -32,11 +34,17 @@ const UserMenu = ({ savedOrderHash }) => {
                 <img src={pathname === '/callback/' ? callbackIconBrown : callbackIcon} alt=""/>
                 <span>Дзвінок</span>
             </Link>
+            {/* Demo build: the start page with the login form, otherwise reachable only by typing its address */}
+            <Link to={'/'}
+                  className={pathname === '/' ? styles.userMenu__linkActive : styles.userMenu__link}>
+                <img src={pathname === '/' ? authIconBrown : authIcon} alt=""/>
+                <span>Вхід</span>
+            </Link>
         </>
     )
 
     return (
-        <div className={`menu ${styles.userMenu} ${isDesktop ? styles.mainDesktopMenu : ''}`}>
+        <div className={`menu ${styles.userMenu} ${styles.clientMenu} ${isDesktop ? styles.mainDesktopMenu : ''}`}>
             {isDesktop ? <>
                 <div className={styles.desktopMenuWrap}>{userMenuLinks}</div>
             

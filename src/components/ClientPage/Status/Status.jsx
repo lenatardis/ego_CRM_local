@@ -9,6 +9,7 @@ import Payment from "./Payment/Payment";
 import Preloader from "../../Common/Preloader/Preloader";
 import { sendOrderHash } from "../../../api/ordersApi";
 import { getPaymentDetail } from "../../../api/generalApi";
+import ArrBack from "../../Common/ArrBack/ArrBack";
 
 const Status = ({ orderHash }) => {
     const [order, setOrder] = useState(null);
@@ -57,6 +58,9 @@ const Status = ({ orderHash }) => {
             {!isLoading && order && (
                 <div className={styles.statusWrap}>
                     <div className={styles.status}>
+                        <div className={styles.status__back}>
+                            <ArrBack/>
+                        </div>
                         <div className={styles.status__logo}>
                             <img src={logo} alt=""/>
                         </div>
@@ -89,6 +93,9 @@ const Status = ({ orderHash }) => {
             {isLoading && <Preloader/>}
             {!isLoading && !order && (
                 <div className={styles.notFound}>
+                    <div className={styles.notFound__back}>
+                        <ArrBack/>
+                    </div>
                     <h2 className={styles.message}>Замовлення не знайдено, зверніться до вашого менеджера Ego-textile для уточнення інформації.</h2>
                 </div>
             )}

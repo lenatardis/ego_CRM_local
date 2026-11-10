@@ -61,6 +61,16 @@
 
 }
 
+// customer menu (UserMenu): smaller icons than in the staff menu
+.clientMenu {
+  .userMenu__link,
+  .userMenu__linkActive {
+    img {
+      width: 18px;
+    }
+  }
+}
+
 .back {
   left: 50%;
   position: fixed;

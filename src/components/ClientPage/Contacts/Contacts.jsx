@@ -2,9 +2,9 @@ import React, {useEffect, useState} from "react";
 import styles from './Contacts.module.scss';
 import logo from "../../../assets/img/logoEgo.svg";
 import ContactsContent from "./ContactsContent/ContactsContent";
-import ContactsAbout from "./ContactsAbout";
 import Preloader from "../../Common/Preloader/Preloader";
 import { getCompanyInfo } from "../../../api/generalApi";
+import ArrBack from "../../Common/ArrBack/ArrBack";
 
 const Contacts = () => {
     const [data, setData] = useState(null);
@@ -28,6 +28,9 @@ const Contacts = () => {
 
     return (
         <div className={styles.contacts}>
+            <div className={styles.contacts__back}>
+                <ArrBack/>
+            </div>
             <div className={styles.contacts__logo}>
                 <img src={logo} alt=""/>
             </div>
@@ -35,7 +38,6 @@ const Contacts = () => {
             {data && (
                 <ContactsContent phone={data.phone} email={data.email} site={data.site}/>
             )}
-            <ContactsAbout/>
         </div>
     )
 }

@@ -7,7 +7,12 @@ const ArrBack = () => {
   const navigate = useNavigate();
 
   const onReturn = () => {
-    navigate(-1);
+    // a page opened directly (e.g. a customer's link) has no app page behind it: go to the start page instead
+    if (window.history.state?.idx > 0) {
+      navigate(-1);
+    } else {
+      navigate('/');
+    }
   };
 
   return (<p className={styles.arrLine}>

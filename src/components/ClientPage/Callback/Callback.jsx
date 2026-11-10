@@ -5,6 +5,7 @@ import CallbackForm from "./CallbackForm/CallbackForm";
 import CallbackWorkTime from "./CallbackWorkTime";
 import Preloader from "../../Common/Preloader/Preloader";
 import { getWorkSchedule } from "../../../api/generalApi"
+import ArrBack from "../../Common/ArrBack/ArrBack";
 
 const Callback = () => {
     const [data, setData] = useState(null);
@@ -28,6 +29,9 @@ const Callback = () => {
 
     return (
         <div className={styles.callback}>
+            <div className={styles.callback__back}>
+                <ArrBack/>
+            </div>
             <div className={styles.callback__logo}>
                 <img src={logo} alt=""/>
             </div>

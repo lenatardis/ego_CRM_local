@@ -3,6 +3,10 @@
   min-height: 100vh;
   padding: 0 16px 100px;
 
+  &__back {
+    padding-top: 16px;
+  }
+
   &__logo {
     text-align: center;
     padding: 20px 0;

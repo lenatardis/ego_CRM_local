@@ -3,6 +3,10 @@
   min-height: 100vh;
   padding: 0 16px 20px;
 
+  &__back {
+    padding-top: 16px;
+  }
+
   &__logo {
     text-align: center;
     padding: 20px 0;
@@ -40,6 +44,12 @@
   align-items: center;
   flex-direction: column;
   background-color: #D9D1E0;
+
+  // at the top left, like on the other client pages (the block itself is padded 100px from the top)
+  &__back {
+    align-self: flex-start;
+    margin: -84px 0 50px;
+  }
   
   .message {
       font-size: 20px;
@@ -58,5 +68,9 @@
   .statusWrap {
     padding-left: 150px;
     background: #D9D1E0;
+  }
+
+  .notFound__back {
+    padding-left: 200px;
   }
 }
