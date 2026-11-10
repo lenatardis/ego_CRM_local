@@ -1,40 +1,21 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from './Auth.module.scss';
 import logo from '../../../assets/img/logoEgo.svg'
-import GlobalPopup from "../../Common/GlobalPopup/GlobalPopup";
 import AuthForm from "./AuthForm/AuthForm";
 
-import {useAppDispatch} from "../../../hooks/redux";
-import {setIsActivePopup} from "../../../store/main-slice";
-import {useIsDesktop} from "../../../hooks/useIsDesktop";
 
-
+// Demo build: the login form sits in a card on the page (originally a "Вхід" button opening it in a popup)
 const Auth = () => {
-    const [authPopup, setAuthPopup] = useState(false);
-    const dispatch = useAppDispatch();
-
-    const isDesktop = useIsDesktop();
-
-    const handleOpenAuthPopup = () => {
-        setAuthPopup(true);
-        dispatch(setIsActivePopup(true));
-    }
-
     return (
         <div className={styles.auth}>
-            <div className={styles.auth__logo}>
-                <img src={logo} alt=""/>
-                <div className={styles.action}>
-                    <button onClick={handleOpenAuthPopup}>
-                        <span>Вхід</span>
-                    </button>
-                </div>
+            <div className={styles.card}>
+                <img className={styles.card__logo} src={logo} alt="Ego Textile"/>
+                <h1 className={styles.card__title}>Вхід у CRM</h1>
+                <p className={styles.card__hint}>
+                    Демо-доступ: оберіть менеджера у списку – логін і пароль заповняться самі.
+                </p>
+                <AuthForm />
             </div>
-            {authPopup && (
-                <GlobalPopup title={'Введіть логін/пароль'} onClose={() => setAuthPopup(false)} {...(isDesktop ? { centeredPopup: true } : {})}>
-                    <AuthForm />
-                </GlobalPopup>
-            )}
         </div>
     )
 }

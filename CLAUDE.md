@@ -139,7 +139,7 @@ Follow the approach already proven in the ERP (`../ego_ERP_local/src/mocks/`):
 - Related records are stored by id and expanded into nested objects when a response is built, so edits propagate.
 - Lists sort newest-created first, so a record created through a form appears at the top of page 1.
 - External services (Nova Poshta, monobank, WayForPay, Checkbox) are mocked the same way — never call the real services.
-- Demo login: managers in `src/mocks/data/demoUsers.js` (ids 21–24, `demo_manager`…`demo_manager4`, password `DemoPass123` as in the ERP; names = the managers on the ERP's CRM orders). Tokens `demo-crm-{access,refresh}-<id>`. The login form has a demo-manager picker that fills in the credentials (like the ERP's demo-role picker).
+- Demo login: managers in `src/mocks/data/demoUsers.js` (ids 21–24, `demo_manager`…`demo_manager4`, password `DemoPass123` as in the ERP; names = the managers on the ERP's CRM orders). Tokens `demo-crm-{access,refresh}-<id>`. The login form has a demo-manager picker that fills in the credentials (like the ERP's demo-role picker). Changed (2026-11-10, at the user's request): the start page (`ClientPage/Auth/Auth.jsx`) shows the form in a centred card (max 400 px) with a demo-access hint, instead of a full-width "Вхід" button opening it in a popup; the page fills the screen without scrolling on mobile (the wrapper's 67 px menu padding is subtracted) and the background is opaque `#493D53` (the original `#30223BE0` over white).
 
 ## Deployment
 

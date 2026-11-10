@@ -1,42 +1,64 @@
 .auth {
-  background-color: #30223BE0;
-  width: 100vw;
-  height: 100vh;
-  max-width: 768px;
-  padding: 0 16px;
-
-  &__logo {
-    text-align: center;
-    padding: 20px 0;
-  }
-}
-
-.action {
-  margin-top: 64px;
-
+  // opaque version of the original #30223BE0 over white, so the sidebar stays visible
+  background-color: #493D53;
+  width: 100%;
+  // the wrapper already leaves 67px for the bottom menu on mobile
+  min-height: calc(100vh - 67px);
+  min-height: calc(100dvh - 67px);
+  padding: 24px 16px;
   display: flex;
   align-items: center;
   justify-content: center;
+}
 
-  button {
-    height: 45px;
+.card {
+  width: 100%;
+  max-width: 400px;
+  padding: 24px 20px;
+  background-color: #F1EEF3;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+
+  &__logo {
+    display: block;
+    width: 112px;
+    height: 112px;
+    margin: 0 auto 16px;
+  }
+
+  &__title {
+    margin-bottom: 8px;
+    text-align: center;
+    color: #201827;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 28px;
+  }
+
+  &__hint {
+    margin-bottom: 20px;
+    padding: 10px 12px;
     background-color: #D9D1E0;
-    border-radius: 4px;
-    width: 100%;
+    border-radius: 8px;
+    color: #201827;
+    font-size: 13px;
+    line-height: 18px;
+  }
 
-    span {
-      font-size: 14px;
-      font-weight: 600;
-      line-height: 20px;
-    }
+  select {
+    background-color: #fff;
   }
 }
 
 @media screen and (min-width: 1024px) {
   .auth {
     max-width: 1920px;
-    width: 100%;
+    min-height: 100vh;
+    min-height: 100dvh;
     padding-left: 216px;
   }
-}
 
+  .card {
+    padding: 32px;
+  }
+}
