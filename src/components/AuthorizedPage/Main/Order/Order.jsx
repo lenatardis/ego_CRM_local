@@ -28,6 +28,7 @@ const Order = ({ item, tabName }) => {
     const navigate = useNavigate();
     const [showMenu, setShowMenu] = useState(false);
     const [isShowPopup, setIsShowPopup] = useState(false);
+    const [isShowCreatePopup, setIsShowCreatePopup] = useState(false);
     const [suborders, setSuborders] = useState([]);
     const [suborderCreateError, setSuborderCreateError] = useState('');
     const [deleteError, setDeleteError] = useState('');
@@ -109,8 +110,9 @@ const Order = ({ item, tabName }) => {
         return 'Не вдалося створити підзамовлення.';
     }
 
-    const createSuborder = (e) => {
-        e.stopPropagation();
+    // demo build: the "+" button asks first (popup like the delete confirmation), creating happens on "Підтвердити"
+    const createSuborder = () => {
+        setIsShowCreatePopup(false);
 
         if (managerId) {
             const accessToken = getAccessToken();
@@ -258,7 +260,10 @@ const Order = ({ item, tabName }) => {
                         {item.is_general && subordersCount < 1 && (
                             <button
                                 className={styles.menuBtn}
-                                onClick={createSuborder}
+                                onClick={(e) => {
+                                    e.stopPropagation();
+                                    setIsShowCreatePopup(true);
+                                }}
                                 title="Додати підзамовлення"
                             >
                                 <img src={addIcon} width={16} height={16} alt="" />
@@ -315,6 +320,36 @@ const Order = ({ item, tabName }) => {
                         </div>
                         <div className={styles.globalPopup__content}>
                             <CancelOrder onCancel={closePopup} onConfirm={deleteOrder} />
+                        </div>
+                    </div>
+                </>
+            )}
+            {isShowCreatePopup && (
+                <>
+                    <span
+                        className={styles.shadowActive}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            setIsShowCreatePopup(false);
+                        }}
+                    />
+                    <div className={`${styles.globalPopupActive} ${isDesktop ? styles.centeredPopup : ''}`}
+                        onClick={(e) => e.stopPropagation()}>
+                        <div className={styles.header}>
+                            <p className={`${styles.header__title} popupTitle`}>Створення підзамовлення</p>
+                            <div className={styles.header__close} onClick={() => setIsShowCreatePopup(false)}>
+                                <span className="popupCloseCaption">Закрити</span>
+                                <button>
+                                    <img src={closeIcon} className="popupCloseIcon" alt="" />
+                                </button>
+                            </div>
+                        </div>
+                        <div className={styles.globalPopup__content}>
+                            <CancelOrder
+                                text={<>Ви впевнені, що бажаєте<br />створити підзамовлення?</>}
+                                onCancel={() => setIsShowCreatePopup(false)}
+                                onConfirm={createSuborder}
+                            />
                         </div>
                     </div>
                 </>

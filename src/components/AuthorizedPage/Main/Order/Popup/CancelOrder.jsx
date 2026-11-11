@@ -2,11 +2,12 @@ import React from "react";
 import styles from './CancelOrder.module.scss';
 import Button from './Button/Button';
 
-const CancelOrder = ({onConfirm, onCancel, suborder, ttn}) => {
+// `text` (demo build): another question with the same look and buttons, e.g. the suborder create confirmation
+const CancelOrder = ({onConfirm, onCancel, suborder, ttn, text}) => {
     return (
         <div className={styles.cancelOrder}>
             <h2>
-                {!ttn ? (
+                {text ? text : !ttn ? (
                     <>
                         Ви бажаєте<br />
                         видалити {!suborder ? 'замовлення' : 'підзамовлення'}?
