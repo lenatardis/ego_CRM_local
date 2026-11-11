@@ -442,7 +442,7 @@ const Products = () => {
                 {isEstimateSyncing && (
                     <div className={styles.syncOverlay}>
                         <div className={styles.syncOverlay__box}>
-                            Синхронізуємо суму доставки...
+                            Розраховуємо суму доставки...
                         </div>
                     </div>
                 )}

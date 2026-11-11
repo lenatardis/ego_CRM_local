@@ -65,7 +65,7 @@ const Profile = () => {
 
                 <div className={styles.box}>
                     <form onSubmit={handleSubmit}>
-                        <h3>Змінна паролю</h3>
+                        <h3>Зміна паролю</h3>
                         <div className="baseInputContainer">
                             <input
                                 placeholder="Новий пароль"
