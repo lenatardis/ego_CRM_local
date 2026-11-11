@@ -67,7 +67,7 @@ export const Suborder = ({ item, onDelete }) => {
                         <div className={styles.header}>
                             <p className={styles.header__title}>Видалення підзамовлення</p>
                             <div className={styles.header__close} onClick={() => closePopup()}>
-                                <span>Закрити</span>
+                                <span className="popupCloseCaption">Закрити</span>
                                 <button>
                                     <img src={closeIcon} alt=""/>
                                 </button>

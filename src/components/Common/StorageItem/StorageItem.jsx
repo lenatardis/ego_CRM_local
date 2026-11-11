@@ -355,7 +355,7 @@ const StorageItem = ({ orderId, id, name, images, sizes, copy, setOrder = null, 
                     <div className={styles.header}>
                         <p className={styles.header__title}>Вказати розмір:</p>
                         <div className={styles.header__close} onClick={() => closeSizePopup()}>
-                            <span>Закрити</span>
+                            <span className="popupCloseCaption">Закрити</span>
                             <button>
                                 <img src={closeIcon} alt="" />
                             </button>
@@ -376,7 +376,7 @@ const StorageItem = ({ orderId, id, name, images, sizes, copy, setOrder = null, 
                     <div className={styles.header}>
                         <p className={styles.header__title}>Вказати колір:</p>
                         <div className={styles.header__close} onClick={() => closeColorPopup()}>
-                            <span>Закрити</span>
+                            <span className="popupCloseCaption">Закрити</span>
                             <button>
                                 <img src={closeIcon} alt="" />
                             </button>

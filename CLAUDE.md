@@ -162,3 +162,7 @@ Live at https://lenatardis.github.io/ego_CRM_local/ — `.github/workflows/deplo
 - When replacing an API call with mock behavior, preserve the existing response shape and frontend data flow.
 - Keep the project runnable with the existing npm scripts.
 - Commit/push only when asked; no AI attribution trailers in commit messages.
+
+## Mobile tweaks (demo build)
+
+- Popups show only the × below 1024 px (2026-11-11, at the user's request, same as the ERP): every "Закрити" caption next to a popup's × (`GlobalPopup`, `StorageItem` size / colour, `Order` ×2, `Suborder`, `OrderActions`, `ProfilePopup`) has the class `popupCloseCaption`, hidden by `src/App.scss` below 1024 px. A new popup with that caption should get the class too.

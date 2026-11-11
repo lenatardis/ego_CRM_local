@@ -307,7 +307,7 @@ const Order = ({ item, tabName }) => {
                         <div className={styles.header}>
                             <p className={styles.header__title}>Видалення замовлення</p>
                             <div className={styles.header__close} onClick={() => closePopup()}>
-                                <span>Закрити</span>
+                                <span className="popupCloseCaption">Закрити</span>
                                 <button>
                                     <img src={closeIcon} alt="" />
                                 </button>
@@ -354,7 +354,7 @@ const Order = ({ item, tabName }) => {
                         <div className={styles.header}>
                             <p className={styles.header__title}>{deleteError ? 'Видалення замовлення' : 'Створення підзамовлення'}</p>
                             <div className={styles.header__close} onClick={() => { setSuborderCreateError(''); setDeleteError(''); }}>
-                                <span>Закрити</span>
+                                <span className="popupCloseCaption">Закрити</span>
                                 <button>
                                     <img src={closeIcon} alt="" />
                                 </button>

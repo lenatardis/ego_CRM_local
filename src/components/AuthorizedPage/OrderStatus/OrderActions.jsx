@@ -123,7 +123,7 @@ const OrderActions = ({ orderUrl, isDisabled, onCopyAll, ttnURL, deliveryInfo, s
                         <div className={styles2.header}>
                             <p className={styles2.header__title}>Друк ТТН</p>
                             <div className={styles2.header__close} onClick={() => closePopup()}>
-                                <span>Закрити</span>
+                                <span className="popupCloseCaption">Закрити</span>
                                 <button>
                                     <img src={closeIcon} alt="" />
                                 </button>
