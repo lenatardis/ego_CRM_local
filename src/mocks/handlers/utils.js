@@ -44,7 +44,7 @@ export const toBoolOrUndefined = (v) => (v === 'true' ? true : v === 'false' ? f
 
 /** DRF-style page: { count, next, previous, results }. */
 export const paginate = (items, page, pageSize) => {
-    const size = Math.max(1, Number(pageSize) || 10);
+    const size = Math.max(1, Number(pageSize) || 26);
     const current = Math.max(1, Number(page) || 1);
     const start = (current - 1) * size;
     return {

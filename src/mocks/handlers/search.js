@@ -16,7 +16,7 @@ import { findFabric, findKitTemplate, findProduct } from '../data/catalog';
 // query must match; phone numbers match by digits (the query arrives unencoded, so a typed "+" reaches the server
 // as a space).
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 26; // demo page size for lists without their own page_size (2026-11-11, at the user's request)
 
 const normalize = (text) => String(text ?? '').toLowerCase().replace(/ё/g, 'е');
 const digits = (text) => String(text ?? '').replace(/\D/g, '');

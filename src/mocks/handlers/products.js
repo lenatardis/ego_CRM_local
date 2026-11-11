@@ -21,7 +21,7 @@ import { manufacturingOf } from '../data/production';
 //   DELETE products/order-product/:id/     -> 204
 // List filters arrive comma-separated (getSearchParams joins arrays), e.g. type=1,3.
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 26; // demo page size for lists without their own page_size (2026-11-11, at the user's request)
 
 const idList = (v) => (isSet(v) ? String(v).split(',').filter(Boolean).map(Number) : []);
 const totalPages = (count, size) => Math.max(1, Math.ceil(count / size));

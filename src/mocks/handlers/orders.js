@@ -17,7 +17,7 @@ import { activeSources, isActiveSource } from '../data/sources';
 //   POST   orders/duplicate/ { order_id }               -> the new order
 //   DELETE orders/:id/                                  -> 204; 400 { detail } when the ERP depends on it (deleteBlocker)
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 26; // demo page size for lists without their own page_size (2026-11-11, at the user's request)
 
 const pageOf = (list, page) => {
     const current = Math.max(1, Number(page) || 1);
