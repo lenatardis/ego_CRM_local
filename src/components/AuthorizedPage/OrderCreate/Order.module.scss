@@ -231,3 +231,8 @@
   font-size: 14px;
   line-height: 1.4;
 }
+// Demo build, phones: the source popup's list scrolls inside the top popup (same height as the fabric tags popup, `ChoosePopup`)
+.sourcePopupList {
+  height: calc(100vh - 190px);
+  overflow: auto;
+}
