@@ -393,6 +393,7 @@ const Products = () => {
                     <div>
                         <ProductActions
                             order={order}
+                            isSuborder={!!order && !order.is_general}
                             popup={popup}
                             setPopup={setPopup}
                             setOrder={setWarehouseItems}

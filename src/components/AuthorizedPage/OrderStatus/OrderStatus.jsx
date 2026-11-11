@@ -636,6 +636,7 @@ const OrderStatus = () => {
                     <div>
                         <OrderActions
                             orderUrl={order?.url}
+                            isSuborder={!!order && !order.is_general}
                             isDisabled={isDisabled}
                             onCopyAll={onCopyAll}
                             ttnURL={TTNURL}

@@ -11,7 +11,7 @@ import { getAccessToken } from "../../../utils/authTokens";
 import { getNPTTNPDF } from "../../../api/novaPoshtaApi";
 import Preloader from "../../Common/Preloader/Preloader";
 
-const OrderActions = ({ orderUrl, isDisabled, onCopyAll, ttnURL, deliveryInfo, setTTNURL }) => {
+const OrderActions = ({ orderUrl, isDisabled, onCopyAll, ttnURL, deliveryInfo, setTTNURL, isSuborder = false }) => {
     const [isShowPopup, setIsShowPopup] = useState(false);
     const [isTTNLoading, setIsTTNLoading] = useState(false);
     const [ttnError, setTtnError] = useState('');
@@ -82,7 +82,7 @@ const OrderActions = ({ orderUrl, isDisabled, onCopyAll, ttnURL, deliveryInfo, s
 
     return (
         <>
-            <div className={styles.orderActions}>
+            <div className={`${styles.orderActions} ${isSuborder ? styles.suborder : ''}`}>
                 <div className={styles.row}>
                     <button onClick={onCopyAll} className={`${styles.copyButton} click-effect`} tabIndex={0}>
                         <img src={copyIcon} alt="" />

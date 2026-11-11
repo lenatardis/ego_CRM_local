@@ -161,3 +161,10 @@
     }
   }
 }
+// Demo build: on a suborder the bar above the bottom menu takes the suborder page's background
+// (#f7eadf, set inline by the page) instead of the main order's #D9D1E0; desktop keeps its #F1EEF3 card
+@media screen and (max-width: 1023px) {
+  .orderActions.suborder {
+    background: #f7eadf;
+  }
+}

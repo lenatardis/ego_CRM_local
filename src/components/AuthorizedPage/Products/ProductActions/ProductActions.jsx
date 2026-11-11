@@ -8,7 +8,7 @@ import GlobalPopup from "../../../Common/GlobalPopup/GlobalPopup";
 import StoragePopup from "../StoragePopup/StoragePopup";
 import {Link} from "react-router-dom";
 
-const ProductActions = ({order, popup, setPopup, setOrder, isDisabled = false,  onAfterProductAdd}) => {
+const ProductActions = ({order, popup, setPopup, setOrder, isDisabled = false,  onAfterProductAdd, isSuborder = false}) => {
     const dispatch = useAppDispatch();
     const handlePopup = () => {
         setPopup('status');
@@ -17,7 +17,7 @@ const ProductActions = ({order, popup, setPopup, setOrder, isDisabled = false,  
 
 
     return (
-        <div className={styles.productActions}>
+        <div className={`${styles.productActions} ${isSuborder ? styles.suborder : ''}`}>
             <div className={styles.row}>
                 <button className={styles.addItem} onClick={() => handlePopup()} disabled={isDisabled}>
                     <span>Додати товар зі складу</span>
