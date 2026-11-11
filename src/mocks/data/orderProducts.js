@@ -8,7 +8,7 @@
 //                     components: [{ component_template_id, option, comment, custom_size, mono_fabric_type, is_custom }] }
 // The kit's own id is the order product id (calculator/kit/:id/, ?kit_id=).
 //
-// Seed: SEED_ORDER_PRODUCTS from the shared seed — the seed orders' amounts, bills and bank payments are
+// Seed: SEED_ORDER_PRODUCTS from the shared seed – the seed orders' amounts, bills and bank payments are
 // derived from these carts, priced like the CRM prices them (the Products page recomputes the order's
 // amount from its cart, Products.jsx, so they must agree).
 

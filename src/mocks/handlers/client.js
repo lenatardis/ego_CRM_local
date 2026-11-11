@@ -7,7 +7,7 @@ import {
 import { loadOrderProducts, serializeOrderProduct } from '../data/orderProducts';
 import { emptyItem, findNpItem, loadDirectory, serializeNpItem } from '../data/novaPoshta';
 
-// The customer's side (ClientPage/*), all public — the customer has no account, only the order link:
+// The customer's side (ClientPage/*), all public – the customer has no account, only the order link:
 //   GET  orders/free-access/?order_hash=          -> { order, general_order, payment, products, kits, payment_bills,
 //                                                      nova_poshta_delivery, ukr_poshta_delivery } (Status.jsx; 404 if unknown)
 //   POST orders/free-access-customer/ { order_id, phone_last_digits } -> { customer, nova_poshta_delivery } (DetailsInput.jsx)

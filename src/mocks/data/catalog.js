@@ -88,7 +88,7 @@ export const sizeLabel = (size) => `${size.width}x${size.length}`;
 
 /**
  * Sizes of a product with their colors, as StorageItem.jsx / UserPage/Fabric.jsx read them. `price` is
- * { sell_price } (or null without a price) in lists — the storage popup reads price.sell_price — and a plain
+ * { sell_price } (or null without a price) in lists – the storage popup reads price.sell_price – and a plain
  * number on the public product card.
  */
 const productSizes = (product, sourceId, plainPrice) => {

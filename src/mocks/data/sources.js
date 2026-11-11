@@ -1,5 +1,5 @@
 // Order (lead) sources, owned by the ERP (../../../CLAUDE.md, "Cross-app contract"): the ERP's Sources page edits
-// the shared `sources` collection (seed: the shared catalog's DEMO_SOURCES), the CRM only reads it — re-read on every
+// the shared `sources` collection (seed: the shared catalog's DEMO_SOURCES), the CRM only reads it – re-read on every
 // access, because the ERP may change it in another tab. A deleted source (`deleted_at`) is no longer offered for
 // orders, but the orders that have it keep showing it ("Існуючі замовлення збережуть джерело", the ERP's warning).
 

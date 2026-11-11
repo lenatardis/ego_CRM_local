@@ -223,7 +223,7 @@ const blankToNull = (v) => (v === '' || v === undefined ? null : v);
 
 /**
  * Applies the flat fields DeliveryNP / OrderCreate / Products send to an item (a copy). Returns
- * { item } or { errors } — weight is checked against the chosen branch (NovaPoshtaWeight.jsx messages).
+ * { item } or { errors } – weight is checked against the chosen branch (NovaPoshtaWeight.jsx messages).
  */
 export const applyItemFields = (item, body) => {
     const next = structuredClone(item);
@@ -286,8 +286,8 @@ th,td{border:1px solid #bbb;padding:6px 10px;text-align:left;vertical-align:top}
         row('Оголошена вартість, грн', item.delivery.estimate_order_price),
         row('Платник доставки', item.delivery.payer === 'Sender' ? 'Відправник' : 'Отримувач'),
         row('Форма оплати', item.delivery.payment_method === 'CASH' ? 'Готівкова' : 'Безготівкова'),
-        row('Зворотна доставка (наложений платіж), грн', item.with_backward_delivery ? item.backward_amount : '—'),
-        row('Дата відправки', item.delivery_date ?? '—'),
+        row('Зворотна доставка (наложений платіж), грн', item.with_backward_delivery ? item.backward_amount : '–'),
+        row('Дата відправки', item.delivery_date ?? '–'),
         row('Орієнтовна вартість доставки, грн', item.delivery.estimate_delivery_price),
     ].join('')}</table>
 <p class="note">Демо-накладна: сформована в браузері, сервіс Нової Пошти не викликався.</p></body></html>`;

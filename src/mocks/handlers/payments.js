@@ -7,7 +7,7 @@ import {
 import { nextId } from '../db';
 import { toIso } from '../shared/seed';
 
-// POST payments/ { order_id, ...fields } (src/api/paymentApi.js updatePayment) — an upsert of the order's
+// POST payments/ { order_id, ...fields } (src/api/paymentApi.js updatePayment) – an upsert of the order's
 // payment, which is embedded in the shared order record. OrderWrapper.jsx creates it for a new order with
 // { post_paid_amount: null }; Products / OrderStatus send totals, discount and type; CartProducts resets it
 // with { final_amount: null, amount: null, status: 'NONE' }. Answers the payment (OrderStatus.jsx puts the

@@ -86,7 +86,7 @@ const SHARED_PREFIX = 'ego-demo:shared:';
 ensureVersion(SHARED_PREFIX, SHARED_DATA_VERSION);
 
 // Private data follows the shared data it was built on (CRM carts, delivery items, recent views point at shared
-// orders): whenever the shared store is (re)created it gets a new generation id — here or in the ERP — and private
+// orders): whenever the shared store is (re)created it gets a new generation id – here or in the ERP – and private
 // data built on another generation is dropped, or a new order would inherit a deleted order's cart through a reused id.
 // Private data that has no generation yet (stored before this check existed) adopts the current one.
 const SHARED_GENERATION_KEY = `${SHARED_PREFIX}generation`;

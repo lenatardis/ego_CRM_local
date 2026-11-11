@@ -1,6 +1,6 @@
 // One-off snapshot of the real Nova Poshta directory for the mock backend (src/mocks/data/npDirectory.json):
 // the cities below with their refs, and all their branches ("Branch" category, cargo branches included;
-// no parcel lockers). The demo never calls Nova Poshta at runtime — rerun this by hand to refresh the snapshot.
+// no parcel lockers). The demo never calls Nova Poshta at runtime – rerun this by hand to refresh the snapshot.
 // Uses the public JSON API (no key needed for these Address methods).
 // Usage: node scripts/fetch-np-directory.mjs
 import fs from 'node:fs';
@@ -10,7 +10,7 @@ import { fileURLToPath } from 'node:url';
 const API = 'https://api.novaposhta.ua/v2.0/json/';
 const OUT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../src/mocks/data/npDirectory.json');
 
-// [city, area] — the city as Nova Poshta names it, the area to tell same-named settlements apart
+// [city, area] – the city as Nova Poshta names it, the area to tell same-named settlements apart
 const CITIES = [
     ['Київ', 'Київська'], ['Харків', 'Харківська'], ['Одеса', 'Одеська'], ['Дніпро', 'Дніпропетровська'],
     ['Львів', 'Львівська'], ['Запоріжжя', 'Запорізька'], ['Вінниця', 'Вінницька'], ['Полтава', 'Полтавська'],

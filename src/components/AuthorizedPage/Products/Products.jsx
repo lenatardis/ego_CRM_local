@@ -86,7 +86,7 @@ const Products = () => {
     const getRelatedEstimateOrderPrice = async (accessToken) => {
         if (!order?.id) return 0;
 
-        // Ми в головному замовленні: друга половинка — final_amount підзамовлення
+        // Ми в головному замовленні: друга половинка – final_amount підзамовлення
         if (order?.is_general) {
             const result = await getSuborders(accessToken, { general_order: order.id });
             const suborder = Array.isArray(result) ? result[0] : null;
@@ -94,7 +94,7 @@ const Products = () => {
             return getNumberValue(suborder?.payment?.final_amount);
         }
 
-        // Ми в підзамовленні: друга половинка — final_amount головного замовлення
+        // Ми в підзамовленні: друга половинка – final_amount головного замовлення
         return getNumberValue(order?.general_order?.payment?.final_amount);
     };
 

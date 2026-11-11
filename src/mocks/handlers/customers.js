@@ -3,7 +3,7 @@ import { API, withAuth, notFound } from './utils';
 import { nextId } from '../db';
 import { loadCustomers, loadOrders, nowIso, saveCustomers, saveOrders } from '../data/orders';
 
-// POST customers/ { order_id, ...fields } (src/api/customersApi.js) — an upsert of the order's customer:
+// POST customers/ { order_id, ...fields } (src/api/customersApi.js) – an upsert of the order's customer:
 // creates one when the order has none yet (OrderWrapper.jsx sends { first_name: null } for a new order),
 // otherwise edits it. The customer record is shared by all orders that refer to it.
 // Answers the customer (`id` is what OrderCreate.jsx checks) or field errors ({ phone: [message] }).

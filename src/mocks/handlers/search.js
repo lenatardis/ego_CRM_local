@@ -11,8 +11,8 @@ import { findFabric, findKitTemplate, findProduct } from '../data/catalog';
 //          filter: { is_order, is_fabric, is_warehouse_item } }
 // The results are always orders (they replace the order list); the three toggles choose where the query is
 // looked for: the order itself ("Замовлення": number, customer, phone, comment, source), its kits
-// ("Тканини": fabric code, fabric type, kit name — the cart shows kits by name) and the stock items in its
-// cart ("Склад"). `filter` echoes the toggles back — the page shows the toggle buttons from it. Every word of the
+// ("Тканини": fabric code, fabric type, kit name – the cart shows kits by name) and the stock items in its
+// cart ("Склад"). `filter` echoes the toggles back – the page shows the toggle buttons from it. Every word of the
 // query must match; phone numbers match by digits (the query arrives unencoded, so a typed "+" reaches the server
 // as a space).
 
