@@ -65,11 +65,11 @@ export const Suborder = ({ item, onDelete }) => {
                     }`}
                          onClick={(e) => e.stopPropagation()}>
                         <div className={styles.header}>
-                            <p className={styles.header__title}>Видалення підзамовлення</p>
+                            <p className={`${styles.header__title} popupTitle`}>Видалення підзамовлення</p>
                             <div className={styles.header__close} onClick={() => closePopup()}>
                                 <span className="popupCloseCaption">Закрити</span>
                                 <button>
-                                    <img src={closeIcon} alt=""/>
+                                    <img src={closeIcon} className="popupCloseIcon" alt=""/>
                                 </button>
                             </div>
                         </div>

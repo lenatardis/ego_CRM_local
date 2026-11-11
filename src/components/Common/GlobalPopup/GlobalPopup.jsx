@@ -26,11 +26,11 @@ const GlobalPopup = ({children, topPopup, title, onClose = () => {}, isNested = 
             <span className={styles.outer} onClick={(e) => close(e)}></span>
             <div className={`${popupClass} globalPopup`}>
                 <div className={styles.header}>
-                    <p className={styles.header__title}>{title}</p>
+                    <p className={`${styles.header__title} popupTitle`}>{title}</p>
                     <div className={styles.header__close} onClick={(e) => close(e)}>
                         <span className="popupCloseCaption">Закрити</span>
                         <button>
-                            <img src={closeIcon} alt="" />
+                            <img src={closeIcon} className="popupCloseIcon" alt="" />
                         </button>
                     </div>
                 </div>

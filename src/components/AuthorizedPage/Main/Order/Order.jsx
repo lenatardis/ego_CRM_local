@@ -305,11 +305,11 @@ const Order = ({ item, tabName }) => {
                         }`}
                         onClick={(e) => e.stopPropagation()}>
                         <div className={styles.header}>
-                            <p className={styles.header__title}>Видалення замовлення</p>
+                            <p className={`${styles.header__title} popupTitle`}>Видалення замовлення</p>
                             <div className={styles.header__close} onClick={() => closePopup()}>
                                 <span className="popupCloseCaption">Закрити</span>
                                 <button>
-                                    <img src={closeIcon} alt="" />
+                                    <img src={closeIcon} className="popupCloseIcon" alt="" />
                                 </button>
                             </div>
                         </div>
@@ -352,11 +352,11 @@ const Order = ({ item, tabName }) => {
                         onClick={(e) => e.stopPropagation()}
                     >
                         <div className={styles.header}>
-                            <p className={styles.header__title}>{deleteError ? 'Видалення замовлення' : 'Створення підзамовлення'}</p>
+                            <p className={`${styles.header__title} popupTitle`}>{deleteError ? 'Видалення замовлення' : 'Створення підзамовлення'}</p>
                             <div className={styles.header__close} onClick={() => { setSuborderCreateError(''); setDeleteError(''); }}>
                                 <span className="popupCloseCaption">Закрити</span>
                                 <button>
-                                    <img src={closeIcon} alt="" />
+                                    <img src={closeIcon} className="popupCloseIcon" alt="" />
                                 </button>
                             </div>
                         </div>

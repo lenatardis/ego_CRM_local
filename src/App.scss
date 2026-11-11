@@ -328,9 +328,22 @@ body {
     padding-bottom: 0;
   }
 }
-// Demo build: popups show only the × on phones / tablets, no "Закрити" caption
+// Demo build: popups show only the × on phones / tablets, no "Закрити" caption;
+// a bigger × and a smaller title, so they look in proportion (as in the ERP).
+// Doubled classes: the popups' own module rules are as specific as one class.
 @media screen and (max-width: 1023px) {
   .popupCloseCaption {
     display: none;
+  }
+
+  .popupCloseIcon.popupCloseIcon {
+    display: block;
+    width: 24px;
+    height: 24px;
+  }
+
+  .popupTitle.popupTitle {
+    font-size: 16px;
+    line-height: 20px;
   }
 }

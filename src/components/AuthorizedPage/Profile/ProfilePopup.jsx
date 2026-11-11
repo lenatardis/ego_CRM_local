@@ -10,11 +10,11 @@ const ProfilePopup = ({onClose, handleSubmit}) => {
             <button className={styles.popup__closer} onClick={() => onClose()}/>
             <div className={styles.popup}>
                 <div className={styles.popup__header}>
-                    <p>Зміна пароля</p>
+                    <p className="popupTitle">Зміна пароля</p>
                     <div className={styles.close} onClick={() => onClose()}>
                         <span className="popupCloseCaption">Закрити</span>
                         <button>
-                            <img src={closeIcon} alt=""/>
+                            <img src={closeIcon} className="popupCloseIcon" alt=""/>
                         </button>
                     </div>
                 </div>

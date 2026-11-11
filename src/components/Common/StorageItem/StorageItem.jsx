@@ -353,11 +353,11 @@ const StorageItem = ({ orderId, id, name, images, sizes, copy, setOrder = null, 
             {isShowSizePopup && (
                 <div className={isShowSizePopup ? `${styles.globalPopupActive} ${styles.topPopup}` : styles.globalPopup}>
                     <div className={styles.header}>
-                        <p className={styles.header__title}>Вказати розмір:</p>
+                        <p className={`${styles.header__title} popupTitle`}>Вказати розмір:</p>
                         <div className={styles.header__close} onClick={() => closeSizePopup()}>
                             <span className="popupCloseCaption">Закрити</span>
                             <button>
-                                <img src={closeIcon} alt="" />
+                                <img src={closeIcon} className="popupCloseIcon" alt="" />
                             </button>
                         </div>
                     </div>
@@ -374,11 +374,11 @@ const StorageItem = ({ orderId, id, name, images, sizes, copy, setOrder = null, 
             {isShowColorPopup && (
                 <div className={isShowColorPopup ? `${styles.globalPopupActive} ${styles.topPopup}` : styles.globalPopup}>
                     <div className={styles.header}>
-                        <p className={styles.header__title}>Вказати колір:</p>
+                        <p className={`${styles.header__title} popupTitle`}>Вказати колір:</p>
                         <div className={styles.header__close} onClick={() => closeColorPopup()}>
                             <span className="popupCloseCaption">Закрити</span>
                             <button>
-                                <img src={closeIcon} alt="" />
+                                <img src={closeIcon} className="popupCloseIcon" alt="" />
                             </button>
                         </div>
                     </div>

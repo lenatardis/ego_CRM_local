@@ -121,11 +121,11 @@ const OrderActions = ({ orderUrl, isDisabled, onCopyAll, ttnURL, deliveryInfo, s
                         }`}
                         onClick={(e) => e.stopPropagation()}>
                         <div className={styles2.header}>
-                            <p className={styles2.header__title}>Друк ТТН</p>
+                            <p className={`${styles2.header__title} popupTitle`}>Друк ТТН</p>
                             <div className={styles2.header__close} onClick={() => closePopup()}>
                                 <span className="popupCloseCaption">Закрити</span>
                                 <button>
-                                    <img src={closeIcon} alt="" />
+                                    <img src={closeIcon} className="popupCloseIcon" alt="" />
                                 </button>
                             </div>
                         </div>
