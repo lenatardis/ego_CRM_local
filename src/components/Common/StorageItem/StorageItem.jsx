@@ -13,6 +13,7 @@ import { useAppDispatch } from "../../../hooks/redux";
 import { getAccessToken } from "../../../utils/authTokens";
 import { setAddProduct } from "../../../api/productsApi";
 import ImagePopup from "../ImagePopup/ImagePopup";
+import {photoSkeleton} from "../../../utils/photoSkeleton";
 
 const StorageItem = ({ orderId, id, name, images, sizes, copy, setOrder = null, setPopup, inPopup, sourceID, onAfterProductAdd }) => {
     let basicCount = 4;
@@ -269,7 +270,7 @@ const StorageItem = ({ orderId, id, name, images, sizes, copy, setOrder = null, 
         <div className={`${styles.storageItem} ${inPopup ? styles.inPopup : ''}`}>
             <div className={styles.infoWrap}>
                 <div className={styles.titleWrap}>
-                    {images?.length ? <img src={images[0]} className={styles.itemImg} alt=""
+                    {images?.length ? <img src={images[0]} {...photoSkeleton(styles.itemImg)} alt=""
                         onClick={() => showImagePopup(images[0])} /> :
                         <span className={styles.iconWrap}><img src={IconPlaceholder} alt="" /></span>}
                     <div>

@@ -3,6 +3,7 @@ import styles from '../ProductItem.module.scss';
 import ImgPlaceholder from "../../../../assets/img/placeholder.svg";
 import { useIsDesktop } from "../../../../hooks/useIsDesktop";
 import InfoHint from "../InfoHint/InfoHint";
+import {photoSkeleton} from "../../../../utils/photoSkeleton";
 
 const ClosedItem = ({ name = 'Невідомий продукт', price = 'Не доступно', images = [], components, fabric_type, kit_type, isClient, sourceName, originalSourceName }) => {
     const isDesktop = useIsDesktop();
@@ -19,7 +20,7 @@ const ClosedItem = ({ name = 'Невідомий продукт', price = 'Не 
     return (
         <React.Fragment>
             <div className={styles.closedWrap}>
-                <img src={!images[0] ? ImgPlaceholder : images[0]} alt="" />
+                <img src={!images[0] ? ImgPlaceholder : images[0]} {...photoSkeleton(undefined, !!images[0])} alt="" />
                 {isDesktop && <div className={styles.desktopWrap}>
                     <div className={`${isDesktop ? styles.desktopTitleBlock : ''}`}>
                         <p className={`${styles.closedWrap__title} ${styles.desktopTitle}`}>{name}</p>

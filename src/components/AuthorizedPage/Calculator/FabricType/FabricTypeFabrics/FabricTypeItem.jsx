@@ -1,12 +1,13 @@
 import React from "react";
 import styles from './FabricTypeFabrics.module.scss';
 import imgPlaceholder from "../../../../../assets/icons/typePlaceholder.svg";
+import {photoSkeleton} from "../../../../../utils/photoSkeleton";
 
 const FabricTypeItem = ({item, isActive = false, onClick}) => {
     return (
         item.img ? (
             <div className={`${styles.fabric__itemWrap} ${isActive ? styles.fabric__active : ''}`} onClick={onClick}>
-                <img src={item.img} alt="" className={styles.fabric__itemImg}/>
+                <img src={item.img} alt="" {...photoSkeleton(styles.fabric__itemImg)}/>
                 <p>{item.name}</p>
             </div>
         ) : (

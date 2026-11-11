@@ -1,5 +1,6 @@
 import plusSign from "../../../../../assets/icons/plus.svg";
 import styles from "./ComponentsPopup.module.scss";
+import {photoSkeleton} from "../../../../../utils/photoSkeleton";
 
 export default function ComponentsList({ components, onAddComponent, defaultFabricImage = '' }) {
     return (
@@ -8,7 +9,7 @@ export default function ComponentsList({ components, onAddComponent, defaultFabr
                 <li key={component.id} className={styles.component}>
                     <div className={styles.component__info}>
                         <div className={styles.component__img}>
-                            <img src={component.image[0] || defaultFabricImage} alt="" />
+                            <img src={component.image[0] || defaultFabricImage} {...photoSkeleton(undefined, !!(component.image[0] || defaultFabricImage))} alt="" />
                         </div>
                         <div className={styles.info}>
                             <p className={styles.info__name}>{component.name}</p>

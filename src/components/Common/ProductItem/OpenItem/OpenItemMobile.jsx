@@ -8,6 +8,7 @@ import IconWarning from "../../../../assets/img/warning.svg";
 import removeIcon from "../../../../assets/icons/removeIcon.svg";
 import pencilIcon from "../../../../assets/icons/pencil.svg";
 import styles from '../ProductItem.module.scss';
+import {photoSkeleton} from "../../../../utils/photoSkeleton";
 
 const OpenItemMobile = ({product, onDelete, isClient, isDisabled = false}) => {
     const navigate = useNavigate();
@@ -24,7 +25,7 @@ const OpenItemMobile = ({product, onDelete, isClient, isDisabled = false}) => {
                     <div className={styles.imgPlaceholder}>
                         <div className={styles.darkerImg}></div>
                         <img src={product.images?.length && product.images[0] ? product.images[0] : ImgPlaceholderIcon}
-                             className={!product.images?.length || !product.images[0] ? styles.placeholderImg : styles.mainImg}
+                             {...(!product.images?.length || !product.images[0] ? photoSkeleton(styles.placeholderImg, false) : photoSkeleton(styles.mainImg))}
                              alt=""/>
                         {imgUrl && (
                             <button

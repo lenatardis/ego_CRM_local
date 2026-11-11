@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import styles from './FabricOptions.module.scss';
 import imgPlaceholder from "../../../../assets/icons/typePlaceholder.svg";
+import {photoSkeleton} from "../../../../utils/photoSkeleton";
 
 const FabricOptions = ({options, selectedOptionIds, setSelectedOptionIds, openFabricConsumptionPopup, fabricConsumption}) => {
     const toggleSelectedOption = (optionId) => {
@@ -28,7 +29,7 @@ const FabricOptions = ({options, selectedOptionIds, setSelectedOptionIds, openFa
                     <label className={styles.options__itemWrap} key={item.id}>
                         <div className={styles.options__placeholder}>
                             {item.image ? (
-                                <img src={item.image} alt="" className={styles.options__itemImg}/>
+                                <img src={item.image} alt="" {...photoSkeleton(styles.options__itemImg)}/>
                             ) : (
                                 <img src={imgPlaceholder} alt=""/>
                             )}

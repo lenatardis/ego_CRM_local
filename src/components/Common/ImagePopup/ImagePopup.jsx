@@ -1,6 +1,7 @@
 import React from "react";
 import styles from './ImagePopup.module.scss';
 import closeIcon from '../../../assets/icons/closeCross.svg';
+import {photoSkeleton} from "../../../utils/photoSkeleton";
 
 const ImagePopup = ({ onClose = () => {}, img, isShowImagePopup}) => {
 
@@ -21,7 +22,7 @@ const ImagePopup = ({ onClose = () => {}, img, isShowImagePopup}) => {
                 <button className={styles.closeBtn} onClick={(e) => close(e)}>
                     <img src={closeIcon} alt="" />
                 </button>
-                <img className={styles.image} src={img} alt=""/>
+                <img {...photoSkeleton(styles.image)} src={img} alt=""/>
             </div>
         </>
 

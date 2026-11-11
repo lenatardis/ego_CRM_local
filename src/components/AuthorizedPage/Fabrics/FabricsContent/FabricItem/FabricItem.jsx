@@ -5,6 +5,7 @@ import copyIcon from "../../../../../assets/icons/copy.svg";
 import {getBaseUrl} from "../../../../../store/selectors";
 import ImgPlaceholder from '../../../../../assets/img/FabricImgPlaceholder.png';
 import ImagePopup from "../../../../Common/ImagePopup/ImagePopup";
+import {photoSkeleton} from "../../../../../utils/photoSkeleton";
 
 const FabricItem = ({item, selectedFabricId, onFabricSelect, isCalculator}) => {
     const baseUrl = getBaseUrl;
@@ -27,7 +28,7 @@ const FabricItem = ({item, selectedFabricId, onFabricSelect, isCalculator}) => {
                 } : null}>
                 <div className={styles.fabric__left}>
                     <div className={styles.fabric__image}>
-                        <img className={item.images[0] ? styles.clickable : null} src={item.images[0] ? item.images[0] : ImgPlaceholder} onClick={item?.images[0] ? (e) => showImagePopup(e, item?.images[0]) : null} alt=""/>
+                        <img {...(item.images[0] ? photoSkeleton(styles.clickable) : photoSkeleton(null, false))} src={item.images[0] ? item.images[0] : ImgPlaceholder} onClick={item?.images[0] ? (e) => showImagePopup(e, item?.images[0]) : null} alt=""/>
                     </div>
                     <div className={styles.fabric__info}>
                         <h5>{item.type?.type || 'Невідомий тип тканини'}</h5>

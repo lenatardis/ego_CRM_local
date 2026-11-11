@@ -4,6 +4,7 @@ import Slider from 'react-slick';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import SliderItem from "./SliderItem";
+import {photoSkeleton} from "../../utils/photoSkeleton";
 
 const FabricSlider = ({images, column, products}) => {
 
@@ -11,7 +12,7 @@ const FabricSlider = ({images, column, products}) => {
         customPaging: function(i) {
             return (
                 <a>
-                    <img src={images[i]} alt=""/>
+                    <img src={images[i]} {...photoSkeleton()} alt=""/>
                 </a>
             );
         },

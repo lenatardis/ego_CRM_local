@@ -7,6 +7,7 @@ import queryString from "query-string";
 import Preloader from "../Common/Preloader/Preloader";
 import { getFabricItem, getProductDetail } from "../../api/productsApi";
 import logo from "../../assets/img/logoEgo.svg";
+import {photoSkeleton} from "../../utils/photoSkeleton";
 
 const Fabric = () => {
     const params = useLocation();
@@ -62,7 +63,7 @@ const Fabric = () => {
                     <div>
                         {item.images.length > 1 ? <FabricSlider images={item.images} column/> : <div className={styles.imgPlaceholder}>
                             <img src={!item.images.length || !item.images[0] ? ImgPlaceholder : item.images[0]}
-                                 className={!item.images.length || !item.images[0] ? '' : styles.mainImg}
+                                 {...(!item.images.length || !item.images[0] ? photoSkeleton('', false) : photoSkeleton(styles.mainImg))}
                                  alt=""/>
                         </div>}
                     </div>

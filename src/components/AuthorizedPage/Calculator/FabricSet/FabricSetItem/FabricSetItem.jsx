@@ -16,6 +16,7 @@ import { useAppDispatch } from "../../../../../hooks/redux";
 import { setIsActivePopup } from "../../../../../store/main-slice";
 import GlobalPopup from "../../../../Common/GlobalPopup/GlobalPopup";
 import { useIsDesktop } from "../../../../../hooks/useIsDesktop";
+import {photoSkeleton} from "../../../../../utils/photoSkeleton";
 
 const FabricSetItem = ({
                            inPopup,
@@ -251,7 +252,7 @@ const FabricSetItem = ({
                     <div className={styles.set}>
                         <div className={styles.mainRow}>
                             <div className={styles.set__color} onClick={() => setContainerPosition(2)}>
-                                <img className={styles.colorCover} src={image} alt="" />
+                                <img {...photoSkeleton(styles.colorCover, !!image)} src={image} alt="" />
                             </div>
 
                             <div className={styles.set__panel}>

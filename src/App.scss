@@ -347,3 +347,20 @@ body {
     line-height: 20px;
   }
 }
+
+// Demo build: placeholder while a photo loads (`photoSkeleton()` in src/utils/photoSkeleton.js, same look as the ERP's)
+.photoSkeleton {
+  background: linear-gradient(90deg, #e6e0ea 25%, #f3eff5 50%, #e6e0ea 75%) 0 0 / 200% 100%;
+  animation: photoSkeleton 1.2s ease-in-out infinite;
+}
+
+@keyframes photoSkeleton {
+  from { background-position: 100% 0; }
+  to { background-position: -100% 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .photoSkeleton {
+    animation: none;
+  }
+}

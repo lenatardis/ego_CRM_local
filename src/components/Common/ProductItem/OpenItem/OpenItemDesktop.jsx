@@ -11,6 +11,7 @@ import styles from '../ProductItem.module.scss';
 import { useRef, useEffect, useState } from "react";
 import ImagePopup from "../../ImagePopup/ImagePopup";
 import InfoHint from "../InfoHint/InfoHint"
+import {photoSkeleton} from "../../../../utils/photoSkeleton";
 
 const OpenItemDesktop = ({ product, onDelete, isClient, isDisabled = false, sourceName, originalSourceName }) => {
     const navigate = useNavigate();
@@ -90,7 +91,7 @@ const OpenItemDesktop = ({ product, onDelete, isClient, isDisabled = false, sour
                             <div className={styles.darkerImg}></div>
                             <img
                                 src={product.images?.length && product.images[0] ? product.images[0] : ImgPlaceholderIcon}
-                                className={!product.images?.length || !product.images[0] ? styles.placeholderImg : styles.mainImg}
+                                {...(!product.images?.length || !product.images[0] ? photoSkeleton(styles.placeholderImg, false) : photoSkeleton(styles.mainImg))}
                                 onClick={product?.images?.length && product?.images[0] ? () => showImagePopup(product.images[0]) : null}
                                 alt="" />
                             {imgUrl && (
