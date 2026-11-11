@@ -15,9 +15,7 @@ import authIcon from '../../assets/icons/auth.svg';
 import { useLocation, useNavigate } from "react-router";
 import statusIcon from "../../assets/icons/statusWhite.svg";
 import statusBrownIcon from "../../assets/icons/statusBrown.svg";
-import arrIcon from "../../assets/icons/arrowDown.svg";
 import arrIcon2 from "../../assets/icons/arrowDownWhite.svg";
-import backIcon from "../../assets/icons/back.svg";
 import logoutIcon from '../../assets/icons/logout.svg';
 import { useAppDispatch, useAppSelector } from "../../hooks/redux";
 import { setIsActivePopup } from "../../store/main-slice";
@@ -28,6 +26,7 @@ import { getAccessToken } from "../../utils/authTokens";
 import { setNewOrder } from "../../api/ordersApi";
 import { logout } from "../../store/account-slice";
 import { useIsDesktop } from "../../hooks/useIsDesktop";
+import MobileBar, { getPageTitle, useMobileMenu } from "./MobileBar";
 
 const MainMenu = () => {
     const [isDeliveryMenu, setIsDeliveryMenu] = useState(false);
@@ -35,9 +34,6 @@ const MainMenu = () => {
     const [storageAccordionOpen, setStorageAccordionOpen] = useState(false);
 
     const { pathname } = useLocation();
-    const [menuPosition, setMenuPosition] = useState(2);
-    const [touchStartX, setTouchStartX] = useState(0);
-    const [touchEndX, setTouchEndX] = useState(0);
     const [showPopup, setShowPopup] = useState(false);
     const [showPagePopup, setShowPagePopup] = useState(false);
     const [isDeliveryNP, setIsDeliveryNP] = useState(pathname.startsWith('/deliveryUKR') ? false : true);
@@ -46,9 +42,6 @@ const MainMenu = () => {
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
 
-    const menuRef = useRef(null);
-    const leftHiddenLinkRef = useRef(null);
-    const rightHiddenLinkRef = useRef(null);
     const prevIsDeliveryMenuRef = useRef(false);
 
     const params = useParams();
@@ -56,11 +49,14 @@ const MainMenu = () => {
     const generalOrderId = useAppSelector(getGeneralOrderId);
 
     const isDesktop = useIsDesktop();
+    // Demo build: below 1024 px this menu is a slide-out opened from the top bar (MobileBar)
+    const [isMobileOpen, setIsMobileOpen] = useMobileMenu(isDesktop);
+    const closeMobileMenu = () => setIsMobileOpen(false);
 
     const isAllOrdersActive = !isDeliveryMenu && pathname === '/';
 
     const onOrder = () => {
-        resetHiddenButtons();
+        closeMobileMenu();
 
         if (id) {
             const accessToken = getAccessToken();
@@ -82,13 +78,14 @@ const MainMenu = () => {
     }, [pathname]);
 
     useEffect(() => {
-        if (isDesktop && isDeliveryMenu && !prevIsDeliveryMenuRef.current) {
+        if (isDeliveryMenu && !prevIsDeliveryMenuRef.current) {
             setOrdersAccordionOpen(true);
         }
         prevIsDeliveryMenuRef.current = isDeliveryMenu;
-    }, [isDeliveryMenu, isDesktop]);
+    }, [isDeliveryMenu]);
 
     const changeDelivery = () => {
+        closeMobileMenu();
         setShowPopup(true);
         dispatch(setIsActivePopup(true));
     };
@@ -107,6 +104,7 @@ const MainMenu = () => {
     };
 
     const checkPageNav = () => {
+        closeMobileMenu();
         setShowPagePopup(true);
         dispatch(setIsActivePopup(true));
     };
@@ -122,165 +120,12 @@ const MainMenu = () => {
         setShowPagePopup(false);
     };
 
-    /* mobile swipe */
-    const handleTouchStart = (e) => {
-        setTouchStartX(e.targetTouches[0].clientX);
-        setTouchEndX(e.targetTouches[0].clientX);
-    };
-
-    const handleTouchMove = (e) => {
-        setTouchEndX(e.targetTouches[0].clientX);
-    };
-
-    const handleTouchEnd = () => {
-        if (touchStartX - touchEndX > 50 && menuPosition < 3) {
-            setMenuPosition((prev) => prev + 1);
-        }
-
-        if (touchStartX - touchEndX < -50 && menuPosition === 3) {
-            setMenuPosition(2);
-        }
-    };
-
-    const resetHiddenButtons = () => {
-        setMenuPosition(2);
-    };
 
     const onLogOut = () => {
-        resetHiddenButtons();
+        closeMobileMenu();
         dispatch(logout());
         window.location.reload();
     };
-
-    const onReturn = () => {
-        resetHiddenButtons();
-        navigate(-1);
-    };
-
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (
-                menuRef.current &&
-                !menuRef.current.contains(event.target) &&
-                (!leftHiddenLinkRef.current || !leftHiddenLinkRef.current.contains(event.target)) &&
-                (!rightHiddenLinkRef.current || !rightHiddenLinkRef.current.contains(event.target))
-            ) {
-                setMenuPosition(2);
-            }
-        };
-
-        document.addEventListener('touchstart', handleClickOutside);
-
-        return () => {
-            document.removeEventListener('touchstart', handleClickOutside);
-        };
-    }, []);
-
-    const mobileMenuLinks = !isDeliveryMenu
-        ? (
-            <>
-                <Link
-                    to={'/'}
-                    className={pathname === '/' ? styles.userMenu__linkActive : styles.userMenu__link}
-                    onClick={() => resetHiddenButtons()}
-                >
-                    <img src={pathname === '/' ? mainBrownIcon : mainIcon} alt="" />
-                    <span>Усі замовлення</span>
-                </Link>
-
-                <Link
-                    to={'/fabrics/'}
-                    className={pathname === '/fabrics/' ? styles.userMenu__linkActive : styles.userMenu__link}
-                    onClick={() => resetHiddenButtons()}
-                >
-                    <img src={pathname === '/fabrics/' ? fabricsBrownIcon : fabricsIcon} alt="" />
-                    <span>Тканини</span>
-                </Link>
-
-                <Link
-                    to={'/storage/'}
-                    className={pathname === '/storage/' ? styles.userMenu__linkActive : styles.userMenu__link}
-                    onClick={() => resetHiddenButtons()}
-                >
-                    <img src={pathname === '/storage/' ? storageBrownIcon : storageIcon} alt="" />
-                    <span>Склад</span>
-                </Link>
-
-                <button onClick={() => checkPageNav()} className={styles.userMenu__link}>
-                    <img src={authIcon} alt="" />
-                    <span>Замовлення +</span>
-                </button>
-            </>
-        )
-        : (
-            <>
-                <Link
-                    to={`/order/${generalOrderId ? generalOrderId : orderId}`}
-                    className={`${pathname.startsWith('/order/') ? styles.userMenu__linkActive : styles.userMenu__link} ${styles.innerShift}`}
-                    onClick={() => resetHiddenButtons()}
-                >
-                    <img src={pathname.startsWith('/order/') ? mainBrownIcon : mainIcon} alt="" />
-                    <span className={generalOrderId ? styles.backToMain : ''}>
-                        {generalOrderId ? 'Головне замовлення' : 'Замовлення'}
-                    </span>
-                </Link>
-
-              
-                <Link
-                    to={`/products/${orderId}`}
-                    className={`${pathname.startsWith('/products/') ? styles.userMenu__linkActive : styles.userMenu__link} ${styles.innerShift}`}
-                    onClick={() => resetHiddenButtons()}
-                >
-                    <img src={pathname.startsWith('/products/') ? productsBrownIcon : productsIcon} alt="" />
-                    <span>Товари</span>
-                </Link>
-
-                  {!generalOrderId && (
-                    <>
-                        {isDeliveryNP ? (
-                            <Link
-                                to={`/deliveryNP/${orderId}`}
-                                onClick={() =>
-                                    pathname.startsWith('/deliveryNP/') || pathname.startsWith('/deliveryUKR/')
-                                        ? changeDelivery()
-                                        : resetHiddenButtons()
-                                }
-                                className={`${pathname.startsWith('/deliveryNP/') || pathname.startsWith('/deliveryUKR/')
-                                    ? styles.userMenu__linkActive
-                                    : styles.userMenu__link} ${styles.innerShift}`}
-                            >
-                                <img src={novaMailIcon} alt="" />
-                                <span>Доставка</span>
-                            </Link>
-                        ) : (
-                            <Link
-                                to={`/deliveryUKR/${generalOrderId ? generalOrderId : orderId}`}
-                                onClick={() =>
-                                    pathname.startsWith('/deliveryNP') || pathname.startsWith('/deliveryUKR')
-                                        ? changeDelivery()
-                                        : resetHiddenButtons()
-                                }
-                                className={`${pathname.startsWith('/deliveryNP') || pathname.startsWith('/deliveryUKR')
-                                    ? styles.userMenu__linkActive
-                                    : styles.userMenu__link} ${styles.innerShift}`}
-                            >
-                                <img src={ukrMailIcon} alt="" />
-                                <span>Доставка</span>
-                            </Link>
-                        )}
-                    </>
-                )}
-
-                <Link
-                    to={`/order_status/${orderId}`}
-                    className={`${pathname.startsWith('/order_status/') ? styles.userMenu__linkActive : styles.userMenu__link} ${styles.innerShift}`}
-                    onClick={() => resetHiddenButtons()}
-                >
-                    <img src={pathname.startsWith('/order_status/') ? statusBrownIcon : statusIcon} alt="" />
-                    <span>Статус</span>
-                </Link>
-            </>
-        );
 
     const desktopMenuLinks = (
         <>
@@ -293,7 +138,7 @@ const MainMenu = () => {
                 <div
                     className={`${styles.desktopAccordionHead} ${isAllOrdersActive ? styles.userMenu__linkActive : styles.userMenu__link}`}
                     onClick={() => {
-                        resetHiddenButtons();
+                        closeMobileMenu();
                         navigate('/');
                     }}
                 >
@@ -326,7 +171,7 @@ const MainMenu = () => {
                         <Link
                             to={`/order/${generalOrderId ? generalOrderId : orderId}`}
                             className={`${pathname.startsWith('/order/') ? styles.userMenu__linkActive : styles.userMenu__link} ${styles.innerShift}`}
-                            onClick={() => resetHiddenButtons()}
+                            onClick={() => closeMobileMenu()}
                         >
                             <img src={pathname.startsWith('/order/') ? mainBrownIcon : mainIcon} alt="" />
                             <span className={generalOrderId ? styles.backToMain : ''}>
@@ -338,7 +183,7 @@ const MainMenu = () => {
                         <Link
                             to={`/products/${orderId}`}
                             className={`${pathname.startsWith('/products/') ? styles.userMenu__linkActive : styles.userMenu__link} ${styles.innerShift}`}
-                            onClick={() => resetHiddenButtons()}
+                            onClick={() => closeMobileMenu()}
                         >
                             <img src={pathname.startsWith('/products/') ? productsBrownIcon : productsIcon} alt="" />
                             <span>Товари</span>
@@ -352,7 +197,7 @@ const MainMenu = () => {
                                         onClick={() =>
                                             pathname.startsWith('/deliveryNP/') || pathname.startsWith('/deliveryUKR/')
                                                 ? changeDelivery()
-                                                : resetHiddenButtons()
+                                                : closeMobileMenu()
                                         }
                                         className={`${pathname.startsWith('/deliveryNP/') || pathname.startsWith('/deliveryUKR/')
                                             ? styles.userMenu__linkActive
@@ -367,7 +212,7 @@ const MainMenu = () => {
                                         onClick={() =>
                                             pathname.startsWith('/deliveryNP') || pathname.startsWith('/deliveryUKR')
                                                 ? changeDelivery()
-                                                : resetHiddenButtons()
+                                                : closeMobileMenu()
                                         }
                                         className={`${pathname.startsWith('/deliveryNP') || pathname.startsWith('/deliveryUKR')
                                             ? styles.userMenu__linkActive
@@ -383,7 +228,7 @@ const MainMenu = () => {
                         <Link
                             to={`/order_status/${orderId}`}
                             className={`${pathname.startsWith('/order_status/') ? styles.userMenu__linkActive : styles.userMenu__link} ${styles.innerShift}`}
-                            onClick={() => resetHiddenButtons()}
+                            onClick={() => closeMobileMenu()}
                         >
                             <img src={pathname.startsWith('/order_status/') ? statusBrownIcon : statusIcon} alt="" />
                             <span>Статус</span>
@@ -413,7 +258,7 @@ const MainMenu = () => {
                     <Link
                         to={isDeliveryMenu ? `/fabrics/${orderId}` : '/fabrics/'}
                         className={`${pathname.startsWith('/fabrics/') || pathname === '/fabrics/' ? styles.userMenu__linkActive : styles.userMenu__link} ${styles.innerShift}`}
-                        onClick={() => resetHiddenButtons()}
+                        onClick={() => closeMobileMenu()}
                     >
                         <img src={pathname.startsWith('/fabrics/') || pathname === '/fabrics/' ? fabricsBrownIcon : fabricsIcon} alt="" />
                         <span>Тканини</span>
@@ -422,7 +267,7 @@ const MainMenu = () => {
                     <Link
                         to={isDeliveryMenu ? `/storage/${orderId}` : '/storage/'}
                         className={`${pathname.startsWith('/storage/') || pathname === '/storage/' ? styles.userMenu__linkActive : styles.userMenu__link} ${styles.innerShift}`}
-                        onClick={() => resetHiddenButtons()}
+                        onClick={() => closeMobileMenu()}
                     >
                         <img src={pathname.startsWith('/storage/') || pathname === '/storage/' ? storageBrownIcon : storageIcon} alt="" />
                         <span>Продукція</span>
@@ -435,71 +280,30 @@ const MainMenu = () => {
 
     return (
         <>
-            <div
-                className={`menu ${styles.userMenu} ${styles.swipeMenu} ${isDesktop ? styles.mainDesktopMenu : ''}`}
-                style={
-                    isDesktop
-                        ? {}
-                        : {
-                            left: menuPosition === 1
-                                ? 'calc(50% + 67px)'
-                                : menuPosition === 3
-                                    ? 'calc(50% - 67px)'
-                                    : '50%'
-                        }
-                }
-                onTouchStart={isDesktop ? undefined : handleTouchStart}
-                onTouchMove={isDesktop ? undefined : handleTouchMove}
-                onTouchEnd={isDesktop ? undefined : handleTouchEnd}
-                ref={menuRef}
-            >
-                {isDesktop ? (
-                    <div className={styles.desktopMenuWrap}>
-                        {desktopMenuLinks}
-                    </div>
-                ) : (
-                    mobileMenuLinks
-                )}
-
-                {isDesktop && (
-                    <div className={styles.btnWrap}>
-                        <a className={`${styles.userMenu__link} ${styles.ERP}`} href="/ego_ERP_local/">
-                            <span>Перейти в ERP</span>
-                        </a>
-
-                        <button
-                            onClick={onLogOut}
-                            className={`${styles.userMenu__link} ${styles.logoutLink}`}
-                        >
-                            <img src={logoutIcon} alt="" />
-                            <span>Вийти</span>
-                        </button>
-                    </div>
-                )}
-            </div>
-
             {!isDesktop && (
-                <div className={styles.back}>
-                    <button
-                        onClick={null}
-                        className={styles.hiddenLeftLink}
-                        style={{ left: menuPosition === 1 ? '0' : '-67px' }}
-                        ref={leftHiddenLinkRef}
-                    >
-                        <img src={arrIcon} alt="" className={styles.rotated} />
-                    </button>
+                <MobileBar title={getPageTitle(pathname, true)} isOpen={isMobileOpen} setIsOpen={setIsMobileOpen} />
+            )}
+            <div
+                className={`menu ${styles.userMenu} ${styles.mainDesktopMenu} ${isDesktop ? styles.swipeMenu : styles.sideMenu} ${isMobileOpen ? styles.sideMenuOpen : ''}`}
+            >
+                <div className={styles.desktopMenuWrap}>
+                    {desktopMenuLinks}
+                </div>
+
+                <div className={styles.btnWrap}>
+                    <a className={`${styles.userMenu__link} ${styles.ERP}`} href="/ego_ERP_local/">
+                        <span>Перейти в ERP</span>
+                    </a>
 
                     <button
-                        onClick={() => isDeliveryMenu ? onReturn() : onLogOut()}
-                        className={`${styles.hiddenRightLink} ${isDeliveryMenu ? styles.returnLink : styles.logoutLink}`}
-                        style={{ right: menuPosition === 3 ? '0' : '-67px' }}
-                        ref={rightHiddenLinkRef}
+                        onClick={onLogOut}
+                        className={`${styles.userMenu__link} ${styles.logoutLink}`}
                     >
-                        <img src={isDeliveryMenu ? backIcon : logoutIcon} alt="" />
-                        <span>{isDeliveryMenu ? 'Назад' : 'Вийти'}</span>
+                        <img src={logoutIcon} alt="" />
+                        <span>Вийти</span>
                     </button>
                 </div>
-            )}
+            </div>
 
             {showPopup && (
                 <GlobalPopup

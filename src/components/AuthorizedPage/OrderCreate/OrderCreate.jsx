@@ -327,7 +327,7 @@ const OrderCreate = ({ order, sourcesList }) => {
     return (
         <div className={styles.order}>
             <div className={styles.orderWrap}>
-                {isDesktop && <ArrBack />}
+                <ArrBack/>
                 <form onSubmit={handleSubmit}>
                     <h2 className={styles.order__title}>Замовлення</h2>
                     <div className={styles.order__content}>

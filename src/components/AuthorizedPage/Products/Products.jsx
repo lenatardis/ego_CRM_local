@@ -359,7 +359,7 @@ const Products = () => {
     return (
         <div className={styles.products} style={{ backgroundColor: order?.is_general ? '#D9D1E0' : '#f7eadf' }}>
             <div className={styles.wrap}>
-                {isDesktop && <ArrBack />}
+                <ArrBack/>
                 <div className={styles.grid}>
                     <div><h2 className={styles.products__title}>Товар</h2></div>
                     <div></div>

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from './DeliveryNP.module.scss';
 import { useFormik } from "formik";
-import { useIsDesktop } from "../../../hooks/useIsDesktop";
 import { useNavigate } from "react-router";
 import './delivery.scss'
 import NovaPoshtaCities from "./NovaPoshtaCities/NovaPoshtaCities";
@@ -18,6 +17,7 @@ import DateTimeField from "../../Common/DateTimeField/DateTimeField";
 import { BackwardDelivery } from "./BackwardDelivery/BackwardDelivery";
 import { PaymentMethod } from "./PaymentMethod/PaymentMethod";
 import ArrBack from "../../Common/ArrBack/ArrBack";
+import { useIsDesktop } from "../../../hooks/useIsDesktop";
 import { DELIVERY_PARSER_HINT } from "../../Common/Parser/parserHints";
 import { getServerErrorMessage } from "../../../utils/getServerErrorMessage";
 import InfoHint from "../../Common/ProductItem/InfoHint/InfoHint";
@@ -26,6 +26,7 @@ import { getOrderInfo, getSuborders } from "../../../api/ordersApi";
 
 
 const DeliveryNP = ({ deliveryOrder, lastOrderId }) => {
+    const isDesktop = useIsDesktop();
     const [cityValue, setCityValue] = useState(deliveryOrder?.receiver?.delivery_receiver?.city || '');
     const [saveData, setSaveData] = useState('');
     const [requiredNPValues, setRequiredNPValues] = useState(null);
@@ -391,7 +392,6 @@ const DeliveryNP = ({ deliveryOrder, lastOrderId }) => {
         }
     }
 
-    const isDesktop = useIsDesktop();
     const nextPage = () => {
         if (lastOrderId) {
             navigate(`/order_status/${lastOrderId}`);
@@ -400,6 +400,8 @@ const DeliveryNP = ({ deliveryOrder, lastOrderId }) => {
 
     return (
         <div className={`${styles.deliveryNP} deliveryNP`}>
+            {/* demo build: on phones "Назад" at the top; desktop shows it via the wrapper's column-reverse (below) */}
+            {!isDesktop && <ArrBack/>}
             <div className={styles.deliveryNPWrap}>
                 <form onSubmit={handleSubmit}>
                     <div className={styles.deliveryNP__content}>
@@ -701,7 +703,7 @@ const DeliveryNP = ({ deliveryOrder, lastOrderId }) => {
                     hintText={DELIVERY_PARSER_HINT}
                 />
 
-                {isDesktop && <ArrBack />}
+                {isDesktop && <ArrBack/>}
             </div>
             <div className="globalBtnWrap">
                 <button className="globalBtn button-xs" onClick={nextPage}>

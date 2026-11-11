@@ -3,7 +3,6 @@ import styles from './Main.module.scss';
 import UserHeader from "./UserHeader/UserHeader";
 import MainTabs from "./MainTabs/MainTabs";
 import {useAppDispatch, useAppSelector} from "../../../hooks/redux";
-import {useIsDesktop} from "../../../hooks/useIsDesktop";
 import {getOrderList, getUser} from "../../../store/selectors";
 import Order from "./Order/Order";
 import {setOrders} from "../../../store/main-slice";
@@ -25,7 +24,6 @@ const Main = () => {
     const [page, setPage] = useState(1);
     const [totalPages, setTotalPages] = useState(1);
     const dispatch = useAppDispatch();
-    const isDesktop = useIsDesktop();
    
     useEffect(() => {
         if (id) {
@@ -133,7 +131,7 @@ const Main = () => {
     return (
         <div className={styles.main}>
             <div className={styles.mainWrap}>
-                {isDesktop && <ArrBack/>}
+                <ArrBack/>
                 <div className={styles.upperPanel}>
                     <UserHeader/>
                     <OrderSearchFilters setOrdersFilter={setOrdersFilter} searchValue={searchValue}

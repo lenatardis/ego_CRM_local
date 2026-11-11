@@ -9,10 +9,13 @@ import callbackIconBrown from '../../assets/icons/callbackBrown.svg';
 import authIcon from '../../assets/icons/auth.svg';
 import authIconBrown from '../../assets/icons/authBrown.svg';
 import {useIsDesktop} from "../../hooks/useIsDesktop";
+import MobileBar, { getPageTitle, useMobileMenu } from "./MobileBar";
 
 const UserMenu = ({ savedOrderHash }) => {
     const { pathname} = useLocation();
     const isDesktop = useIsDesktop();
+    // Demo build: below 1024 px this menu is a slide-out opened from the top bar (MobileBar), as the staff menu
+    const [isMobileOpen, setIsMobileOpen] = useMobileMenu(isDesktop);
     const statusLink = savedOrderHash
         ? `/orders/?order=${encodeURIComponent(savedOrderHash)}`
         : '/orders/';
@@ -44,12 +47,15 @@ const UserMenu = ({ savedOrderHash }) => {
     )
 
     return (
-        <div className={`menu ${styles.userMenu} ${styles.clientMenu} ${isDesktop ? styles.mainDesktopMenu : ''}`}>
-            {isDesktop ? <>
+        <>
+            {!isDesktop && (
+                <MobileBar title={getPageTitle(pathname, false)} isOpen={isMobileOpen} setIsOpen={setIsMobileOpen} />
+            )}
+            <div className={`menu ${styles.userMenu} ${styles.clientMenu} ${isDesktop ? styles.mainDesktopMenu : `${styles.sideMenu} ${isMobileOpen ? styles.sideMenuOpen : ''}`}`}
+                 onClick={(e) => { if (e.target.closest('a')) setIsMobileOpen(false); }}>
                 <div className={styles.desktopMenuWrap}>{userMenuLinks}</div>
-            
-            </> : <>{userMenuLinks}</>}
-        </div>
+            </div>
+        </>
     )
 }
 

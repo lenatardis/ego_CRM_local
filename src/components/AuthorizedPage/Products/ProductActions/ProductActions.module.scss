@@ -3,7 +3,7 @@
   position: fixed;
   width: calc(100vw - 32px);
   height: 75px;
-  bottom: 74px;
+  bottom: 0; // demo build: was 74px, above the old bottom menu (now a top bar)
   left: 16px;
   background: #D9D1E0;
 

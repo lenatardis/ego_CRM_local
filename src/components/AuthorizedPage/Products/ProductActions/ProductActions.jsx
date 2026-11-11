@@ -17,7 +17,7 @@ const ProductActions = ({order, popup, setPopup, setOrder, isDisabled = false,  
 
 
     return (
-        <div className={`${styles.productActions} ${isSuborder ? styles.suborder : ''}`}>
+        <div className={`${styles.productActions} ${isSuborder ? styles.suborder : ''} bottomActions`}>
             <div className={styles.row}>
                 <button className={styles.addItem} onClick={() => handlePopup()} disabled={isDisabled}>
                     <span>Додати товар зі складу</span>

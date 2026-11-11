@@ -3,6 +3,7 @@ import styles from './DeliveryUKR.module.scss';
 import { useFormik } from "formik";
 import { useParams } from "react-router-dom";
 import ArrBack from "../../Common/ArrBack/ArrBack";
+import { useIsDesktop } from "../../../hooks/useIsDesktop";
 import UkrPoshtaCities from "./UkrPoshtaCities/UkrPoshtaCities";
 import UkrPoshtaRegion from "./UkrPoshtaRegion/UkrPoshtaRegion";
 import UkrPoshtaArea from "./UkrPoshtaArea/UkrPoshtaArea";
@@ -13,10 +14,10 @@ import { CopyToClipboard } from "react-copy-to-clipboard";
 import copyIcon from "../../../assets/icons/copy.svg";
 import Parser from "../../Common/Parser/Parser";
 import InputMask from "react-input-mask";
-import { useIsDesktop } from "../../../hooks/useIsDesktop";
 import { DELIVERY_PARSER_HINT } from "../../Common/Parser/parserHints";
 
 const DeliveryUKR = () => {
+    const isDesktop = useIsDesktop();
     const { id } = useParams();
     const [city, setCity] = useState('');
     const [regionValue, setRegionValue] = useState('');
@@ -79,7 +80,6 @@ const DeliveryUKR = () => {
         setAreaValue(prevArea => area !== undefined ? area : prevArea);
         setIndexValue(prevIndex => index !== undefined ? index : prevIndex);
     }
-    const isDesktop = useIsDesktop();
     const navigate = useNavigate();
     const nextPage = () => {
         if (id) {
@@ -89,6 +89,8 @@ const DeliveryUKR = () => {
 
     return (
         <div className={`${styles.deliveryUKR} deliveryUKR`}>
+            {/* demo build: on phones "Назад" at the top; desktop shows it via the wrapper's column-reverse (below) */}
+            {!isDesktop && <ArrBack/>}
             <div className={styles.deliveryUKRWrap}>
                 <form onSubmit={handleSubmit}>
                     <div className={styles.deliveryUKR__content}>
@@ -285,7 +287,7 @@ const DeliveryUKR = () => {
                     parserStyles={{ backgroundColor: '#EDD593' }}
                     hintText={DELIVERY_PARSER_HINT}
                 />
-                {isDesktop && <ArrBack />}
+                {isDesktop && <ArrBack/>}
             </div>
             <div className="globalBtnWrap">
                 <button className="globalBtn button-xs" onClick={nextPage}>

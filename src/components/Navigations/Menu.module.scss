@@ -71,126 +71,54 @@
   }
 }
 
-.back {
-  left: 50%;
-  position: fixed;
-  bottom: 0;
-  transform: translateX(-50%);
-  display: flex;
-  justify-content: space-between;
-  width: 100vw;
-  max-width: 768px;
-  z-index: 3;
-  background-color: #D9D1E0;
-}
-
-.hiddenLeftLink {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  left: -67px;
-  bottom: 0;
-  width: 67px;
-  height: 67px;
-  background: #D9D1E0;
-  z-index: 3;
-}
-
-.rotated {
-  width: 26px;
-  transform: rotate(90deg);
-  transition: all 300ms linear;
-}
-
 .swipeMenu {
   left: 0;
   z-index: 4;
   transition: all 20ms linear;
 }
 
-.hiddenRightLink {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  right: -67px;
-  bottom: 0;
-  width: 67px;
-  height: 74px;
-  padding: 12px 0;
-  background: #D9D1E0;
-  z-index: 3;
-
-  img {
-    display: block;
-  }
-
-  span {
-    margin-top: 3px;
-    display: block;
-    color: #fff;
-    font-size: 10px;
-    font-weight: 400;
-    line-height: 16px;
-  }
-}
-
 .logoutLink {
   background: #F37D76;
 }
 
-.returnLink {
-  flex: 0 0 auto;
-  background: #573971;
+// The desktop sidebar (≥ 1024 px). Kept in mixins, because below 1024 px the same menu is a slide-out
+// (`.sideMenu`, demo build) that reuses these rules.
+@mixin sidebarMenu {
+  flex-direction: column;
+  row-gap: 10px;
 }
 
-@media screen and (min-width: 1024px) {
-  .userMenu {
-    left: 0;
-    top: 0;
-    width: 200px;
-    height: 100vh;
-    bottom: auto;
-    transform: none;
-    flex-direction: column;
-    row-gap: 10px;
+@mixin sidebarLink {
+  height: 40px;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  border-radius: 12px;
+  column-gap: 5px;
 
-    &__link,
-    &__linkActive {
-      height: 40px;
-      flex-direction: row;
-      justify-content: flex-start;
-      align-items: center;
-      border-radius: 12px;
-      column-gap: 5px;
-
-      img {
-        height: auto;
-        flex: 0 0 auto;
-      }
-
-      span {
-        font-size: 14px;
-        line-height: 16px;
-
-        br {
-          display: block;
-        }
-      }
-    }
-
-    &.mainDesktopMenu {
-      justify-content: space-between;
-    }
-
-    .desktopMenuWrap {
-      display: flex;
-      flex-direction: column;
-      row-gap: 10px;
-      width: 100%;
-    }
+  img {
+    height: auto;
+    flex: 0 0 auto;
   }
 
+  span {
+    font-size: 14px;
+    line-height: 16px;
+
+    br {
+      display: block;
+    }
+  }
+}
+
+@mixin sidebarWrap {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+  width: 100%;
+}
+
+@mixin sidebarParts {
   .desktopAccordionHead.userMenu__link,
   .desktopAccordionHead.userMenu__linkActive {
     padding-right: 10px;
@@ -257,6 +185,139 @@
   .accordionBodyOpen {
     max-height: 500px;
     opacity: 1;
+  }
+}
+
+@media screen and (min-width: 1024px) {
+  .userMenu {
+    left: 0;
+    top: 0;
+    width: 200px;
+    height: 100vh;
+    bottom: auto;
+    transform: none;
+    @include sidebarMenu;
+
+    &__link,
+    &__linkActive {
+      @include sidebarLink;
+    }
+
+    &.mainDesktopMenu {
+      justify-content: space-between;
+    }
+
+    .desktopMenuWrap {
+      @include sidebarWrap;
+    }
+  }
+
+  @include sidebarParts;
+}
+
+// Demo build, phones / tablets (< 1024 px; 2026-11-11, at the user's request): a top bar (MobileBar.jsx)
+// instead of the 74 px bottom bar; ☰ opens the desktop sidebar as a slide-out from the left, as in the ERP.
+// Layers: bar 4 (as the old bottom bar), overlay 6, menu 7 – under the app's popups (9–10).
+.mobileBar,
+.mobileOverlay {
+  display: none;
+}
+
+@media screen and (max-width: 1023px) {
+  .mobileBar {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100vw;
+    max-width: 768px;
+    z-index: 4;
+    height: 56px;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    column-gap: 12px;
+    background-color: #30223C;
+
+    &__toggle {
+      width: 40px;
+      height: 40px;
+      flex: 0 0 auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      row-gap: 5px;
+      background-color: transparent;
+      border-radius: 8px;
+
+      span {
+        display: block;
+        width: 22px;
+        height: 2px;
+        border-radius: 1px;
+        background-color: #fff;
+      }
+    }
+
+    &__logo {
+      flex: 0 0 auto;
+      border-radius: 50%;
+    }
+
+    &__title {
+      min-width: 0;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 600;
+    }
+  }
+
+  .mobileOverlay {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 6;
+    background-color: rgba(48, 34, 59, 0.5);
+  }
+
+  .userMenu.sideMenu {
+    @include sidebarMenu;
+    justify-content: space-between;
+    left: 0;
+    top: 0;
+    bottom: auto;
+    width: 220px;
+    max-width: calc(100vw - 48px);
+    height: 100vh;
+    height: 100dvh;
+    padding: 16px;
+    overflow-y: auto;
+    z-index: 7;
+    transform: translateX(-100%);
+    transition: transform .25s ease;
+
+    .userMenu__link,
+    .userMenu__linkActive {
+      flex: 0 0 auto;
+      @include sidebarLink;
+    }
+
+    .desktopMenuWrap,
+    .btnWrap {
+      flex: 0 0 auto;
+      @include sidebarWrap;
+    }
+
+    @include sidebarParts;
+  }
+
+  .userMenu.sideMenu.sideMenuOpen {
+    transform: none;
+    box-shadow: 4px 0 24px rgba(0, 0, 0, 0.25);
   }
 }
 

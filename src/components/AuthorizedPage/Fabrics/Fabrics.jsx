@@ -147,7 +147,7 @@ const Fabrics = () => {
     return (
         <div className={styles.fabrics}>
             <div className={styles.fabricsWrap}>
-                {isDesktop && <ArrBack/>}
+                <ArrBack/>
                 <div className={styles.searchWrapper}>
                     <Search
                         searchValue={filterParams.search}

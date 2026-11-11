@@ -8,7 +8,6 @@ import { getAccessToken } from "../../../utils/authTokens";
 import { Filters } from "./Filters/Filters";
 import Search from "../../Common/Search/Search";
 import ArrBack from "../../Common/ArrBack/ArrBack";
-import { useIsDesktop } from "../../../hooks/useIsDesktop";
 import eyeIcon from "../../../assets/icons/eye.svg";
 import eyeClosedIcon from "../../../assets/icons/eyeClosed.svg";
 
@@ -83,12 +82,11 @@ const Storage = () => {
         fetchStorageProducts(newFilterParams);
     }
 
-     const isDesktop = useIsDesktop();
 
     return (
         <div className={styles.storage}>
             <div className={styles.storageWrap}>
-                {isDesktop && <ArrBack/>}
+                <ArrBack/>
                 <div className={styles.storage__search}>
                     <Search
                         searchValue={filterParams.search}

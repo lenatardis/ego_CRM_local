@@ -133,8 +133,23 @@ body {
   //background-color: #000;
 }
 
-.wrapper:has(.menu) {
-  padding-bottom: 67px;
+// Demo build (2026-11-11): below 1024 px the menu is a 56 px top bar (Navigations/MobileBar.jsx), not the old
+// 74 px bottom bar, so the pages start below it; the Товари / Статус action bars (`bottomActions`) now sit at
+// the very bottom, so those pages leave room for them
+@media screen and (max-width: 1023px) {
+  .wrapper:has(.menu) {
+    padding-top: 56px;
+  }
+
+  .wrapper:has(.bottomActions) {
+    padding-bottom: 85px;
+  }
+}
+
+// the page behind the open slide-out menu doesn't scroll (independent of the popups' inline body overflow)
+html.menuScrollLock,
+html.menuScrollLock body {
+  overflow: hidden !important;
 }
 
 .baseInputContainer {

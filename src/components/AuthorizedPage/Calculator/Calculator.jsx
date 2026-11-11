@@ -524,7 +524,7 @@ const Calculator = () => {
     return (
         <div className={styles.calculator}>
             <div className={styles.calcWrap}>
-                 {isDesktop && <ArrBack />}
+                 <ArrBack/>
                 {/* a kit in production is read-only: nothing in it can be clicked or focused (see the caption below) */}
                 <div className={manufacturing ? styles.readOnly : undefined} {...(manufacturing ? { inert: '' } : {})}>
                 <h2>Тип тканини</h2>

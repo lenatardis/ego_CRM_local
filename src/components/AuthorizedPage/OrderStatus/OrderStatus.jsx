@@ -542,7 +542,7 @@ const OrderStatus = () => {
     return (
         <div className={styles.orderStatus} style={{ backgroundColor: order?.is_general ? "#D9D1E0" : "#f7eadf" }}>
             <div className={styles.statusWrap}>
-                {isDesktop && <ArrBack />}
+                <ArrBack/>
 
                 <div className={styles.grid}>
                     <div>
