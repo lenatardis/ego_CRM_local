@@ -82,7 +82,7 @@ const OrderActions = ({ orderUrl, isDisabled, onCopyAll, ttnURL, deliveryInfo, s
 
     return (
         <>
-            <div className={`${styles.orderActions} ${isSuborder ? styles.suborder : ''} bottomActions`}>
+            <div className={`${styles.orderActions} ${isSuborder ? styles.suborder : ''}`}>
                 <div className={styles.row}>
                     <button onClick={onCopyAll} className={`${styles.copyButton} click-effect`} tabIndex={0}>
                         <img src={copyIcon} alt="" />

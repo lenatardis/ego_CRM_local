@@ -95,4 +95,10 @@
   .hint[data-open="true"][data-placement="bottom"] .tooltip {
     transform: translateX(-50%) translateY(0);
   }
+
+  // Demo build: a closed tooltip, centred on an icon near the right edge, still stuck out of the screen
+  // (invisible, but it made the page scroll sideways – e.g. Доставка); closed ones take no space now
+  .hint:not([data-open="true"]) .tooltip {
+    display: none;
+  }
 }

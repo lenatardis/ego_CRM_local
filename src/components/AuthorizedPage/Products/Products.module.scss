@@ -76,3 +76,10 @@
   font-weight: 600;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
 }
+// Demo build, phones / tablets: the action bar (ProductActions / OrderActions) is fixed at the bottom edge,
+// so the page itself – with its own background – leaves room for it (the wrapper's padding showed white)
+@media screen and (max-width: 1023px) {
+  .products {
+    padding-bottom: 85px;
+  }
+}
