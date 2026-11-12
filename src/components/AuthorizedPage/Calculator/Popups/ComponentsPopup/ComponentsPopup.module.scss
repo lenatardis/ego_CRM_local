@@ -20,7 +20,7 @@
   &__list {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 8px;
     height: calc(100vh - 283px);
     overflow: auto;
     margin-bottom: 20px;
@@ -29,6 +29,10 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      // demo build: a light card, as in the fabric lists
+      padding: 8px 10px;
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 8px;
 
       &__info {
         display: flex;

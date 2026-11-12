@@ -15,6 +15,7 @@ import OptionPopup from "../../Popups/OptionPopup/OptionPopup";
 import { useAppDispatch } from "../../../../../hooks/redux";
 import { setIsActivePopup } from "../../../../../store/main-slice";
 import GlobalPopup from "../../../../Common/GlobalPopup/GlobalPopup";
+import ConfirmPopup from "../../../../Common/ConfirmPopup/ConfirmPopup";
 import { useIsDesktop } from "../../../../../hooks/useIsDesktop";
 import {photoSkeleton} from "../../../../../utils/photoSkeleton";
 
@@ -199,6 +200,11 @@ const FabricSetItem = ({
         onSelectSize(componentIndex, sizeIndex);
     };
 
+    // Demo build: a template kit's own components can't be deleted until the kit is split (original rule) – the bin
+    // then explains that instead of being a dead, faded button; a deletable component asks first.
+    const canDelete = isKitSplitted || !("is_custom" in item) || !!item?.is_custom;
+    const [binPopup, setBinPopup] = useState(null); // 'locked' | 'confirm'
+
     const handleDeleteComponent = (itemId) => {
         setContainerPosition(2);
         onDelete(componentIndex, itemId);
@@ -368,14 +374,34 @@ const FabricSetItem = ({
                 </div>
 
                 <button
-                    onClick={() => handleDeleteComponent(item?.id)}
-                    className={styles.hiddenRightBtn}
+                    type="button"
+                    onClick={() => { if (!canDelete) dispatch(setIsActivePopup(true)); setBinPopup(canDelete ? "confirm" : "locked"); }}
+                    className={`${styles.hiddenRightBtn} ${canDelete ? "" : styles.binLocked}`}
                     ref={rightHiddenLinkRef}
-                    disabled={!isKitSplitted && ("is_custom" in item && !item?.is_custom)}
+                    aria-label={canDelete ? "Видалити компонент" : "Компонент можна видалити після розформування комплекту"}
                 >
                     <img src={DeleteSet} alt="" />
                 </button>
             </div>
+
+            {binPopup === "confirm" && (
+                <ConfirmPopup
+                    title="Видалення компонента"
+                    text={<>Ви впевнені, що бажаєте<br />видалити компонент «{name}»?</>}
+                    onConfirm={() => { setBinPopup(null); handleDeleteComponent(item?.id); }}
+                    onCancel={() => { setBinPopup(null); setContainerPosition(2); }}
+                />
+            )}
+
+            {binPopup === "locked" && (
+                <GlobalPopup title="Видалення компонента" onClose={() => { setBinPopup(null); setContainerPosition(2); }}
+                    {...(isDesktop ? { centeredPopup: true } : {})}>
+                    <p className={`infoNote ${styles.binLockedNote}`}>
+                        Це компонент комплекту за шаблоном. Щоб видалити його, спершу розформуйте комплект –
+                        кнопка «Розформувати комплект» над компонентами.
+                    </p>
+                </GlobalPopup>
+            )}
 
             {showCommentPopup && (
                 <GlobalPopup title={"Коментар"} onClose={closeCommentPopup} {...(isDesktop ? { centeredPopup: true } : {})}>

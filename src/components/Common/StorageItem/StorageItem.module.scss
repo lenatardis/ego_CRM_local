@@ -290,4 +290,16 @@
   font-weight: 500;
 }
 
+// Demo build, phones: each item is a light card (rows with divider lines blended into the page), as the fabric lists
+@media screen and (max-width: 1023px) {
+  .storageItem {
+    padding: 10px;
+    margin-bottom: 8px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 8px;
 
+    &:not(:last-of-type) {
+      border-bottom: none;
+    }
+  }
+}

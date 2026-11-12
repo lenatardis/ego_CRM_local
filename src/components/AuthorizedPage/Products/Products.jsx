@@ -361,7 +361,7 @@ const Products = () => {
             <div className={styles.wrap}>
                 <ArrBack/>
                 <div className={styles.grid}>
-                    <div><h2 className={styles.products__title}>Товар</h2></div>
+                    <div><h2 className={styles.products__title}>Товари</h2></div>
                     <div></div>
                 </div>
                 <div className={`${styles.grid} ${styles.mobileWrap}`}>

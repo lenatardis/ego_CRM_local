@@ -5,9 +5,11 @@ import OpenItemMobile from "./OpenItem/OpenItemMobile";
 import OpenItemDesktop from "./OpenItem/OpenItemDesktop";
 import ClosedItem from "./ClosedItem/ClosedItem";
 import {useIsDesktop} from "../../../hooks/useIsDesktop";
+import ConfirmPopup from "../ConfirmPopup/ConfirmPopup";
 
 const ProductItem = ({isOpen, item, onDelete, isClient, isDisabled, sourceName}) => {
     const [open, setOpen] = useState(isOpen);
+    const [confirmDeleteId, setConfirmDeleteId] = useState(null);
 
     const product = {
         id: item.id,
@@ -32,7 +34,14 @@ const ProductItem = ({isOpen, item, onDelete, isClient, isDisabled, sourceName})
         setOpen(prevOpen => !prevOpen);
     }
 
+    // demo build: deleting asks first (ConfirmPopup)
     const handleDeleteItem = (id) => {
+        setConfirmDeleteId(id);
+    }
+
+    const confirmDelete = () => {
+        const id = confirmDeleteId;
+        setConfirmDeleteId(null);
         setOpen(false);
         onDelete(id);
     }
@@ -54,7 +63,14 @@ const ProductItem = ({isOpen, item, onDelete, isClient, isDisabled, sourceName})
                     <OpenItemDesktop product={product} onDelete={handleDeleteItem} isClient={isClient} isDisabled={isDisabled} sourceName={sourceName} originalSourceName={item?.warehouse_item?.source?.name}/>
                 </div>
             }
-
+            {confirmDeleteId !== null && (
+                <ConfirmPopup
+                    title={item.kit ? 'Видалення комплекту' : 'Видалення товару'}
+                    text={<>Ви впевнені, що бажаєте<br />видалити {item.kit ? 'комплект' : 'товар'}?</>}
+                    onConfirm={confirmDelete}
+                    onCancel={() => setConfirmDeleteId(null)}
+                />
+            )}
         </>
     )
 }

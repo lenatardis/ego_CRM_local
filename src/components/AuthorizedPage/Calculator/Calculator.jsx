@@ -13,6 +13,7 @@ import { getCartOrder } from "../../../api/productsApi";
 import {useAppDispatch} from "../../../hooks/redux";
 import {setIsActivePopup} from "../../../store/main-slice";
 import GlobalPopup from "../../Common/GlobalPopup/GlobalPopup";
+import ConfirmPopup from "../../Common/ConfirmPopup/ConfirmPopup";
 import FabricSizeSecond from "./FabricSize/FabricSizeSecond";
 import AddCommentButton from "./CommentButton/AddCommentButton";
 import KitCommentPopup from "./Popups/CommentPopup/KitCommentPopup";
@@ -317,6 +318,8 @@ const Calculator = () => {
         });
     };
 
+    const [isSplitConfirm, setIsSplitConfirm] = useState(false); // demo build: splitting asks first
+
     const splitKit = () => {
         const accessToken = getAccessToken();
         setIsLoading(true);
@@ -598,7 +601,7 @@ const Calculator = () => {
                         {!isKitSplitted && components?.components?.length > 0 && (
                             <div className={styles.templateKitWrapper}>
                                 <div className={styles.kitSplitButton}>
-                                    <button onClick={splitKit}>Розформувати комплект</button>
+                                    <button onClick={() => setIsSplitConfirm(true)}>Розформувати комплект</button>
                                 </div>
 
                                 <FabricSet
@@ -704,7 +707,7 @@ const Calculator = () => {
                     <GlobalPopup
                         title={'Коментар'}
                         onClose={() => setShowKitCommentPopup(false)}
-                        {...(isDesktop ? { centeredPopup: true } : { topPopup: true })}
+                        {...(isDesktop ? { centeredPopup: true } : {})}
                     >
                         <KitCommentPopup
                             kitCommentText={kitCommentText}
@@ -712,6 +715,15 @@ const Calculator = () => {
                             onSaveKitComment={onSaveKitComment}
                         />
                     </GlobalPopup>
+                )}
+
+                {isSplitConfirm && (
+                    <ConfirmPopup
+                        title="Розформування комплекту"
+                        text={<>Розформувати комплект?<br />Компоненти стануть окремими, і ціну буде пораховано за ними</>}
+                        onConfirm={() => { setIsSplitConfirm(false); splitKit(); }}
+                        onCancel={() => setIsSplitConfirm(false)}
+                    />
                 )}
 
                 {showComponentPopup && (

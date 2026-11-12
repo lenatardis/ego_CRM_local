@@ -284,13 +284,15 @@
   background: #30223B;
 }
 
+.binLockedNote {
+  margin-bottom: 16px;
+}
+
 .hiddenRightBtn {
   background: #F37D76;
 
-  // Demo build: a component that can't be deleted (template kit not split) – solid muted block instead of the
-  // global 50 % opacity of disabled buttons, which made the bin look faded / broken
-  &:disabled {
-    opacity: 1;
+  // Demo build: a component that can't be deleted yet (template kit not split): muted block; a tap explains why
+  &.binLocked {
     background: #C9C1D0;
   }
 }
