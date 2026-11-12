@@ -146,6 +146,8 @@ Follow the approach already proven in the ERP (`../ego_ERP_local/src/mocks/`):
 
 Live at https://lenatardis.github.io/ego_CRM_local/ – `.github/workflows/deploy.yml` builds and deploys on every push to `master` (npm ci, `npm run build` with `CI=false`, `404.html` = `index.html` for deep links, `actions/deploy-pages`). So every push to `master` changes the live demo; bump `DATA_VERSION` / `SHARED_DATA_VERSION` when stored demo data would no longer fit.
 
+Stale bundles (2026-11-13, at the user's request – a phone kept an old copy of the app after a day of deploys and hung until its cache was cleared): the workflow builds with `REACT_APP_BUILD_ID` = the commit SHA and writes `build/version.json` `{"build": "<sha>"}`. `src/utils/versionCheck.js` (started in `src/index.jsx`) fetches it with no caching on start and whenever the tab is shown again (at most once a minute). On a different build it reloads, once per build (sessionStorage `ego-demo:crm:reloadedForBuild`, so a CDN still serving the old index.html can't cause a reload loop). Local builds have no build id and skip the check. Checked with a static build (`aaa` vs `version.json` `bbb`: one reload, no second; matching: no reload).
+
 ## Sub-path hosting
 
 - `package.json` `homepage` must point to the Pages URL so CRA builds asset URLs under `/ego_CRM_local/`.

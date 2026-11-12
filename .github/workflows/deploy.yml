@@ -25,9 +25,12 @@ jobs:
           cache: npm
       - run: npm ci
       # CRA treats lint warnings as errors when CI=true; the app is served from /ego_CRM_local/ (package.json homepage)
+      # REACT_APP_BUILD_ID + version.json: a tab running an older bundle reloads (src/utils/versionCheck.js)
       - run: npm run build
         env:
           CI: false
+          REACT_APP_BUILD_ID: ${{ github.sha }}
+      - run: echo "{\"build\":\"${GITHUB_SHA}\"}" > build/version.json
       # SPA fallback: GitHub Pages serves 404.html for deep links like /<repo>/order_status/4154/
       - run: cp build/index.html build/404.html
       - uses: actions/upload-pages-artifact@v3
