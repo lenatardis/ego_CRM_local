@@ -374,3 +374,48 @@ html.menuScrollLock body {
     animation: none;
   }
 }
+
+// Demo build: info note (why something is unavailable / what to do) – light card, purple stripe, round "i".
+// `infoNote--tinted` where the note sits among white inputs (a white note read as another field there).
+// Used on Статус, the order form, Товари (empty cart) and Доставка (Нова Пошта).
+.infoNote {
+  position: relative;
+  padding: 8px 12px 8px 36px;
+  font-size: 13px;
+  line-height: 18px;
+  color: #4a3b57;
+  background: rgba(255, 255, 255, 0.6);
+  border-left: 3px solid #573971;
+  border-radius: 4px;
+
+  &::before {
+    content: "i";
+    position: absolute;
+    left: 11px;
+    top: 9px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #573971;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 16px;
+    text-align: center;
+  }
+}
+
+.infoNote--tinted {
+  background: rgba(87, 57, 113, 0.1);
+}
+
+// something just succeeded (Доставка: "ТТН створено" / "ТТН оновлено")
+.infoNote--success {
+  background: rgba(46, 139, 87, 0.12);
+  border-left-color: #2e8b57;
+
+  &::before {
+    content: "✓";
+    background: #2e8b57;
+  }
+}

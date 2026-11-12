@@ -15,6 +15,11 @@
   }
 }
 
+// Empty cart: info note (`infoNote`, App.scss), kept clear of the total below it on phones
+.emptyNote {
+  margin-bottom: 12px;
+}
+
 .suborderWrapper {
   padding: 10px 0 0;
   margin-bottom: 75px;

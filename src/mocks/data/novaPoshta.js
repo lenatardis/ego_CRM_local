@@ -206,6 +206,22 @@ export const serializeNpItem = (item, { bills, orderIds } = {}) => ({
     postpaid_amount: Math.max(0, (Number(item.delivery.estimate_order_price) || 0) - paidOf(orderIds ?? [item.order_id], bills)),
 });
 
+/**
+ * What the waybill was made with: the item's fields the delivery page compares (receiver, weight, payer, declared
+ * value, cash on delivery), in the item's own shape. Kept as `waybill_data` when a waybill is created or updated, so
+ * after a reload the page still knows whether the saved fields differ from the waybill (as the original backend,
+ * which made the waybill, knew). Items from before this (seed, older demo data) have none – the page then compares
+ * with the loaded fields, as it always did.
+ */
+export const waybillSnapshot = (item) => structuredClone({
+    id: item.id,
+    receiver: item.receiver,
+    specified_weight: item.specified_weight,
+    delivery: { payer: item.delivery.payer, estimate_order_price: item.delivery.estimate_order_price },
+    with_backward_delivery: item.with_backward_delivery,
+    backward_amount: item.backward_amount,
+});
+
 // --- applying a POST delivery/nova_poshta/item/ body ----------------------------------------
 
 const RECEIVER_PERSON = ['first_name', 'last_name', 'middle_name', 'phone', 'city'];
@@ -220,6 +236,14 @@ const DELIVERY_FIELDS = ['payment_method', 'estimate_order_price', 'comment'];
 const TOP_FIELDS = ['delivery_date', 'with_backward_delivery', 'backward_amount'];
 
 const blankToNull = (v) => (v === '' || v === undefined ? null : v);
+
+/**
+ * Weight limit of the receiver's branch: the per-parcel limit, or – for a branch that has none, like the small
+ * "(до 10 кг)" ones (NP's PlaceMaxWeightAllowed 0) – its total limit from the directory. null = no limit.
+ */
+const weightLimit = (receiver) => Number(receiver.max_weight_allowed)
+    || findWarehouse(receiver.address_identifier)?.max_weight_allowed_total
+    || null;
 
 /**
  * Applies the flat fields DeliveryNP / OrderCreate / Products send to an item (a copy). Returns
@@ -251,8 +275,9 @@ export const applyItemFields = (item, body) => {
         if (!next.receiver.address_identifier) {
             return { errors: { specified_weight: ['Спочатку оберіть відділення.'] } };
         }
-        if (next.receiver.max_weight_allowed && weight > Number(next.receiver.max_weight_allowed)) {
-            return { errors: { specified_weight: [`Вага перевищує допустиму для відділення (${next.receiver.max_weight_allowed} кг).`] } };
+        const limit = weightLimit(next.receiver);
+        if (limit && weight > limit) {
+            return { errors: { specified_weight: [`Вага перевищує допустиму для відділення (${limit} кг).`] } };
         }
         next.specified_weight = weight;
     } else if ('specified_weight' in body) {

@@ -75,11 +75,7 @@
     justify-content: center;
     background-color: #573971;
     border-radius: 4px;
-    margin-bottom: 75px;
-
-    &.disabledMargin {
-      margin-bottom: 10px;
-    }
+    margin-bottom: 0;
 
     span {
       color: #fff;
@@ -90,9 +86,16 @@
   }
 }
 
-.caption {
+// Why "Новий рахунок" is unavailable: the info notes (`infoNote`, App.scss) under the button
+.notes {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
   margin-top: 10px;
-  margin-bottom: 65px;
+
+  &:empty {
+    display: none;
+  }
 }
 
 @media screen and (min-width: 1024px) {
@@ -129,9 +132,6 @@
     margin-top: 52px;
   }
 
-  .caption {
-    margin-bottom: 5px;
-  }
 }
 
 .syncOverlay {

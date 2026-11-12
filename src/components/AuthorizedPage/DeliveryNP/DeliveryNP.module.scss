@@ -100,9 +100,8 @@
 }
 
 .caption {
-  color: #201827;
-  font-size: 16px;
-  line-height: 22px;
+  // looks: `infoNote infoNote--tinted` (App.scss)
+  margin-top: 4px;
 }
 
  .desktop_visible {

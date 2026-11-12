@@ -25,19 +25,25 @@ import { getOrderInfo, getSuborders } from "../../../api/ordersApi";
 
 
 
+// fields a waybill needs (same as isAllRequiredValuesFilled below)
+const REQUIRED_NP_FIELDS = ['first_name', 'middle_name', 'last_name', 'phone', 'city', 'address', 'specified_weight', 'estimate_order_price'];
+
 const DeliveryNP = ({ deliveryOrder, lastOrderId }) => {
     const isDesktop = useIsDesktop();
     const [cityValue, setCityValue] = useState(deliveryOrder?.receiver?.delivery_receiver?.city || '');
     const [saveData, setSaveData] = useState('');
     const [requiredNPValues, setRequiredNPValues] = useState(null);
     const [oldRequiredNPValues, setOldRequiredNPValues] = useState(null);
+    // Demo: 'created' / 'updated' after a successful waybill request – shown until a field changes again
+    const [ttnResult, setTtnResult] = useState(null);
     const [errors, setErrors] = useState({});
     const [serverError, setServerError] = useState('');
     const isAllRequiredValuesFilled = requiredNPValues?.first_name &&  requiredNPValues?.middle_name && requiredNPValues?.last_name && requiredNPValues?.phone && requiredNPValues?.city && requiredNPValues?.address && requiredNPValues?.specified_weight && requiredNPValues?.estimate_order_price;
-    const caption = '*Для створення ТТН необхідно заповнити всі обов\'язкові поля (з зірочкою)';
-    const captionRefresh = '*Для оновлення ТТН необхідно заповнити всі обов\'язкові поля';
-    const captionRefresh2 = '*Якщо бажаєте оновити ТТН, внесіть зміни хоча б в одному з полів';
-    const captionSum = '*Сума оголошеної вартості повинна бути більше 0. Додайте, будь ласка, товари';
+    const caption = 'Для створення ТТН необхідно заповнити всі обов\'язкові поля (з зірочкою)';
+    const captionRefresh = 'Для оновлення ТТН необхідно заповнити всі обов\'язкові поля';
+    const captionRefresh2 = 'Якщо бажаєте оновити ТТН, внесіть зміни хоча б в одному з полів';
+    const captionSaved = 'Зміни збережено. Щоб вони потрапили в ТТН, натисніть «Оновити ТТН»';
+    const captionSum = 'Сума оголошеної вартості повинна бути більше 0. Додайте, будь ласка, товари';
     const navigate = useNavigate();
 
     const applyServerError = (response) => {
@@ -94,7 +100,8 @@ const DeliveryNP = ({ deliveryOrder, lastOrderId }) => {
             console.log(requiredNPValues);
             console.log('INIT mapped estimate_order_price', requiredNPValues?.estimate_order_price);
             setRequiredNPValues(requiredNPValues);
-            setOldRequiredNPValues(requiredNPValues);
+            // compare with what the waybill was made with (mock `waybill_data`), so unsent changes survive a reload
+            setOldRequiredNPValues(deliveryOrder.waybill_data ? getRequiredNPValues(deliveryOrder.waybill_data) : requiredNPValues);
         }
     }, [deliveryOrder])
 
@@ -261,7 +268,9 @@ const DeliveryNP = ({ deliveryOrder, lastOrderId }) => {
     const validateRequiredNPValues = () => {
         const newErrors = {};
 
-        for (const [key, value] of Object.entries(requiredNPValues)) {
+        // Demo fix: only the required fields (as isAllRequiredValuesFilled) – the compared set also holds
+        // max_weight_allowed, empty for a branch with no per-parcel limit, which silently blocked the waybill
+        for (const [key, value] of Object.entries(requiredNPValues).filter(([key]) => REQUIRED_NP_FIELDS.includes(key))) {
             if (!value) {
                 newErrors[key] = 'This field may not be blank.';
             }
@@ -312,6 +321,7 @@ const DeliveryNP = ({ deliveryOrder, lastOrderId }) => {
                         ...requiredNPValues,
                         estimate_order_price: data.delivery.estimate_order_price
                     });
+                    setTtnResult('updated');
 
                     applyServerError(null);
                 } else {
@@ -348,6 +358,7 @@ const DeliveryNP = ({ deliveryOrder, lastOrderId }) => {
                             ...requiredNPValues,
                             estimate_order_price: response.delivery.estimate_order_price
                         });
+                        setTtnResult('created');
 
                         applyServerError(null);
                     } else {
@@ -363,6 +374,13 @@ const DeliveryNP = ({ deliveryOrder, lastOrderId }) => {
                 });
         }
     };
+
+    // the "ТТН створено / оновлено" note belongs to that request: a later field change ends it
+    useEffect(() => {
+        if (ttnResult && requiredNPValues && oldRequiredNPValues && !areObjectsEqual(requiredNPValues, oldRequiredNPValues)) {
+            setTtnResult(null);
+        }
+    }, [ttnResult, requiredNPValues, oldRequiredNPValues]);
 
     function areObjectsEqual(obj1, obj2) {
         const obj1Keys = Object.keys(obj1);
@@ -659,13 +677,20 @@ const DeliveryNP = ({ deliveryOrder, lastOrderId }) => {
                             />
                         </div>
                         {(!values.ttn && !isAllRequiredValuesFilled && !!values.declared_order_price) && (
-                            <p className={styles.caption}>{caption}</p>
+                            <p className={`${styles.caption} infoNote infoNote--tinted`}>{caption}</p>
                         )}
                         {(!values.ttn && !values.declared_order_price) && (
-                            <p className={styles.caption}>{captionSum}</p>
+                            <p className={`${styles.caption} infoNote infoNote--tinted`}>{captionSum}</p>
                         )}
-                        {(values.ttn && !isAllRequiredValuesFilled) && <p className={styles.caption}>{captionRefresh}</p>}
-                        {(values.ttn && isAllRequiredValuesFilled && requiredNPValues && oldRequiredNPValues && areObjectsEqual(requiredNPValues, oldRequiredNPValues)) && <p className={styles.caption}>{captionRefresh2}</p>}
+                        {(values.ttn && !isAllRequiredValuesFilled) && <p className={`${styles.caption} infoNote infoNote--tinted`}>{captionRefresh}</p>}
+                        {(values.ttn && isAllRequiredValuesFilled && requiredNPValues && oldRequiredNPValues && areObjectsEqual(requiredNPValues, oldRequiredNPValues)) && (
+                            ttnResult
+                                ? <p className={`${styles.caption} infoNote infoNote--success`}>{ttnResult === 'created' ? 'ТТН створено' : 'ТТН оновлено'}</p>
+                                : <p className={`${styles.caption} infoNote infoNote--tinted`}>{captionRefresh2}</p>
+                        )}
+                        {(values.ttn && isAllRequiredValuesFilled && requiredNPValues && oldRequiredNPValues && !areObjectsEqual(requiredNPValues, oldRequiredNPValues) && !serverError) && (
+                            <p className={`${styles.caption} infoNote infoNote--tinted`}>{captionSaved}</p>
+                        )}
                         {serverError && (
                             <p className={styles.serverError}>ERROR: {serverError}</p>
                         )}

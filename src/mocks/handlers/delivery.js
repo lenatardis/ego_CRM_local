@@ -3,7 +3,7 @@ import { API, withAuth, isSet, notFound } from './utils';
 import { loadCustomers, loadOrders, loadPaymentBills, nowIso } from '../data/orders';
 import {
     applyItemFields, emptyItem, estimateDeliveryPrice, findNpItem, loadDirectory, loadNpItems, newTtn, nextNpItemId, saveNpItems,
-    searchCities, searchWarehouses, serializeNpItem, waybillErrors, waybillHtml,
+    searchCities, searchWarehouses, serializeNpItem, waybillErrors, waybillHtml, waybillSnapshot,
 } from '../data/novaPoshta';
 
 // Nova Poshta delivery (src/api/novaPoshtaApi.js; DeliveryNP*, OrderCreate, Products, OrderStatus, Parser):
@@ -11,6 +11,7 @@ import {
 //   POST   delivery/nova_poshta/item/ { order_id, ...flat fields } -> item (upsert keyed by order; 400 { errors })
 //   POST   delivery/nova_poshta/waybill/ { nova_poshta_id }        -> item with delivery.ttn (400 { errors })
 //   POST   delivery/nova_poshta/waybill/update/ { nova_poshta_id } -> item, same ttn, recalculated
+//          (both keep `waybill_data` – the fields the waybill was made with, see waybillSnapshot)
 //   GET    delivery/nova_poshta/waybill/:id/pdf/       -> { url } of a printable waybill (OrderActions.jsx opens it)
 //   DELETE delivery/nova_poshta/:id/                   -> item without its waybill (not used by the pages)
 //   GET    delivery/nova_poshta/location/city/?city=   -> { cities: [{ city, city_ref, area, settlement_type }] }
@@ -76,6 +77,9 @@ export const deliveryHandlers = [
         const existing = findNpItem((i) => i.order_id === group.order.id);
         const { item, errors } = applyItemFields(existing ?? newItemFor(group), fields);
         if (errors) return badRequest(errors);
+        // a waybill made before `waybill_data` existed (seed, older demo data): until this first change the page
+        // treated the saved fields as the waybill's, so they are what it was made with
+        if (existing?.delivery.ttn && !existing.waybill_data) item.waybill_data = waybillSnapshot(existing);
 
         item.modified = nowIso();
         if (item.delivery.ttn) item.delivery.estimate_delivery_price = estimateDeliveryPrice(item);
@@ -95,6 +99,7 @@ export const deliveryHandlers = [
         next.delivery.ttn = next.delivery.ttn ?? newTtn();
         next.delivery_date = next.delivery_date ?? today();
         next.delivery.estimate_delivery_price = estimateDeliveryPrice(next);
+        next.waybill_data = waybillSnapshot(next);
         next.modified = nowIso();
         replaceItem(next);
         return respond(next);
@@ -112,6 +117,7 @@ export const deliveryHandlers = [
         const next = structuredClone(item);
         next.delivery_date = next.delivery_date ?? today();
         next.delivery.estimate_delivery_price = estimateDeliveryPrice(next);
+        next.waybill_data = waybillSnapshot(next);
         next.modified = nowIso();
         replaceItem(next);
         return respond(next);
@@ -132,6 +138,7 @@ export const deliveryHandlers = [
         if (!item) return notFound();
         const next = structuredClone(item);
         Object.assign(next.delivery, { ttn: null, estimate_delivery_price: null });
+        next.waybill_data = null;
         replaceItem(next);
         return respond(next);
     })),

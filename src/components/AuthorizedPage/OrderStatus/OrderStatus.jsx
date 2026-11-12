@@ -62,11 +62,11 @@ const OrderStatus = () => {
         !order?.payment?.final_amount;
 
     const caption =
-        '*Для того щоб додати новий або відредагувати рахунок змініть статус замовлення на "В обробці"';
-    const caption2 = "*Доступна сума дорівнює нулю";
-    const caption3 = "*Неможливо додати новий рахунок при повному методі оплати";
-    const caption4 = "*Для того щоб додати новий рахунок додайте товар(и)";
-    const caption5 = "*Максимально можливо створити 2 рахунки";
+        'Для того щоб додати новий або відредагувати рахунок змініть статус замовлення на "В обробці"';
+    const caption2 = "Доступна сума дорівнює нулю";
+    const caption3 = "Неможливо додати новий рахунок при повному методі оплати";
+    const caption4 = "Для того щоб додати новий рахунок додайте товар(и)";
+    const caption5 = "Максимально можливо створити 2 рахунки";
 
     const isMaxBillsCountReached = bills.length >= 2;
 
@@ -619,16 +619,18 @@ const OrderStatus = () => {
                                     <span>Новий рахунок</span>
                                 </button>
 
+                                <div className={styles.notes}>
                                 {(
                                     order?.payment?.status === "NOT_PAID" ||
-                                    order?.payment?.status === "PAY_WAIT") && <p className={styles.caption}>{caption}</p>}
+                                    order?.payment?.status === "PAY_WAIT") && <p className="infoNote">{caption}</p>}
 
-                                {availableSum <= 0 && order?.payment?.final_amount ? <p className={styles.caption}>{caption2}</p> : null}
+                                {availableSum <= 0 && order?.payment?.final_amount ? <p className="infoNote">{caption2}</p> : null}
 
-                                {bills[0]?.method === "FULL" && <p className={styles.caption}>{caption3}</p>}
+                                {bills[0]?.method === "FULL" && <p className="infoNote">{caption3}</p>}
 
-                                {!order?.payment?.final_amount && <p className={styles.caption}>{caption4}</p>}
-                                {isMaxBillsCountReached && <p className={styles.caption}>{caption5}</p>}
+                                {!order?.payment?.final_amount && <p className="infoNote">{caption4}</p>}
+                                {isMaxBillsCountReached && <p className="infoNote">{caption5}</p>}
+                                </div>
                             </>
                         )}
                     </div>
@@ -690,17 +692,19 @@ const OrderStatus = () => {
                                             <span>Новий рахунок</span>
                                         </button>
 
+                                        <div className={styles.notes}>
                                         {(order?.payment?.status === "PAID" ||
                                             order?.payment?.status === "NOT_PAID" ||
-                                            order?.payment?.status === "PAY_WAIT") && <p className={styles.caption}>{caption}</p>}
+                                            order?.payment?.status === "PAY_WAIT") && <p className="infoNote">{caption}</p>}
 
-                                        {availableSum <= 0 && order?.payment?.final_amount ? <p className={styles.caption}>{caption2}</p> : null}
+                                        {availableSum <= 0 && order?.payment?.final_amount ? <p className="infoNote">{caption2}</p> : null}
 
-                                        {bills[0]?.method === "FULL" && <p className={styles.caption}>{caption3}</p>}
+                                        {bills[0]?.method === "FULL" && <p className="infoNote">{caption3}</p>}
 
-                                        {!order?.payment?.final_amount && <p className={styles.caption}>{caption4}</p>}
+                                        {!order?.payment?.final_amount && <p className="infoNote">{caption4}</p>}
 
-                                        {isMaxBillsCountReached && <p className={styles.caption}>{caption5}</p>}
+                                        {isMaxBillsCountReached && <p className="infoNote">{caption5}</p>}
+                                        </div>
                                     </div>
                                 )}
                             </>

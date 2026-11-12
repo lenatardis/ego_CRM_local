@@ -366,7 +366,7 @@ const Products = () => {
                 </div>
                 <div className={`${styles.grid} ${styles.mobileWrap}`}>
                     <div>
-                        {!warehouseItems.length && <p>На даний момент немає товарів у замовленні</p>}
+                        {!warehouseItems.length && <p className={`${styles.emptyNote} infoNote`}>На даний момент немає товарів у замовленні</p>}
                         {warehouseItems && (
                             <CartProducts
                                 items={warehouseItems}

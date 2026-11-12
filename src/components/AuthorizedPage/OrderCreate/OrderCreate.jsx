@@ -35,7 +35,7 @@ const OrderCreate = ({ order, sourcesList }) => {
     const [popup, setPopup] = useState(null);
     const isDesktop = useIsDesktop();
     const [chosenSource, setChosenSource] = useState(order?.source?.name || '');
-    const statusCaption = isDisabled ? '*Для того щоб відредагувати значення змініть статус замовлення на "В обробці"' : null;
+    const statusCaption = isDisabled ? 'Для того щоб відредагувати значення змініть статус замовлення на "В обробці"' : null;
     const [serverError, setServerError] = useState('');
     const location = useLocation();
     const isNewOrder = location.state?.isNewOrder;
@@ -337,7 +337,7 @@ const OrderCreate = ({ order, sourcesList }) => {
                                 <span>{`${order.created.substring(8, 10)}.${order.created.substring(5, 7)}.${order.created.substring(0, 4)}`}</span>
                             )}
                         </p>
-                        {statusCaption && <p className={styles.statusCaption}>{statusCaption}</p>}
+                        {statusCaption && <p className={`${styles.statusCaption} infoNote infoNote--tinted`}>{statusCaption}</p>}
                         <div className={styles.form}>
                             <div className={styles.inputWrap}>
                                 <label for="userUrl" className={styles.form__label}>Посилання на профіль замовника</label>
