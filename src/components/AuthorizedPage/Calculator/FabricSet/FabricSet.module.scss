@@ -254,6 +254,23 @@
   transition: all 20ms linear;
 }
 
+.peek {
+  animation: swipeHint 0.9s ease-in-out;
+}
+
+@keyframes swipeHint {
+  0%, 100% { transform: translateX(0); }
+  30% { transform: translateX(28px); }
+  65% { transform: translateX(-28px); }
+}
+
+// Demo build, phones: cards keep a few px from the kit's purple frame (and from the screen edge outside it)
+@media screen and (max-width: 1023px) {
+  .content > .setWrap:not(.inPopup) {
+    margin: 0 6px;
+  }
+}
+
 .hiddenLeftBtn, .hiddenRightBtn {
   display: flex;
   justify-content: center;

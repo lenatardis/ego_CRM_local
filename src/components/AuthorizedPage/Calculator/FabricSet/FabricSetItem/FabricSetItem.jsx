@@ -3,7 +3,7 @@ import styles from "../FabricSet.module.scss";
 import OptionButton from "../OptionButton/OptionButton";
 import CommentIcon from "../../../../../assets/icons/comment.svg";
 import OptionIcon from "../../../../../assets/icons/options.svg";
-import ReturnIcon from "../../../../../assets/icons/return.svg";
+import SwipeIcon from "../../../../../assets/icons/swipe.svg";
 import EditSet from "../../../../../assets/icons/editSet.svg";
 import DeleteSet from "../../../../../assets/icons/bin.svg";
 import CommentPopup from "../../Popups/CommentPopup/CommentPopup";
@@ -125,8 +125,21 @@ const FabricSetItem = ({
         [price, chosenOptions]
     );
 
-    const handleReturn = () => {
-        setContainerPosition(2);
+    // Demo build: the round button is a swipe hint (phones). A swiped card slides back, as before; a card in place
+    // gives a short wiggle that shows the hidden pencil (custom size) and bin (delete) on its sides.
+    const [isPeeking, setIsPeeking] = useState(false);
+    const peekTimer = useRef(null);
+    useEffect(() => () => clearTimeout(peekTimer.current), []);
+
+    const handleSwipeHint = () => {
+        if (containerPosition !== 2) {
+            setContainerPosition(2);
+            return;
+        }
+        clearTimeout(peekTimer.current);
+        setIsPeeking(false);
+        requestAnimationFrame(() => setIsPeeking(true));
+        peekTimer.current = setTimeout(() => setIsPeeking(false), 1000);
     };
 
     const handleCommentPopup = () => {
@@ -233,7 +246,7 @@ const FabricSetItem = ({
     return (
         <div className={styles.wrapper}>
             <div
-                className={styles.content}
+                className={`${styles.content} ${isPeeking ? styles.peek : ""}`}
                 style={
                     !isDesktop
                         ? { left: containerPosition === 1 ? "0" : containerPosition === 3 ? "-92px" : "-46px" }
@@ -346,9 +359,10 @@ const FabricSetItem = ({
                         )}
                     </div>
 
-                    {!inPopup && (
-                        <button className={styles.returnButton} onClick={handleReturn}>
-                            <img src={ReturnIcon} alt="" />
+                    {!inPopup && !isDesktop && (
+                        <button type="button" className={styles.returnButton} onClick={handleSwipeHint}
+                            aria-label="Проведіть картку вправо або вліво: розмір / видалення">
+                            <img src={SwipeIcon} alt="" />
                         </button>
                     )}
                 </div>
