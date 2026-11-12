@@ -63,7 +63,7 @@ const OrderStatus = () => {
 
     const caption =
         'Для того щоб додати новий або відредагувати рахунок змініть статус замовлення на "В обробці"';
-    const caption2 = "Доступна сума дорівнює нулю";
+    const caption2 = "Уся сума замовлення вже розподілена між рахунками – новий рахунок не потрібен";
     const caption3 = "Неможливо додати новий рахунок при повному методі оплати";
     const caption4 = "Для того щоб додати новий рахунок додайте товар(и)";
     const caption5 = "Максимально можливо створити 2 рахунки";
@@ -707,7 +707,7 @@ const OrderStatus = () => {
                                     order?.payment?.status === "NOT_PAID" ||
                                     order?.payment?.status === "PAY_WAIT") && <p className="infoNote">{caption}</p>}
 
-                                {availableSum <= 0 && order?.payment?.final_amount ? <p className="infoNote">{caption2}</p> : null}
+                                {availableSum <= 0 && order?.payment?.final_amount && !billsCheck ? <p className="infoNote">{caption2}</p> : null}
 
                                 {bills[0]?.method === "FULL" && <p className="infoNote">{caption3}</p>}
 
@@ -783,7 +783,7 @@ const OrderStatus = () => {
                                             order?.payment?.status === "NOT_PAID" ||
                                             order?.payment?.status === "PAY_WAIT") && <p className="infoNote">{caption}</p>}
 
-                                        {availableSum <= 0 && order?.payment?.final_amount ? <p className="infoNote">{caption2}</p> : null}
+                                        {availableSum <= 0 && order?.payment?.final_amount && !billsCheck ? <p className="infoNote">{caption2}</p> : null}
 
                                         {bills[0]?.method === "FULL" && <p className="infoNote">{caption3}</p>}
 
