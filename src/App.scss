@@ -405,6 +405,17 @@ html.menuScrollLock body {
   background: rgba(87, 57, 113, 0.1);
 }
 
+// something needs attention (Статус: bills that don't match the order's total)
+.infoNote--warning {
+  color: #4a3b1f;
+  background: rgba(245, 170, 0, 0.14);
+  border-left-color: #d18a00;
+
+  &::before {
+    background-image: $icon-warning;
+  }
+}
+
 // something just succeeded (Доставка: "ТТН створено" / "ТТН оновлено")
 .infoNote--success {
   background: rgba(46, 139, 87, 0.12);

@@ -87,6 +87,70 @@ const OrderStatus = () => {
     };
     const paidNote = getPaidNote();
 
+    // Demo build (at the user's request): bills keep the amount they got when they were set up, so after the order's
+    // total changes (discount, products) they can ask for more or less than is left to pay. This finds that and, where
+    // the right amount is clear, offers to fix the unpaid bill: the bill that takes "the rest" (Вся сума / the second
+    // bill) absorbs the change, a prepayment stays as agreed, paid bills are never touched.
+    const getBillsCheck = () => {
+        const final = Number(order?.payment?.final_amount) || 0;
+        if (!final || paidNote || bills.length === 0) return null;
+        const cents = (n) => Math.round(Number(n) * 100);
+        const money = (n) => `${cents(n) / 100} грн`;
+        const numbered = bills.map((bill, index) => ({ bill, number: index + 1 }));
+        const paid = numbered.filter(({ bill }) => bill.status === "PAID");
+        const unpaid = numbered.filter(({ bill }) => bill.status !== "PAID");
+        const paidSum = paid.reduce((acc, { bill }) => acc + (Number(bill.prepayment_amount) || 0), 0);
+
+        if (cents(paidSum) > cents(final)) {
+            return { text: `Оплачено ${money(paidSum)} – більше, ніж сума замовлення (${money(final)}). Ймовірно, змінилась знижка або товари.` };
+        }
+        // a bill whose amount isn't entered yet is still being set up
+        if (unpaid.some(({ bill }) => bill.prepayment_amount === null || bill.prepayment_amount === undefined)) return null;
+
+        const remaining = final - paidSum;
+        const unpaidSum = unpaid.reduce((acc, { bill }) => acc + (Number(bill.prepayment_amount) || 0), 0);
+        if (cents(unpaidSum) === cents(remaining)) return null;
+        // a single prepayment below the total is normal: the rest goes to a second bill ("Новий рахунок")
+        if (bills.length === 1 && bills[0].method === "PREPAYMENT" && cents(unpaidSum) < cents(remaining)) return null;
+
+        const reason = "Ймовірно, змінилась знижка або товари.";
+        if (unpaid.length === 0) {
+            return { text: `Оплачено ${money(paidSum)} із ${money(final)} – решту не покриває жоден рахунок. ${reason}` };
+        }
+        const mismatch = `Неоплачені рахунки (${money(unpaidSum)}) не відповідають сумі до сплати (${money(remaining)}). ${reason}`;
+        if (cents(remaining) <= 0) {
+            return { text: `Оплачені рахунки вже покривають суму замовлення – рахунок №${unpaid[unpaid.length - 1].number} більше не потрібен, видаліть його.` };
+        }
+        // the bill that takes the rest: "Вся сума" or the second bill; else (only a prepayment left unpaid,
+        // the second bill already paid) the prepayment itself
+        const rest = [...unpaid].reverse().find(({ bill }) => bill.method === "FULL" || bill.method === "POSTPAID")
+            ?? (bills.length === 2 && unpaid.length === 1 ? unpaid[0] : null);
+        if (!rest) {
+            return { text: `${mismatch} Передоплата більша за суму до сплати – змініть суму рахунку №${unpaid[0].number}.` };
+        }
+        const others = unpaid.filter((item) => item !== rest).reduce((acc, { bill }) => acc + (Number(bill.prepayment_amount) || 0), 0);
+        const target = remaining - others;
+        if (cents(target) <= 0) {
+            return { text: `${mismatch} Передоплата не менша за суму до сплати – змініть суму рахунку №1.` };
+        }
+        return { text: mismatch, fix: { id: rest.bill.id, number: rest.number, amount: cents(target) / 100 } };
+    };
+    const billsCheck = getBillsCheck();
+
+    const billsCheckNote = billsCheck && (
+        <div className={`infoNote infoNote--warning ${styles.billsCheck}`}>
+            <p>{billsCheck.text}</p>
+            {billsCheck.fix && (isDisabled
+                ? <p>Щоб оновити суму рахунку, змініть статус замовлення на "В обробці".</p>
+                : (
+                    <button type="button" className={styles.billsCheckBtn}
+                        onClick={() => handleBillUpdate(billsCheck.fix.id, "prepayment_amount", billsCheck.fix.amount)}>
+                        Оновити рахунок №{billsCheck.fix.number}: {billsCheck.fix.amount} грн
+                    </button>
+                ))}
+        </div>
+    );
+
 
     const getOrderStatusName = (orderStatus) => {
         switch (orderStatus) {
@@ -606,6 +670,7 @@ const OrderStatus = () => {
                             (bills.length > 0 ? (
                                 <>
                                     <h3 className={styles.desktopListTitle}>Список рахунків</h3>
+                                    {billsCheckNote}
                                     <div className={styles.bills}>
                                         {bills.map((el, index) => (
                                             <Bill
@@ -681,6 +746,7 @@ const OrderStatus = () => {
                                     (bills.length > 0 ? (
                                         <>
                                             <h3>Список рахунків</h3>
+                                            {billsCheckNote}
                                             <div className={styles.bills}>
                                                 {bills.map((el, index) => (
                                                     <Bill
