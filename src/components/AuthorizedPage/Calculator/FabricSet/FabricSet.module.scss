@@ -286,6 +286,13 @@
 
 .hiddenRightBtn {
   background: #F37D76;
+
+  // Demo build: a component that can't be deleted (template kit not split) – solid muted block instead of the
+  // global 50 % opacity of disabled buttons, which made the bin look faded / broken
+  &:disabled {
+    opacity: 1;
+    background: #C9C1D0;
+  }
 }
 
 .warning {
