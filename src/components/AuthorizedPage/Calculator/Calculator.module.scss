@@ -77,6 +77,15 @@
     margin-bottom: 20px;
   }
 
+  // demo build: info notes (infoNote, App.scss) – under the variants, and under the save button
+  .variantNote {
+    margin: -4px 0 16px;
+  }
+
+  .calcNote {
+    margin: 10px 0;
+  }
+
   .backendError {
     color: #DC6666;
   }

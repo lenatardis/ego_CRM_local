@@ -527,7 +527,7 @@ const Calculator = () => {
                  <ArrBack/>
                 {/* a kit in production is read-only: nothing in it can be clicked or focused (see the caption below) */}
                 <div className={manufacturing ? styles.readOnly : undefined} {...(manufacturing ? { inert: '' } : {})}>
-                <h2>Тип тканини</h2>
+                <h2>{id ? 'Тип тканини' : 'Оберіть тип тканини'}</h2>
                 <FabricType
                     setTemplate={setTemplate}
                     fabric={fabric}
@@ -546,7 +546,7 @@ const Calculator = () => {
                     setCustomComponents={setCustomComponents}
                 />
 
-                <h2>Розмір комплекту</h2>
+                <h2>{id ? 'Розмір комплекту' : 'Оберіть розмір комплекту'}</h2>
                 <FabricSize
                     activeSize={activeSize}
                     setActiveSize={setActiveSize}
@@ -557,11 +557,11 @@ const Calculator = () => {
                     onSizeChange={resetKitValues}
                 />
 
-                {noKitBanner && <p className={styles.noKitBanner}>{noKitBanner}</p>}
+                {noKitBanner && <p className={`${styles.noKitBanner} infoNote`}>{noKitBanner}</p>}
 
                 {product && product.kit && (
                     <>
-                        <h2>Варіації комплектів по вибраним параметрам</h2>
+                        <h2>{id ? 'Варіації комплектів по вибраним параметрам' : 'Оберіть варіацію комплекту'}</h2>
                         <FabricSizeSecond
                             activeSecondSize={activeSecondSize}
                             setActiveSecondSize={(idx) => {
@@ -580,6 +580,14 @@ const Calculator = () => {
                             setFabricConsumption={setFabricConsumption}
                             setComponentSizes={setComponentSizes}
                         />
+                        {/* demo build: say what "Обрахувати і Зберегти" waits for (it is faded until a variant is picked) */}
+                        {!id && !((components?.components?.length > 0) || (customComponents?.length > 0)) && (
+                            <p className={`${styles.variantNote} infoNote`}>
+                                {product.kit.some((el) => Number(el.starting_price) > 0)
+                                    ? 'Оберіть варіацію комплекту, щоб розрахувати його ціну'
+                                    : 'Для цього розміру немає комплекту з ціною – оберіть інший розмір або тип тканини'}
+                            </p>
+                        )}
                     </>
                 )}
 
@@ -677,7 +685,7 @@ const Calculator = () => {
                 />
 
                 {manufacturing && (
-                    <p>*Комплект уже у виробництві (статус: {manufacturing.status}), змінити його не можна</p>
+                    <p className={`${styles.calcNote} infoNote`}>Комплект уже у виробництві (статус: {manufacturing.status}), змінити його не можна</p>
                 )}
 
                 {backendErrorText && (
@@ -689,7 +697,7 @@ const Calculator = () => {
                 )}
 
                 {product?.kit && ((components?.components?.length > 0) || (customComponents?.length > 0)) && !hasPositivePrice && (
-                    <p>*Не можна обрахувати і зберегти комплект з нульовою ціною</p>
+                    <p className={`${styles.calcNote} infoNote`}>Не можна обрахувати і зберегти комплект з нульовою ціною</p>
                 )}
 
                 {showKitCommentPopup && (

@@ -15,7 +15,7 @@ const STAFF_TITLES = [
     [(p) => p.startsWith('/products/'), 'Товари'],
     [(p) => p.startsWith('/deliveryNP') || p.startsWith('/deliveryUKR'), 'Доставка'],
     [(p) => p.startsWith('/order_status/'), 'Статус'],
-    [(p) => p.startsWith('/calculator'), 'Калькулятор'],
+    [(p) => p.startsWith('/calculator'), 'Калькулятор комплекту'],
     [(p) => p.startsWith('/profile'), 'Профіль'],
 ];
 
