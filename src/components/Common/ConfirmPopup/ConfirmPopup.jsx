@@ -8,7 +8,7 @@ import { useIsDesktop } from "../../../hooks/useIsDesktop";
 // Demo build: a yes / no question before an action that can't be undone (deleting a kit, a product or a kit
 // component, splitting a kit) – the app's popup with the order delete confirmation's question and buttons
 // (CancelOrder: "Підтвердити" / "Скасувати"); centred on desktop, a bottom sheet on phones.
-const ConfirmPopup = ({ title, text, onConfirm, onCancel }) => {
+const ConfirmPopup = ({ title, text, note, onConfirm, onCancel }) => {
     const dispatch = useAppDispatch();
     const isDesktop = useIsDesktop();
 
@@ -23,7 +23,7 @@ const ConfirmPopup = ({ title, text, onConfirm, onCancel }) => {
 
     return (
         <GlobalPopup title={title} onClose={onCancel} {...(isDesktop ? { centeredPopup: true } : {})}>
-            <CancelOrder text={text} onConfirm={() => close(onConfirm)} onCancel={() => close(onCancel)} />
+            <CancelOrder text={text} note={note} onConfirm={() => close(onConfirm)} onCancel={() => close(onCancel)} />
         </GlobalPopup>
     );
 };
