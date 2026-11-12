@@ -70,6 +70,23 @@ const OrderStatus = () => {
 
     const isMaxBillsCountReached = bills.length >= 2;
 
+    // Demo build (at the user's request): a fully paid order can't change its bills or payment status, so instead of
+    // the separate reasons above (several were true at once) it shows one note, by where the order is now
+    const getPaidNote = () => {
+        if (order?.payment?.status !== "PAID") return null;
+        switch (order?.status) {
+            case "IN_PRODUCTION":
+                return "Замовлення в процесі виготовлення не підлягає редагуванню";
+            case "SHIPMENT_READY":
+                return "Замовлення готове до відправки і не підлягає редагуванню";
+            case "DELIVERED":
+                return "Замовлення доставлено і не підлягає редагуванню";
+            default:
+                return "Замовлення оплачено – рахунки не підлягають редагуванню";
+        }
+    };
+    const paidNote = getPaidNote();
+
 
     const getOrderStatusName = (orderStatus) => {
         switch (orderStatus) {
@@ -620,6 +637,7 @@ const OrderStatus = () => {
                                 </button>
 
                                 <div className={styles.notes}>
+                                {paidNote ? <p className="infoNote">{paidNote}</p> : <>
                                 {(
                                     order?.payment?.status === "NOT_PAID" ||
                                     order?.payment?.status === "PAY_WAIT") && <p className="infoNote">{caption}</p>}
@@ -630,6 +648,7 @@ const OrderStatus = () => {
 
                                 {!order?.payment?.final_amount && <p className="infoNote">{caption4}</p>}
                                 {isMaxBillsCountReached && <p className="infoNote">{caption5}</p>}
+                                </>}
                                 </div>
                             </>
                         )}
@@ -693,6 +712,7 @@ const OrderStatus = () => {
                                         </button>
 
                                         <div className={styles.notes}>
+                                        {paidNote ? <p className="infoNote">{paidNote}</p> : <>
                                         {(order?.payment?.status === "PAID" ||
                                             order?.payment?.status === "NOT_PAID" ||
                                             order?.payment?.status === "PAY_WAIT") && <p className="infoNote">{caption}</p>}
@@ -704,6 +724,7 @@ const OrderStatus = () => {
                                         {!order?.payment?.final_amount && <p className="infoNote">{caption4}</p>}
 
                                         {isMaxBillsCountReached && <p className="infoNote">{caption5}</p>}
+                                        </>}
                                         </div>
                                     </div>
                                 )}
