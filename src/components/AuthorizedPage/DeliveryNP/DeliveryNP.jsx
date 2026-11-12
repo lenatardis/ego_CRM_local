@@ -539,7 +539,7 @@ const DeliveryNP = ({ deliveryOrder, lastOrderId }) => {
                                 {estimatePriceHintText && (
                                     <>
                                         &nbsp;
-                                        <InfoHint text={estimatePriceHintText} />
+                                        <InfoHint text={estimatePriceHintText} size={16} />
                                     </>
                                 )}
                             </label>

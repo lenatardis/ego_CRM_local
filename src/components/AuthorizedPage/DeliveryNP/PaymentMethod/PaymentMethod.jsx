@@ -6,7 +6,7 @@ export const PaymentMethod = ({ paymentMethod, onChange, isDisabled }) => {
         <div className={`${styles.payChanger} ${isDisabled ? styles.disabled : ''}`}>
             <div className={styles.labelRow}>
                 <span>Тип оплати</span>
-                <InfoHint text="Готівковий - фізична особа. Безготівковий - оплата на юридичну особу" />
+                <InfoHint text="Готівковий - фізична особа. Безготівковий - оплата на юридичну особу" size={16} />
             </div>
 
             <div className={styles.items}>

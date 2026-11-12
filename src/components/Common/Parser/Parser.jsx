@@ -331,7 +331,7 @@ const Parser = ({ values, setValues, updateData = () => {}, parserStyles = {}, h
                     <h3>Парсер</h3>
                     {!!hintText && (
                         <span onClick={(e) => e.stopPropagation()}>
-                            <InfoHint text={hintText} ariaLabel="Підказка по парсеру" />
+                            <InfoHint text={hintText} ariaLabel="Підказка по парсеру" size={16} />
                         </span>
                     )}
                 </div>

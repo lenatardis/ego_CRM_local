@@ -1,0 +1,6 @@
+// Demo build: icons drawn as inline SVG (not font letters), shared by the info notes (App.scss .infoNote)
+// and the clickable hints (Common/ProductItem/InfoHint), so every "i" in the app looks the same.
+// Its circle is the main purple #573971 (tried: lighter purples stood out, a grey-violet blended in).
+// The "i" is handwritten: a slightly slanted stem ending in a hook that turns up, and a dot.
+$icon-info: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='8' fill='%23573971'/%3E%3Ccircle cx='8.8' cy='4.5' r='1.05' fill='%23fff'/%3E%3Cpath d='M8.3 7.2 L7.5 10.8 C7.3 11.8 7.7 12.2 8.3 12 C8.8 11.8 9.3 11.4 9.7 10.9' fill='none' stroke='%23fff' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+$icon-success: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='8' r='8' fill='%232e8b57'/%3E%3Cpath d='M4.6 8.3l2.2 2.2 4.6-4.8' fill='none' stroke='%23fff' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");

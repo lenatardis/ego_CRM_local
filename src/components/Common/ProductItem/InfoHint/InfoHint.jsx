@@ -7,7 +7,8 @@ const MIN_TOOLTIP_HEIGHT = 80;
 const MAX_TOOLTIP_HEIGHT = 320;
 const EDGE_PADDING = 16; // demo build: an open tooltip stays this far from the screen's sides
 
-const InfoHint = ({ text, ariaLabel = "Інформація" }) => {
+// size: icon size in px (demo build; default 18 as in the stylesheet)
+const InfoHint = ({ text, ariaLabel = "Інформація", size }) => {
     const [open, setOpen] = useState(false);
     const [placement, setPlacement] = useState("top");
     const [maxHeight, setMaxHeight] = useState(MAX_TOOLTIP_HEIGHT);
@@ -104,13 +105,12 @@ const InfoHint = ({ text, ariaLabel = "Інформація" }) => {
                 type="button"
                 className={styles.icon}
                 aria-label={ariaLabel}
+                style={size ? { width: size, height: size, minWidth: size } : undefined}
                 onClick={(e) => {
                     e.stopPropagation();
                     setOpen((prev) => !prev);
                 }}
-            >
-                i
-            </button>
+            />
 
             <span
                 ref={tooltipRef}
