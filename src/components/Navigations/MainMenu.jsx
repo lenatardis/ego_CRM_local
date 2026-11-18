@@ -29,6 +29,8 @@ import { useIsDesktop } from "../../hooks/useIsDesktop";
 import MobileBar, { getPageTitle, useMobileMenu } from "./MobileBar";
 import { useTranslation } from "react-i18next";
 import LanguageSwitcher from "../Common/LanguageSwitcher/LanguageSwitcher";
+import ConfirmPopup from "../Common/ConfirmPopup/ConfirmPopup";
+import { setLanguage } from "../../i18n";
 
 const MainMenu = () => {
     const { t } = useTranslation();
@@ -57,6 +59,18 @@ const MainMenu = () => {
     const closeMobileMenu = () => setIsMobileOpen(false);
 
     const isAllOrdersActive = !isDeliveryMenu && pathname === '/';
+
+    // Demo build (2026-11-18): a language switch re-mounts the pages; in the calculator the kit being built
+    // (fabric, size, variant, options) is kept only after "Обрахувати і Зберегти", so ask first there
+    const [pendingLang, setPendingLang] = useState(null);
+    const requestLanguageSwitch = (lang) => {
+        if (!pathname.startsWith('/calculator')) {
+            setLanguage(lang);
+            return;
+        }
+        closeMobileMenu();
+        setPendingLang(lang);
+    };
 
     const onOrder = () => {
         closeMobileMenu();
@@ -294,7 +308,7 @@ const MainMenu = () => {
                 </div>
 
                 <div className={styles.btnWrap}>
-                    <LanguageSwitcher dark className={styles.langSwitcher}/>
+                    <LanguageSwitcher dark className={styles.langSwitcher} onRequestSwitch={requestLanguageSwitch}/>
 
                     <a className={`${styles.userMenu__link} ${styles.ERP}`} href="/ego_ERP_local/">
                         <span>{t('Перейти в ERP')}</span>
@@ -318,6 +332,15 @@ const MainMenu = () => {
                 >
                     <DeliveryChange onConfirm={onConfirm} onCancel={onCancel} />
                 </GlobalPopup>
+            )}
+
+            {pendingLang && (
+                <ConfirmPopup
+                    title={t('Зміна мови')}
+                    text={t('Зміни, які ще не збережено, буде втрачено. Змінити мову?')}
+                    onConfirm={() => setLanguage(pendingLang)}
+                    onCancel={() => setPendingLang(null)}
+                />
             )}
 
             {showPagePopup && (

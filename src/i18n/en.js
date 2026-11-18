@@ -49,6 +49,8 @@ const en = {
     'Перехід на сторінку Замовлення +': 'Go to the Order + page',
     'Ви бажаєте змінити службу доставки?': 'Do you want to change the delivery service?',
     'Ви бажаєте перейти на сторінку створення нового замовлення?': 'Do you want to go to the new order page?',
+    'Зміна мови': 'Change language',
+    'Зміни, які ще не збережено, буде втрачено. Змінити мову?': 'Changes not saved yet will be lost. Change the language?',
     'Підтвердити': 'Confirm',
     'Скасувати': 'Cancel',
 
