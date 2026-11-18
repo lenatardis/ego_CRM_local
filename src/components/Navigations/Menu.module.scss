@@ -330,8 +330,7 @@
 
 // Demo build (2026-11-18): UA / EN switch above "Перейти в ERP" / at the bottom of the customer menu
 .langSwitcher {
-  display: flex;
-  width: 100%;
+  align-self: center; // only as wide as its two buttons (2026-11-18, at the user's request)
 }
 
 .ERP {
