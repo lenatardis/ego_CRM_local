@@ -1,6 +1,7 @@
 import { Filter } from "./Filter";
 import styles from "./filters.module.scss";
 import removeFiltersIcon from "../../../../assets/icons/filter-remove-icon.svg";
+import { t } from '../../../../i18n';
 
 export const Filters = ({
     filters,
@@ -27,8 +28,8 @@ export const Filters = ({
                 className={styles.filters__eye}
                 title={
                     isInStockOnly
-                        ? "Відображаються тільки товари в наявності"
-                        : "Відображаються всі товари"
+                        ? t('Відображаються тільки товари в наявності')
+                        : t('Відображаються всі товари')
                 }
             >
                 <img

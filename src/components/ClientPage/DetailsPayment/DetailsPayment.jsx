@@ -2,6 +2,7 @@ import React from "react";
 import styles from './DetailsPayment.module.scss';
 import logo from "../../../assets/img/logoEgo.svg";
 import DetailsContent from "./DetailsContent";
+import { t } from '../../../i18n';
 
 const DetailsPayment = () => {
     return (
@@ -9,7 +10,7 @@ const DetailsPayment = () => {
             <div className={styles.detailsPayment__logo}>
                 <img src={logo} alt=""/>
             </div>
-            <h2>Реквізити для оплати</h2>
+            <h2>{t('Реквізити для оплати')}</h2>
             <DetailsContent />
         </div>
     )

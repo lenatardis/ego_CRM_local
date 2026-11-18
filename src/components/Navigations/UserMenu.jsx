@@ -10,8 +10,11 @@ import authIcon from '../../assets/icons/auth.svg';
 import authIconBrown from '../../assets/icons/authBrown.svg';
 import {useIsDesktop} from "../../hooks/useIsDesktop";
 import MobileBar, { getPageTitle, useMobileMenu } from "./MobileBar";
+import { useTranslation } from "react-i18next";
+import LanguageSwitcher from "../Common/LanguageSwitcher/LanguageSwitcher";
 
 const UserMenu = ({ savedOrderHash }) => {
+    const { t } = useTranslation();
     const { pathname} = useLocation();
     const isDesktop = useIsDesktop();
     // Demo build: below 1024 px this menu is a slide-out opened from the top bar (MobileBar), as the staff menu
@@ -25,23 +28,23 @@ const UserMenu = ({ savedOrderHash }) => {
             <Link  to={statusLink}
                   className={pathname === '/orders/' ? styles.userMenu__linkActive : styles.userMenu__link}>
                 <img src={statusIcon} alt=""/>
-                <span>Статус</span>
+                <span>{t('Статус')}</span>
             </Link>
             <Link  to={'/contacts/'}
                   className={pathname === '/contacts/' ? styles.userMenu__linkActive : styles.userMenu__link}>
                 <img src={pathname === '/contacts/' ? contactsIconBrown : contactsIcon} alt=""/>
-                <span>Контакти</span>
+                <span>{t('Контакти')}</span>
             </Link>
             <Link to={'/callback/'}
                   className={pathname === '/callback/' ? styles.userMenu__linkActive : styles.userMenu__link}>
                 <img src={pathname === '/callback/' ? callbackIconBrown : callbackIcon} alt=""/>
-                <span>Дзвінок</span>
+                <span>{t('Дзвінок')}</span>
             </Link>
             {/* Demo build: the start page with the login form, otherwise reachable only by typing its address */}
             <Link to={'/'}
                   className={pathname === '/' ? styles.userMenu__linkActive : styles.userMenu__link}>
                 <img src={pathname === '/' ? authIconBrown : authIcon} alt=""/>
-                <span>Вхід</span>
+                <span>{t('Вхід')}</span>
             </Link>
         </>
     )
@@ -54,6 +57,9 @@ const UserMenu = ({ savedOrderHash }) => {
             <div className={`menu ${styles.userMenu} ${styles.clientMenu} ${isDesktop ? styles.mainDesktopMenu : `${styles.sideMenu} ${isMobileOpen ? styles.sideMenuOpen : ''}`}`}
                  onClick={(e) => { if (e.target.closest('a')) setIsMobileOpen(false); }}>
                 <div className={styles.desktopMenuWrap}>{userMenuLinks}</div>
+                <div className={styles.btnWrap}>
+                    <LanguageSwitcher dark className={styles.langSwitcher}/>
+                </div>
             </div>
         </>
     )

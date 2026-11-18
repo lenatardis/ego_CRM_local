@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { SortItem } from "./SortItem";
 import styles from "./fabricSort.module.scss";
+import { t } from '../../../../i18n';
 
 export const FabricsSort = ({ sortOptions, selectedSortParam, setSortParam }) => {
     const [showApplied, setShowApplied] = useState(false);
@@ -30,7 +31,7 @@ export const FabricsSort = ({ sortOptions, selectedSortParam, setSortParam }) =>
     return (
         <>
             {showApplied && (
-                <p className={styles.appliedMessage}>Зміни застосовано</p>
+                <p className={styles.appliedMessage}>{t('Зміни застосовано')}</p>
             )}
 
             <ul className={styles.fabricSortList}>

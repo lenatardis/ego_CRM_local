@@ -2,6 +2,7 @@ import styles from './not-found.module.scss';
 import { useAppDispatch } from "../../../hooks/redux";
 import { setIsNotFound } from '../../../store/main-slice';
 import { useNavigate } from 'react-router-dom';
+import { t } from '../../../i18n';
 
 export default function NotFound({ message }) {
     const dispatch = useAppDispatch();
@@ -16,7 +17,7 @@ export default function NotFound({ message }) {
         <div className={styles.notFound}>
             <h2 className={styles.message}>{message}</h2>
             <button onClick={handleNavigate} className={styles.link}>
-                <span>На головну</span>
+                <span>{t('На головну')}</span>
             </button>
         </div>
     )

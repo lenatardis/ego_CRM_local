@@ -14,6 +14,7 @@ import { getAccessToken } from "../../../utils/authTokens";
 import { setAddProduct } from "../../../api/productsApi";
 import ImagePopup from "../ImagePopup/ImagePopup";
 import {photoSkeleton} from "../../../utils/photoSkeleton";
+import { t } from '../../../i18n';
 
 const StorageItem = ({ orderId, id, name, images, sizes, copy, setOrder = null, setPopup, inPopup, sourceID, onAfterProductAdd }) => {
     let basicCount = 4;
@@ -193,7 +194,7 @@ const StorageItem = ({ orderId, id, name, images, sizes, copy, setOrder = null, 
 
         if (!currentSize || !currentColor) {
             console.error('Неможливо визначити розмір або колір для товару', { sizes, activeSizeIndex, activeColorIndex });
-            alert('Не вдалося визначити розмір або колір товару. Спробуй ще раз.');
+            alert(t('Не вдалося визначити розмір або колір товару. Спробуй ще раз.'));
             setIsLoading(false);
             setPending(false);
             return;
@@ -236,14 +237,14 @@ const StorageItem = ({ orderId, id, name, images, sizes, copy, setOrder = null, 
                 response?.errors?.warehouse_item_price;
 
             if (warehousePriceError) {
-                alert(`Додайте, будь ласка, ціну для даного товару, щоб мати можливість його додати`);
+                alert(t('Додайте, будь ласка, ціну для даного товару, щоб мати можливість його додати'));
                 return;
             }
 
             if (response?.errors && !warehousePriceError) {
                 const firstError = Object.values(response.errors)[0];
                 if (firstError) {
-                    alert(`Помилка при додаванні товару: ${firstError}`);
+                    alert(`${t('Помилка при додаванні товару:')} ${t(firstError)}`);
                 }
             }
 
@@ -275,9 +276,9 @@ const StorageItem = ({ orderId, id, name, images, sizes, copy, setOrder = null, 
                         <span className={styles.iconWrap}><img src={IconPlaceholder} alt="" /></span>}
                     <div>
                         <h3>{name}</h3>
-                        <p className={quantity < 10 ? styles.balanceWarning : ''}>Залишок {quantity}</p>
+                        <p className={quantity < 10 ? styles.balanceWarning : ''}>{t('Залишок')} {quantity}</p>
                         {inPopup && hasPrice && (
-                            <p>{currentPrice} грн</p>
+                            <p>{currentPrice} {t('грн')}</p>
                         )}
                     </div>
                 </div>
@@ -293,7 +294,7 @@ const StorageItem = ({ orderId, id, name, images, sizes, copy, setOrder = null, 
                         >
                             <img src={plus} alt="" />
                         </button>
-                        <span>Додати</span>
+                        <span>{t('Додати')}</span>
                     </div>}
             </div>
             {sortedSizes?.length > 0 && (
@@ -339,7 +340,7 @@ const StorageItem = ({ orderId, id, name, images, sizes, copy, setOrder = null, 
             )}
             {inPopup && !hasPrice && (
                 <p className={styles.priceWarning}>
-                    Цей товар не можна додати в замовлення, адже йому не задана ціна
+                    {t('Цей товар не можна додати в замовлення, адже йому не задана ціна')}
                 </p>
             )}
             {(isShowSizePopup || isShowColorPopup) && (
@@ -354,9 +355,9 @@ const StorageItem = ({ orderId, id, name, images, sizes, copy, setOrder = null, 
             {isShowSizePopup && (
                 <div className={isShowSizePopup ? `${styles.globalPopupActive} ${styles.topPopup}` : styles.globalPopup}>
                     <div className={styles.header}>
-                        <p className={`${styles.header__title} popupTitle`}>Вказати розмір:</p>
+                        <p className={`${styles.header__title} popupTitle`}>{t('Вказати розмір:')}</p>
                         <div className={styles.header__close} onClick={() => closeSizePopup()}>
-                            <span className="popupCloseCaption">Закрити</span>
+                            <span className="popupCloseCaption">{t('Закрити')}</span>
                             <button>
                                 <img src={closeIcon} className="popupCloseIcon" alt="" />
                             </button>
@@ -364,7 +365,7 @@ const StorageItem = ({ orderId, id, name, images, sizes, copy, setOrder = null, 
                     </div>
                     <div className={styles.globalPopup__content}>
                         {showSizeApplied && (
-                            <p className={styles.appliedMessage}>Зміни застосовано</p>
+                            <p className={styles.appliedMessage}>{t('Зміни застосовано')}</p>
                         )}
 
                         <PopupCheckboxes values={additionalSize} setValues={handleAdditionalSize}
@@ -375,9 +376,9 @@ const StorageItem = ({ orderId, id, name, images, sizes, copy, setOrder = null, 
             {isShowColorPopup && (
                 <div className={isShowColorPopup ? `${styles.globalPopupActive} ${styles.topPopup}` : styles.globalPopup}>
                     <div className={styles.header}>
-                        <p className={`${styles.header__title} popupTitle`}>Вказати колір:</p>
+                        <p className={`${styles.header__title} popupTitle`}>{t('Вказати колір:')}</p>
                         <div className={styles.header__close} onClick={() => closeColorPopup()}>
-                            <span className="popupCloseCaption">Закрити</span>
+                            <span className="popupCloseCaption">{t('Закрити')}</span>
                             <button>
                                 <img src={closeIcon} className="popupCloseIcon" alt="" />
                             </button>
@@ -385,7 +386,7 @@ const StorageItem = ({ orderId, id, name, images, sizes, copy, setOrder = null, 
                     </div>
                     <div className={styles.globalPopup__content}>
                         {showColorApplied && (
-                            <p className={styles.appliedMessage}>Зміни застосовано</p>
+                            <p className={styles.appliedMessage}>{t('Зміни застосовано')}</p>
                         )}
                         <PopupCheckboxes values={additionalColor} setValues={handleAdditionalColor}
                             chooseList={sortedColors} isRadio />

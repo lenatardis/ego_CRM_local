@@ -10,6 +10,7 @@ import { useIsDesktop } from "../../../hooks/useIsDesktop";
 import { getAccessToken } from "../../../utils/authTokens";
 import { getNPTTNPDF } from "../../../api/novaPoshtaApi";
 import Preloader from "../../Common/Preloader/Preloader";
+import { t } from '../../../i18n';
 
 const OrderActions = ({ orderUrl, isDisabled, onCopyAll, ttnURL, deliveryInfo, setTTNURL, isSuborder = false }) => {
     const [isShowPopup, setIsShowPopup] = useState(false);
@@ -65,13 +66,13 @@ const OrderActions = ({ orderUrl, isDisabled, onCopyAll, ttnURL, deliveryInfo, s
                 window.open(url, '_blank', 'noopener,noreferrer');
             } else {
                 setTtnError(
-                    'Вибачте, виникла проблема з підключенням до сервісів Нової Пошти. Спробуйте, будь ласка, пізніше.'
+                    t('Вибачте, виникла проблема з підключенням до сервісів Нової Пошти. Спробуйте, будь ласка, пізніше.')
                 );
             }
         } catch (error) {
             console.log('Open TTN error:', error);
             setTtnError(
-                'Вибачте, виникла проблема з підключенням до сервісів Нової Пошти. Спробуйте, будь ласка, пізніше.'
+                t('Вибачте, виникла проблема з підключенням до сервісів Нової Пошти. Спробуйте, будь ласка, пізніше.')
             );
         } finally {
             setIsTTNLoading(false);
@@ -86,17 +87,17 @@ const OrderActions = ({ orderUrl, isDisabled, onCopyAll, ttnURL, deliveryInfo, s
                 <div className={styles.row}>
                     <button onClick={onCopyAll} className={`${styles.copyButton} click-effect`} tabIndex={0}>
                         <img src={copyIcon} alt="" />
-                        <span>Скопіювати все</span>
+                        <span>{t('Скопіювати все')}</span>
                     </button>
                     {/*  <button className={styles.prodLink} disabled={isDisabled}>
-                    <span>На виробництво</span>
+                    <span>{t('На виробництво')}</span>
                 </button>*/}
                 </div>
                 <div className={styles.row}>
                     {orderUrl && (
                         <CopyToClipboard text={orderUrl} className={`${styles.orderLink} click-effect`}>
                             <button tabIndex={0}>
-                                <span>Посилання на замовлення</span>
+                                <span>{t('Посилання на замовлення')}</span>
                             </button>
                         </CopyToClipboard>
                     )}
@@ -104,7 +105,7 @@ const OrderActions = ({ orderUrl, isDisabled, onCopyAll, ttnURL, deliveryInfo, s
                 <div className={styles.row}>
                     <button className={`${styles.copyButton} click-effect`} tabIndex={0} onClick={openPopup}>
                         <img src={printerIcon} alt="" />
-                        <span>Роздрукувати ТТН</span>
+                        <span>{t('Роздрукувати ТТН')}</span>
                     </button>
                 </div>
             </div>
@@ -121,9 +122,9 @@ const OrderActions = ({ orderUrl, isDisabled, onCopyAll, ttnURL, deliveryInfo, s
                         }`}
                         onClick={(e) => e.stopPropagation()}>
                         <div className={styles2.header}>
-                            <p className={`${styles2.header__title} popupTitle`}>Друк ТТН</p>
+                            <p className={`${styles2.header__title} popupTitle`}>{t('Друк ТТН')}</p>
                             <div className={styles2.header__close} onClick={() => closePopup()}>
-                                <span className="popupCloseCaption">Закрити</span>
+                                <span className="popupCloseCaption">{t('Закрити')}</span>
                                 <button>
                                     <img src={closeIcon} className="popupCloseIcon" alt="" />
                                 </button>
@@ -133,7 +134,7 @@ const OrderActions = ({ orderUrl, isDisabled, onCopyAll, ttnURL, deliveryInfo, s
                             {isTTNLoading ? (
                                 <div className={styles.ttnLoader}>
                                     <Preloader />
-                                    <p>Завантажуємо ТТН...</p>
+                                    <p>{t('Завантажуємо ТТН...')}</p>
                                 </div>
                             ) : ttnError ? (
                                 <div className={styles.ttnError}>

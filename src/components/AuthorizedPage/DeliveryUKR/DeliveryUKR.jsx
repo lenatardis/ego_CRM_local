@@ -15,6 +15,7 @@ import copyIcon from "../../../assets/icons/copy.svg";
 import Parser from "../../Common/Parser/Parser";
 import InputMask from "react-input-mask";
 import { DELIVERY_PARSER_HINT } from "../../Common/Parser/parserHints";
+import { t } from '../../../i18n';
 
 const DeliveryUKR = () => {
     const isDesktop = useIsDesktop();
@@ -96,11 +97,11 @@ const DeliveryUKR = () => {
                     <div className={styles.deliveryUKR__content}>
                         <div className={styles.deliveryUKR__row}>
                             <div className={styles.inputWrap}>
-                                <label className={styles.formLabel}><span>Ім`я</span>&nbsp;<span className={styles.desktop_visible}>Отримувача</span></label>
+                                <label className={styles.formLabel}><span>{t('Ім`я')}</span>&nbsp;<span className={styles.desktop_visible}>{t('Отримувача')}</span></label>
                                 <div className="baseInputContainer">
                                     <span className="coloredLabel colored--first_name"></span>
                                     <input
-                                        placeholder={'Ім`я'}
+                                        placeholder={t('Ім`я')}
                                         className={'baseInput'}
                                         id="first_name"
                                         name="first_name"
@@ -111,11 +112,11 @@ const DeliveryUKR = () => {
                                 </div>
                             </div>
                             <div className={styles.inputWrap}>
-                                <label className={styles.formLabel}><span>Прізвище</span>&nbsp;<span className={styles.desktop_visible}>Отримувача</span></label>
+                                <label className={styles.formLabel}><span>{t('Прізвище')}</span>&nbsp;<span className={styles.desktop_visible}>{t('Отримувача')}</span></label>
                                 <div className="baseInputContainer">
                                     <span className="coloredLabel colored--last_name"></span>
                                     <input
-                                        placeholder={'Прізвище'}
+                                        placeholder={t('Прізвище')}
                                         className={'baseInput'}
                                         id="last_name"
                                         name="last_name"
@@ -127,7 +128,7 @@ const DeliveryUKR = () => {
                             </div>
                         </div>
                         <div className={styles.inputWrap}>
-                            <label className={styles.formLabel}><span>Телефон</span>&nbsp;<span className={styles.desktop_visible}> Отримувача</span>   </label>
+                            <label className={styles.formLabel}><span>{t('Телефон')}</span>&nbsp;<span className={styles.desktop_visible}> {t('Отримувача')}</span>   </label>
                             <div className="baseInputContainer">
                                 <span className="coloredLabel colored--phone"></span>
                                 <InputMask
@@ -139,7 +140,7 @@ const DeliveryUKR = () => {
                                     {(inputProps) => (
                                         <input
                                             {...inputProps}
-                                            placeholder={'Телефон'}
+                                            placeholder={t('Телефон')}
                                             className={'baseInput'}
                                             aria-label={"phone"}
                                             id="phone"
@@ -150,19 +151,19 @@ const DeliveryUKR = () => {
                             </div>
                         </div>
                         <div className={styles.inputWrap}>
-                            <label className={styles.formLabel}>Місто або населений пункт</label>
+                            <label className={styles.formLabel}>{t('Місто або населений пункт')}</label>
                             <UkrPoshtaCities city={city} setCity={setCity} />
                         </div>
                         <div className={styles.inputWrap}>
-                            <label className={styles.formLabel}>Область або регіон</label>
+                            <label className={styles.formLabel}>{t('Область або регіон')}</label>
                             <UkrPoshtaRegion region={regionValue} setRegion={setRegionValue} />
                         </div>
                         <div className={styles.inputWrap}>
-                            <label className={styles.formLabel}>Район (опціонально)</label>
+                            <label className={styles.formLabel}>{t('Район (опціонально)')}</label>
                             <UkrPoshtaArea area={areaValue} setArea={setAreaValue} />
                         </div>
                         <div className={styles.inputWrap}>
-                            <label className={styles.formLabel}>Поштовий індекс</label>
+                            <label className={styles.formLabel}>{t('Поштовий індекс')}</label>
                             <UkrPoshtaIndex index={indexValue} setIndex={setIndexValue} />
                         </div>
 
@@ -170,9 +171,9 @@ const DeliveryUKR = () => {
 
 
                         <div className={styles.inputWrap}>
-                            <label className={styles.formLabel}>Вулиця</label>
+                            <label className={styles.formLabel}>{t('Вулиця')}</label>
                             <input
-                                placeholder={'Вулиця'}
+                                placeholder={t('Вулиця')}
                                 className={'baseInput'}
                                 id="street"
                                 name="street"
@@ -183,9 +184,9 @@ const DeliveryUKR = () => {
                         </div>
                         <div className={styles.deliveryUKR__row}>
                             <div className={styles.inputWrap}>
-                                <label className={styles.formLabel}>Будинок</label>
+                                <label className={styles.formLabel}>{t('Будинок')}</label>
                                 <input
-                                    placeholder={'Будинок'}
+                                    placeholder={t('Будинок')}
                                     className={'baseInput'}
                                     id="house"
                                     name="house"
@@ -195,9 +196,9 @@ const DeliveryUKR = () => {
                                 />
                             </div>
                             <div className={styles.inputWrap}>
-                                <label className={styles.formLabel}>Квартира</label>
+                                <label className={styles.formLabel}>{t('Квартира')}</label>
                                 <input
-                                    placeholder={'Квартира'}
+                                    placeholder={t('Квартира')}
                                     className={'baseInput'}
                                     id="apartment"
                                     name="apartment"
@@ -210,9 +211,9 @@ const DeliveryUKR = () => {
                         </div>
                         <DeliveryIPay isIPay={isIPay} setIsIPay={setIsIPay} />
                         <div className={styles.inputWrap}>
-                            <label className={styles.formLabel}>Оголошена вартість</label>
+                            <label className={styles.formLabel}>{t('Оголошена вартість')}</label>
                             <input
-                                placeholder={'Оголошена вартість'}
+                                placeholder={t('Оголошена вартість')}
                                 className={'baseInput'}
                                 id="declaredValueUKR"
                                 name="declaredValueUKR"
@@ -222,9 +223,9 @@ const DeliveryUKR = () => {
                             />
                         </div>
                         <div className={`${styles.closedInput} ${styles.inputWrap}`}>
-                            <label className={styles.formLabel}>Орієнтовна Вартість Доставки</label>
+                            <label className={styles.formLabel}>{t('Орієнтовна Вартість Доставки')}</label>
                             <input
-                                placeholder={'Орієнтовна Вартість Доставки'}
+                                placeholder={t('Орієнтовна Вартість Доставки')}
                                 className={'baseInput'}
                                 id="deliveryCostUKR"
                                 name="deliveryCostUKR"
@@ -235,10 +236,10 @@ const DeliveryUKR = () => {
                             />
                         </div>
                         <div className={styles.inputWrap}>
-                            <label className={styles.formLabel}>Номер ТТН</label>
+                            <label className={styles.formLabel}>{t('Номер ТТН')}</label>
                             <div className={styles.transportNumber}>
                                 <input
-                                    placeholder={'ТТН'}
+                                    placeholder={t('ТТН')}
                                     className={'baseInput'}
                                     id="ttnUKR"
                                     name="ttnUKR"
@@ -255,11 +256,11 @@ const DeliveryUKR = () => {
                         </div>
 
                         <div className={styles.inputWrap}>
-                            <label className={styles.formLabel}>Коментар</label>
+                            <label className={styles.formLabel}>{t('Коментар')}</label>
                             <textarea
                                 cols="30"
                                 rows="10"
-                                placeholder={'Коментар'}
+                                placeholder={t('Коментар')}
                                 id="commentUKR"
                                 name="commentUKR"
                                 onChange={handleChange}
@@ -268,7 +269,7 @@ const DeliveryUKR = () => {
                         </div>
                         <div className={styles.action}>
                             <button className={'globalBtn'} type='submit' disabled={isSubmitting}>
-                                <span>Створити ТТН</span>
+                                <span>{t('Створити ТТН')}</span>
                             </button>
                         </div>
                     </div>
@@ -291,7 +292,7 @@ const DeliveryUKR = () => {
             </div>
             <div className="globalBtnWrap">
                 <button className="globalBtn button-xs" onClick={nextPage}>
-                    <span>Далі</span>
+                    <span>{t('Далі')}</span>
                 </button>
             </div>
         </div>

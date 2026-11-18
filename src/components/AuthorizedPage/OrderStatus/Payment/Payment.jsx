@@ -5,6 +5,7 @@ import TotalPrice from "../../../Common/TotalPrice/TotalPrice";
 import {getPriceWithDiscount} from "../../../../utils/getPriceWithDiscount";
 import styles from "./payment.module.scss";
 import {useIsDesktop} from "../../../../hooks/useIsDesktop";
+import { t } from '../../../../i18n';
 
 export const Payment = ({payment, handleSaveFinalPrice, handleStatusChange, isPaymentAllowed, orderDiscountCalc = false,
     orderAmount = 0}) => {
@@ -15,9 +16,9 @@ export const Payment = ({payment, handleSaveFinalPrice, handleStatusChange, isPa
     const [popup, setPopup] = useState(null);
     const isDisabled = payment?.status === 'PAID' || payment?.status === 'PAY_WAIT';
     const statuses = [
-        {title: 'В обробці', value: 'IN_PROG'},
-        {title: 'Очікує оплати', value: 'PAY_WAIT', disabled: !isPaymentAllowed},
-        {title: 'Не оплачено', value: 'NOT_PAID'},
+        {title: t('В обробці'), value: 'IN_PROG'},
+        {title: t('Очікує оплати'), value: 'PAY_WAIT', disabled: !isPaymentAllowed},
+        {title: t('Не оплачено'), value: 'NOT_PAID'},
     ];
     const selectedStatus = payment?.status !== 'NONE' ? {
         value: payment.status,
@@ -59,13 +60,13 @@ export const Payment = ({payment, handleSaveFinalPrice, handleStatusChange, isPa
                 />
                     <div className={styles.total}>
                         <div className={styles.row}>
-                            <span>До сплати замовнику:</span>
+                            <span>{t('До сплати замовнику:')}</span>
                             <span
-                                className={styles.value}>{(payment?.final_amount - payment?.already_paid_amount) || 0} грн</span>
+                                className={styles.value}>{(payment?.final_amount - payment?.already_paid_amount) || 0} {t('грн')}</span>
                         </div>
                         <div className={styles.row}>
-                            <span>Оплачено замовником:</span>
-                            <span className={styles.value}>{payment?.already_paid_amount} грн</span>
+                            <span>{t('Оплачено замовником:')}</span>
+                            <span className={styles.value}>{payment?.already_paid_amount} {t('грн')}</span>
                         </div>
                     </div>
                 </>)}
@@ -82,13 +83,13 @@ export const Payment = ({payment, handleSaveFinalPrice, handleStatusChange, isPa
                     />
                     <div className={styles.total}>
                         <div className={styles.row}>
-                            <span>До сплати замовнику:</span>
+                            <span>{t('До сплати замовнику:')}</span>
                             <span
-                                className={styles.value}>{(payment?.final_amount - payment?.already_paid_amount) || 0} грн</span>
+                                className={styles.value}>{(payment?.final_amount - payment?.already_paid_amount) || 0} {t('грн')}</span>
                         </div>
                         <div className={styles.row}>
-                            <span>Оплачено замовником:</span>
-                            <span className={styles.value}>{payment?.already_paid_amount} грн</span>
+                            <span>{t('Оплачено замовником:')}</span>
+                            <span className={styles.value}>{payment?.already_paid_amount} {t('грн')}</span>
                         </div>
                     </div>
                 </div>

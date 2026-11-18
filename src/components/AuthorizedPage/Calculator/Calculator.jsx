@@ -25,6 +25,7 @@ import Preloader from "../../Common/Preloader/Preloader";
 import GlobalCalculator from "../../Common/GlobalCalculator/GlobalCalculator";
 import {useIsDesktop} from "../../../hooks/useIsDesktop";
 import ArrBack from "../../Common/ArrBack/ArrBack";
+import { t } from '../../../i18n';
 
 const Calculator = () => {
     const {orderId, id} = useParams();
@@ -75,7 +76,7 @@ const Calculator = () => {
                         setCustomComponents([]);
                         setKitCommentText("");
                         setSelectedOptionIds([]);
-                        setNoKitBanner('За вибраними даними комплекту не існує');
+                        setNoKitBanner(t('За вибраними даними комплекту не існує'));
                     }
                 })
                 .finally(() => {
@@ -153,13 +154,13 @@ const Calculator = () => {
                     }
 
                     if (resp?.status === 404) {
-                        alert('Неможливо додати комплект, адже залишки обраної тканини дорівнюють 0.');
+                        alert(t('Неможливо додати комплект, адже залишки обраної тканини дорівнюють 0.'));
                         console.log(resp);
                         return;
                     }
 
                     if (resp?.status === 500) {
-                        alert('Вибачте, виникла помилка. Неможливо додати комплект');
+                        alert(t('Вибачте, виникла помилка. Неможливо додати комплект'));
                         console.log(resp);
                         return;
                     }
@@ -530,7 +531,7 @@ const Calculator = () => {
                  <ArrBack/>
                 {/* a kit in production is read-only: nothing in it can be clicked or focused (see the caption below) */}
                 <div className={manufacturing ? styles.readOnly : undefined} {...(manufacturing ? { inert: '' } : {})}>
-                <h2>{id ? 'Тип тканини' : 'Оберіть тип тканини'}</h2>
+                <h2>{id ? t('Тип тканини') : t('Оберіть тип тканини')}</h2>
                 <FabricType
                     setTemplate={setTemplate}
                     fabric={fabric}
@@ -549,7 +550,7 @@ const Calculator = () => {
                     setCustomComponents={setCustomComponents}
                 />
 
-                <h2>{id ? 'Розмір комплекту' : 'Оберіть розмір комплекту'}</h2>
+                <h2>{id ? t('Розмір комплекту') : t('Оберіть розмір комплекту')}</h2>
                 <FabricSize
                     activeSize={activeSize}
                     setActiveSize={setActiveSize}
@@ -564,7 +565,7 @@ const Calculator = () => {
 
                 {product && product.kit && (
                     <>
-                        <h2>{id ? 'Варіації комплектів по вибраним параметрам' : 'Оберіть варіацію комплекту'}</h2>
+                        <h2>{id ? t('Варіації комплектів по вибраним параметрам') : t('Оберіть варіацію комплекту')}</h2>
                         <FabricSizeSecond
                             activeSecondSize={activeSecondSize}
                             setActiveSecondSize={(idx) => {
@@ -587,8 +588,8 @@ const Calculator = () => {
                         {!id && !((components?.components?.length > 0) || (customComponents?.length > 0)) && (
                             <p className={`${styles.variantNote} infoNote`}>
                                 {product.kit.some((el) => Number(el.starting_price) > 0)
-                                    ? 'Оберіть варіацію комплекту, щоб розрахувати його ціну'
-                                    : 'Для цього розміру немає комплекту з ціною – оберіть інший розмір або тип тканини'}
+                                    ? t('Оберіть варіацію комплекту, щоб розрахувати його ціну')
+                                    : t('Для цього розміру немає комплекту з ціною – оберіть інший розмір або тип тканини')}
                             </p>
                         )}
                     </>
@@ -596,12 +597,12 @@ const Calculator = () => {
 
                 {((components?.components?.length > 0) || (customComponents?.length > 0)) && (
                     <div className={styles.kitWrapper}>
-                        <h2 className={styles.setTitle}>Комплект</h2>
+                        <h2 className={styles.setTitle}>{t('Комплект')}</h2>
 
                         {!isKitSplitted && components?.components?.length > 0 && (
                             <div className={styles.templateKitWrapper}>
                                 <div className={styles.kitSplitButton}>
-                                    <button onClick={() => setIsSplitConfirm(true)}>Розформувати комплект</button>
+                                    <button onClick={() => setIsSplitConfirm(true)}>{t('Розформувати комплект')}</button>
                                 </div>
 
                                 <FabricSet
@@ -662,7 +663,7 @@ const Calculator = () => {
                             <AddComponentButton onClick={openComponentPopup}/>
                         </div>
 
-                        <h2>Опції</h2>
+                        <h2>{t('Опції')}</h2>
                         <FabricOptions
                             options={product.kit_options}
                             selectedOptionIds={selectedOptionIds}
@@ -684,11 +685,11 @@ const Calculator = () => {
                         !hasPositivePrice ||
                         !!manufacturing
                     }
-                    buttonName="Обрахувати і Зберегти"
+                    buttonName={t('Обрахувати і Зберегти')}
                 />
 
                 {manufacturing && (
-                    <p className={`${styles.calcNote} infoNote`}>Комплект уже у виробництві (статус: {manufacturing.status}), змінити його не можна</p>
+                    <p className={`${styles.calcNote} infoNote`}>{t('Комплект уже у виробництві (статус: {{status}}), змінити його не можна', {status: manufacturing.status})}</p>
                 )}
 
                 {backendErrorText && (
@@ -700,12 +701,12 @@ const Calculator = () => {
                 )}
 
                 {product?.kit && ((components?.components?.length > 0) || (customComponents?.length > 0)) && !hasPositivePrice && (
-                    <p className={`${styles.calcNote} infoNote`}>Не можна обрахувати і зберегти комплект з нульовою ціною</p>
+                    <p className={`${styles.calcNote} infoNote`}>{t('Не можна обрахувати і зберегти комплект з нульовою ціною')}</p>
                 )}
 
                 {showKitCommentPopup && (
                     <GlobalPopup
-                        title={'Коментар'}
+                        title={t('Коментар')}
                         onClose={() => setShowKitCommentPopup(false)}
                         {...(isDesktop ? { centeredPopup: true } : {})}
                     >
@@ -719,16 +720,16 @@ const Calculator = () => {
 
                 {isSplitConfirm && (
                     <ConfirmPopup
-                        title="Розформування комплекту"
-                        text={<>Розформувати комплект?</>}
-                        note={<>Після розформування кожен компонент рахується окремо, за власною ціною. У ціні готового комплекту частина витрат (пошиття, пакування, тканина) розподілена на весь набір, тому сума окремих компонентів зазвичай більша – ціна комплекту може зрости. Якщо по замовленню вже виставлено рахунки, їхню суму потім треба буде оновити на сторінці «Статус».</>}
+                        title={t('Розформування комплекту')}
+                        text={<>{t('Розформувати комплект?')}</>}
+                        note={<>{t('Після розформування кожен компонент рахується окремо, за власною ціною. У ціні готового комплекту частина витрат (пошиття, пакування, тканина) розподілена на весь набір, тому сума окремих компонентів зазвичай більша – ціна комплекту може зрости. Якщо по замовленню вже виставлено рахунки, їхню суму потім треба буде оновити на сторінці «Статус».')}</>}
                         onConfirm={() => { setIsSplitConfirm(false); splitKit(); }}
                         onCancel={() => setIsSplitConfirm(false)}
                     />
                 )}
 
                 {showComponentPopup && (
-                    <GlobalPopup topPopup title={'Комплектуючі:'} onClose={() => setShowComponentPopup(false)}>
+                    <GlobalPopup topPopup title={t('Комплектуючі:')} onClose={() => setShowComponentPopup(false)}>
                         <ComponentsPopup
                             addCustomComponent={addCustomComponent}
                             defaultFabricImage={fabric?.image || fabric?.type.image}
@@ -740,7 +741,7 @@ const Calculator = () => {
 
                 {showFabricAmountPopup && (
                     <GlobalPopup
-                        title={'Витрата тканини:'}
+                        title={t('Витрата тканини:')}
                         onClose={() => setShowFabricAmountPopup(false)}
                         {...(isDesktop ? { centeredPopup: true } : {})}
                     >
@@ -758,7 +759,7 @@ const Calculator = () => {
                                     type="text"
                                     readOnly
                                 />
-                                <span>&nbsp;см</span>
+                                <span>&nbsp;{t('см')}</span>
                             </div>
                         </GlobalCalculator>
                     </GlobalPopup>

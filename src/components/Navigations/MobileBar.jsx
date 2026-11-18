@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router";
 import styles from './Menu.module.scss';
 import logo from '../../assets/img/logoEgo.svg';
+import { useTranslation } from 'react-i18next';
 
 // Demo build, phones / tablets (< 1024 px), at the user's request (2026-11-11): instead of the bottom bar,
 // a top bar (☰, logo, page name) opens the menu as a slide-out from the left, as in the ERP.
@@ -60,22 +61,26 @@ export const useMobileMenu = (isDesktop) => {
     return [isOpen, setIsOpen];
 };
 
-const MobileBar = ({ title, isOpen, setIsOpen }) => (
+const MobileBar = ({ title, isOpen, setIsOpen }) => {
+    const { t } = useTranslation();
+
+    return (
     <>
         <div className={styles.mobileBar}>
             <button
                 type="button"
                 className={styles.mobileBar__toggle}
                 onClick={() => setIsOpen(true)}
-                aria-label="Відкрити меню"
+                aria-label={t('Відкрити меню')}
             >
                 <span/><span/><span/>
             </button>
             <img className={styles.mobileBar__logo} src={logo} alt="" width={36} height={36}/>
-            <p className={styles.mobileBar__title}>{title}</p>
+            <p className={styles.mobileBar__title}>{t(title)}</p>
         </div>
         {isOpen && <div className={styles.mobileOverlay} onClick={() => setIsOpen(false)}/>}
     </>
-);
+    );
+};
 
 export default MobileBar;

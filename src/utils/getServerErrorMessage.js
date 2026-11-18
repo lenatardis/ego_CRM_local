@@ -1,3 +1,5 @@
+import { t } from '../i18n';
+
 export const getServerErrorMessage = (response) => {
     if (!response) return '';
 
@@ -66,5 +68,5 @@ export const getServerErrorMessage = (response) => {
 
     if (fieldMessages.length) return fieldMessages.join(' | ');
 
-    return 'Сталася помилка сервера';
+    return t('Сталася помилка сервера');
 };

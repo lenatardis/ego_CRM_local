@@ -7,6 +7,7 @@ import {useAppDispatch} from "../../../../hooks/redux";
 import GlobalPopup from "../../../Common/GlobalPopup/GlobalPopup";
 import StoragePopup from "../StoragePopup/StoragePopup";
 import {Link} from "react-router-dom";
+import { t } from '../../../../i18n';
 
 const ProductActions = ({order, popup, setPopup, setOrder, isDisabled = false,  onAfterProductAdd, isSuborder = false}) => {
     const dispatch = useAppDispatch();
@@ -20,10 +21,10 @@ const ProductActions = ({order, popup, setPopup, setOrder, isDisabled = false,  
         <div className={`${styles.productActions} ${isSuborder ? styles.suborder : ''}`}>
             <div className={styles.row}>
                 <button className={styles.addItem} onClick={() => handlePopup()} disabled={isDisabled}>
-                    <span>Додати товар зі складу</span>
+                    <span>{t('Додати товар зі складу')}</span>
                 </button>
                 <Link to={`/calculator/${order?.id}`} className={`${styles.addSet} ${isDisabled ? styles.disabled : ''}`}>
-                    <span>Додати комплект</span>
+                    <span>{t('Додати комплект')}</span>
                 </Link>
             </div>
                 <div className={styles.row}>
@@ -31,17 +32,17 @@ const ProductActions = ({order, popup, setPopup, setOrder, isDisabled = false,  
                     <CopyToClipboard text={order.url} className={`${styles.copyButton} click-effect`}>
                         <button tabIndex={0}>
                             <img src={copyIcon} alt=""/>
-                            <span>Скопіювати посилання</span>
+                            <span>{t('Скопіювати посилання')}</span>
                         </button>
                     </CopyToClipboard>
                     )}
                    {/* <button className={styles.prodLink} disabled={isDisabled}>
-                        <span>На виробництво</span>
+                        <span>{t('На виробництво')}</span>
                     </button>*/}
                 </div>
 
             {popup && popup === 'status' && (
-                <GlobalPopup topPopup title={'Товар зі складу:'} onClose={() => setPopup(false)}>
+                <GlobalPopup topPopup title={t('Товар зі складу:')} onClose={() => setPopup(false)}>
                     <StoragePopup orderId={order?.id} setOrder={setOrder} setPopup={setPopup} sourceID={order?.source?.id} onAfterProductAdd={onAfterProductAdd}/>
                 </GlobalPopup>
             )}

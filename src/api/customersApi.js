@@ -1,6 +1,7 @@
 import { baseUrl } from "./apiConfig";
 import { refreshAccessToken } from "./authApi";
 import { parseResponseSafely } from "./apiUtils";
+import { t } from '../i18n';
 
 export const updateCustomer = async (token, orderId, value) => {
     try {
@@ -22,7 +23,7 @@ export const updateCustomer = async (token, orderId, value) => {
                 if (res) {
                     return updateCustomer(res.access, orderId, value);
                 }
-                return { _serverError: 'Помилка авторизації' };
+                return { _serverError: t('Помилка авторизації') };
             });
         }
 
@@ -32,9 +33,9 @@ export const updateCustomer = async (token, orderId, value) => {
             return data;
         }
 
-        return data || { _serverError: `Помилка сервера (${response.status})` };
+        return data || { _serverError: t('Помилка сервера ({{status}})', {status: response.status}) };
     } catch (error) {
         console.log(error);
-        return { _serverError: 'Не вдалося виконати запит. Перевір підключення або спробуй ще раз.' };
+        return { _serverError: t('Не вдалося виконати запит. Перевір підключення або спробуй ще раз.') };
     }
 };

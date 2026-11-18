@@ -12,6 +12,7 @@ import copyIcon from "../../../../assets/icons/paperclip.svg";
 import { PayMethod } from "./PayMethod";
 import styles from "./bill.module.scss";
 import { useIsDesktop } from "../../../../hooks/useIsDesktop";
+import { t } from '../../../../i18n';
 
 export const Bill = ({ bill, number, updateBill, onSubmitPayment, onDelete, isDisabled, isFullDisabled, availableSum }) => {
     const [isOpen, setIsOpen] = useState(false);
@@ -20,12 +21,12 @@ export const Bill = ({ bill, number, updateBill, onSubmitPayment, onDelete, isDi
     useEffect(() => {
         setSum(bill.prepayment_amount || 0);
     }, [bill.prepayment_amount]);
-    const status = bill.status === 'PAID' ? { title: 'Оплачено', value: bill.status, color: '#07FA64' }
-        : bill.status === 'PAY_WAIT' ? { title: 'Очікує оплати', value: bill.status, color: '#F5E97B' }
-            : { title: 'Не оплачено', value: bill.status, color: '#F37D76' };
+    const status = bill.status === 'PAID' ? { title: t('Оплачено'), value: bill.status, color: '#07FA64' }
+        : bill.status === 'PAY_WAIT' ? { title: t('Очікує оплати'), value: bill.status, color: '#F5E97B' }
+            : { title: t('Не оплачено'), value: bill.status, color: '#F37D76' };
     const statuses = [
-        { title: 'Очікує оплати', value: 'PAY_WAIT' },
-        { title: 'Не оплачено', value: 'NOT_PAID' },
+        { title: t('Очікує оплати'), value: 'PAY_WAIT' },
+        { title: t('Не оплачено'), value: 'NOT_PAID' },
     ];
     const dispatch = useAppDispatch();
     const disabled = isDisabled || status.value === 'PAID';
@@ -61,21 +62,21 @@ export const Bill = ({ bill, number, updateBill, onSubmitPayment, onDelete, isDi
                 <div className={styles.bill__content}>
                     <div className={styles.head}>
                         <div className={styles.head__top}>
-                            <p className={styles.number}>Рахунок №{number}</p>
+                            <p className={styles.number}>{t('Рахунок №{{number}}', {number})}</p>
                             <p className={styles.sum} style={{ color: !bill.prepayment_amount ? 'red' : 'inherit' }}>
-                                {bill.prepayment_amount || 0} грн
+                                {bill.prepayment_amount || 0} {t('грн')}
                             </p>
                         </div>
                         {(bill.receipt_url || (bill.customer_receipt && bill.customer_receipt_approved === 'APPROVED')) && (
                             <div className={styles.receiptBar}>
                                 <div>
                                     <span className={styles.checkIcon}></span>
-                                    <span className={styles.checkText}>Рахунок підтверджено</span>
+                                    <span className={styles.checkText}>{t('Рахунок підтверджено')}</span>
                                 </div>
                                 <a href={bill.receipt_url || bill.customer_receipt} className={styles.link}
                                     target="_blank" rel="noreferrer">
                                     <img src={copyIcon} alt="Receipt" />
-                                    <span>Посилання на чек</span>
+                                    <span>{t('Посилання на чек')}</span>
                                 </a>
                             </div>
 
@@ -100,7 +101,7 @@ export const Bill = ({ bill, number, updateBill, onSubmitPayment, onDelete, isDi
                         <div className={styles.sum}>
                             <input
                                 className={`baseInput ${disabled || bill.method === 'FULL' ? styles.disabled : ''}`}
-                                placeholder="Сума"
+                                placeholder={t('Сума')}
                                 value={sum ? `${sum}` : ''}
                                 onClick={() => {
                                     dispatch(setIsActivePopup(true));
@@ -114,7 +115,7 @@ export const Bill = ({ bill, number, updateBill, onSubmitPayment, onDelete, isDi
                     <div className={`${styles.body} ${isOpen ? styles.open : ''}`}>
                         <div className={styles.head__comment}>
                             <textarea
-                                placeholder="Коментар"
+                                placeholder={t('Коментар')}
                                 defaultValue={bill.comment}
                                 onBlur={(e) => {
                                     if (e.target.value === bill.comment) return;
@@ -142,7 +143,7 @@ export const Bill = ({ bill, number, updateBill, onSubmitPayment, onDelete, isDi
                             <div className={styles.customerReceipt}>
                                 <div className={styles.link}>
                                     <img src={copyIcon} alt="receipt" />
-                                    <a href={bill.customer_receipt} target="_blank" rel="noreferrer">Квитанція про оплату</a>
+                                    <a href={bill.customer_receipt} target="_blank" rel="noreferrer">{t('Квитанція про оплату')}</a>
                                 </div>
                                 {bill?.customer_receipt_approved === 'IN_PROC' && (
                                     <button
@@ -152,14 +153,14 @@ export const Bill = ({ bill, number, updateBill, onSubmitPayment, onDelete, isDi
                                             setPopup('approve');
                                         }}
                                     >
-                                        Підтвердити оплату
+                                        {t('Підтвердити оплату')}
                                     </button>
                                 )}
                             </div>
                         )}
                         <button className={styles.deleteBtn} onClick={() => onDelete(bill.id)} disabled={disabled}>
                             <img src={removeIcon} alt="Remove" />
-                            <span>Видалити рахунок</span>
+                            <span>{t('Видалити рахунок')}</span>
                         </button>
                     </div>
                 </div>
@@ -168,23 +169,23 @@ export const Bill = ({ bill, number, updateBill, onSubmitPayment, onDelete, isDi
                 </button>
             </div>
             {popup === 'sum' && (
-                <GlobalPopup title={'Сума:'} onClose={() => setPopup(null)} {...(isDesktop ? { centeredPopup: true } : {})}>
+                <GlobalPopup title={t('Сума:')} onClose={() => setPopup(null)} {...(isDesktop ? { centeredPopup: true } : {})}>
                     <GlobalCalculator handleChange={handleSumChange} handleDelete={() => setSum(Math.floor(sum / 10))} onSubmit={() => handleSumSubmit(false)}>
                         <div className={styles.sumInputWrap}>
-                            <p>Максимально можлива сума: {bill.prepayment_amount + availableSum} грн</p>
+                            <p>{t('Максимально можлива сума:')} {bill.prepayment_amount + availableSum} {t('грн')}</p>
                             <input value={sum} className={'baseInput'} type="text" readOnly />
-                            <span>&nbsp;грн</span>
+                            <span>&nbsp;{t('грн')}</span>
                         </div>
                     </GlobalCalculator>
                 </GlobalPopup>
             )}
             {popup === 'approve' && (
-                <GlobalPopup title={'Підтвердження оплати:'} onClose={() => setPopup(null)} {...(isDesktop ? { centeredPopup: true } : {})}>
+                <GlobalPopup title={t('Підтвердження оплати:')} onClose={() => setPopup(null)} {...(isDesktop ? { centeredPopup: true } : {})}>
                     <div className={styles.approve}>
-                        <p>Ви дійсно підтверджуєте оплату рахунку?</p>
+                        <p>{t('Ви дійсно підтверджуєте оплату рахунку?')}</p>
                         <div className={styles.actions}>
-                            <button className={styles.submit} onClick={() => handleSubmitPayment(true)}>Підтвердити</button>
-                            <button className={styles.cancel} onClick={() => handleSubmitPayment(false)}>Відхилити</button>
+                            <button className={styles.submit} onClick={() => handleSubmitPayment(true)}>{t('Підтвердити')}</button>
+                            <button className={styles.cancel} onClick={() => handleSubmitPayment(false)}>{t('Відхилити')}</button>
                         </div>
                     </div>
                 </GlobalPopup>

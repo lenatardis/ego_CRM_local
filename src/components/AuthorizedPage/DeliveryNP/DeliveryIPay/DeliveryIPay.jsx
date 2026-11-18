@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./DeliveryIPay.module.scss";
+import { t } from '../../../../i18n';
 
 
 const DeliveryIPay = ({isIPay, auditDates}) => {
@@ -10,11 +11,11 @@ const DeliveryIPay = ({isIPay, auditDates}) => {
 
     return (
         <div className={styles.iPay}>
-            <span>Хто оплачує Доставку </span>
+            <span>{t('Хто оплачує Доставку')} </span>
             <div className={styles.iPay__customCheckbox}>
                 <input name={'ipay'} type={'checkbox'} checked={isIPay} onChange={() => onChangePay(!isIPay)} />
                 <span/>
-                <label htmlFor={'ipay'}>Наша доставка</label>
+                <label htmlFor={'ipay'}>{t('Наша доставка')}</label>
             </div>
         </div>
     )

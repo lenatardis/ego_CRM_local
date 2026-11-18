@@ -5,6 +5,7 @@ import {
     applyItemFields, emptyItem, estimateDeliveryPrice, findNpItem, loadDirectory, loadNpItems, newTtn, nextNpItemId, saveNpItems,
     searchCities, searchWarehouses, serializeNpItem, waybillErrors, waybillHtml, waybillSnapshot,
 } from '../data/novaPoshta';
+import { t } from '../../i18n';
 
 // Nova Poshta delivery (src/api/novaPoshtaApi.js; DeliveryNP*, OrderCreate, Products, OrderStatus, Parser):
 //   GET    delivery/nova_poshta/item/?order_id=        -> [item], or 404 { detail } when the order has none yet
@@ -110,7 +111,7 @@ export const deliveryHandlers = [
         const { nova_poshta_id } = await request.json();
         const item = findNpItem((i) => String(i.id) === String(nova_poshta_id));
         if (!item) return notFound();
-        if (!item.delivery.ttn) return badRequest({ ttn: ['ТТН ще не створено.'] });
+        if (!item.delivery.ttn) return badRequest({ ttn: [t('ТТН ще не створено.')] });
         const errors = waybillErrors(item);
         if (Object.keys(errors).length) return badRequest(errors);
 

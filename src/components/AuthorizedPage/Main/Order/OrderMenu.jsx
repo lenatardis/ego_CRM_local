@@ -11,6 +11,7 @@ import {removeStateOrder, updateOrders} from "../../../../store/main-slice";
 import {getUser} from "../../../../store/selectors";
 import { getAccessToken } from "../../../../utils/authTokens";
 import { setOrderDuplicate, updateOrder } from "../../../../api/ordersApi";
+import { t } from '../../../../i18n';
 
 const OrderMenu = ({setShowMenu, onEditOrder, id, openPopup, isFavorite, tabName, isGeneral}) => {
     const dispatch = useAppDispatch();
@@ -70,28 +71,28 @@ const OrderMenu = ({setShowMenu, onEditOrder, id, openPopup, isFavorite, tabName
                             className={styles.menu__copy}
                             onClick={() => onSetToFavorite(!isFavorite)}
                         >
-                            <span>{isFavorite ? "Видалити з обраних" : "Добавити в обране"}</span>
+                            <span>{isFavorite ? t('Видалити з обраних') : t('Добавити в обране')}</span>
                             <img src={favoriteIcon} alt="" />
                         </button>
                     )}
                     {isGeneral && (
                         <button onClick={() => onSetMyOrder()}>
-                            <span>Закріпити за мною</span>
+                            <span>{t('Закріпити за мною')}</span>
                             <img src={fastenIcon} alt=""/>
                         </button>
                     )}
                     <button onClick={() => onEditOrder(id)}>
-                        <span>Редагувати замовлення</span>
+                        <span>{t('Редагувати замовлення')}</span>
                         <img src={editIcon} alt=""/>
                     </button>
                     {isGeneral && (
                         <button className={styles.menu__copy} onClick={() => onDuplicate()}>
-                            <span>Дублювати замовлення</span>
+                            <span>{t('Дублювати замовлення')}</span>
                             <img src={copyIcon} alt=""/>
                         </button>
                     )}
                     <button className={styles.menu__remove} onClick={() => openPopup()}>
-                        <span>Видалити замовлення</span>
+                        <span>{t('Видалити замовлення')}</span>
                         <img src={removeIcon} alt=""/>
                     </button>
                 </div>

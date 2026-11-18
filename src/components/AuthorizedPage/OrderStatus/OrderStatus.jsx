@@ -27,6 +27,7 @@ import { getPriceWithDiscount } from "../../../utils/getPriceWithDiscount";
 import { approveReceipt } from "../../../api/receiptApi";
 import { getOrderMessageText } from "../../../utils/getOrderMessageText";
 import { useIsDesktop } from "../../../hooks/useIsDesktop";
+import { t } from '../../../i18n';
 
 const OrderStatus = () => {
     const { id: orderId } = useParams();
@@ -62,11 +63,11 @@ const OrderStatus = () => {
         !order?.payment?.final_amount;
 
     const caption =
-        'Для того щоб додати новий або відредагувати рахунок змініть статус замовлення на "В обробці"';
-    const caption2 = "Уся сума замовлення вже розподілена між рахунками – новий рахунок не потрібен";
-    const caption3 = "Неможливо додати новий рахунок при повному методі оплати";
-    const caption4 = "Для того щоб додати новий рахунок додайте товар(и)";
-    const caption5 = "Максимально можливо створити 2 рахунки";
+        t('Для того щоб додати новий або відредагувати рахунок змініть статус замовлення на "В обробці"');
+    const caption2 = t('Уся сума замовлення вже розподілена між рахунками – новий рахунок не потрібен');
+    const caption3 = t('Неможливо додати новий рахунок при повному методі оплати');
+    const caption4 = t('Для того щоб додати новий рахунок додайте товар(и)');
+    const caption5 = t('Максимально можливо створити 2 рахунки');
 
     const isMaxBillsCountReached = bills.length >= 2;
 
@@ -76,13 +77,13 @@ const OrderStatus = () => {
         if (order?.payment?.status !== "PAID") return null;
         switch (order?.status) {
             case "IN_PRODUCTION":
-                return "Замовлення в процесі виготовлення не підлягає редагуванню";
+                return t('Замовлення в процесі виготовлення не підлягає редагуванню');
             case "SHIPMENT_READY":
-                return "Замовлення готове до відправки і не підлягає редагуванню";
+                return t('Замовлення готове до відправки і не підлягає редагуванню');
             case "DELIVERED":
-                return "Замовлення доставлено і не підлягає редагуванню";
+                return t('Замовлення доставлено і не підлягає редагуванню');
             default:
-                return "Замовлення оплачено – рахунки не підлягають редагуванню";
+                return t('Замовлення оплачено – рахунки не підлягають редагуванню');
         }
     };
     const paidNote = getPaidNote();
@@ -95,14 +96,14 @@ const OrderStatus = () => {
         const final = Number(order?.payment?.final_amount) || 0;
         if (!final || paidNote || bills.length === 0) return null;
         const cents = (n) => Math.round(Number(n) * 100);
-        const money = (n) => `${cents(n) / 100} грн`;
+        const money = (n) => `${cents(n) / 100} ${t('грн')}`;
         const numbered = bills.map((bill, index) => ({ bill, number: index + 1 }));
         const paid = numbered.filter(({ bill }) => bill.status === "PAID");
         const unpaid = numbered.filter(({ bill }) => bill.status !== "PAID");
         const paidSum = paid.reduce((acc, { bill }) => acc + (Number(bill.prepayment_amount) || 0), 0);
 
         if (cents(paidSum) > cents(final)) {
-            return { text: `Оплачено ${money(paidSum)} – більше, ніж сума замовлення (${money(final)}). Ймовірно, змінилась знижка або товари.` };
+            return { text: t('Оплачено {{paid}} – більше, ніж сума замовлення ({{total}}). Ймовірно, змінилась знижка або товари.', {paid: money(paidSum), total: money(final)}) };
         }
         // a bill whose amount isn't entered yet is still being set up
         if (unpaid.some(({ bill }) => bill.prepayment_amount === null || bill.prepayment_amount === undefined)) return null;
@@ -113,25 +114,25 @@ const OrderStatus = () => {
         // a single prepayment below the total is normal: the rest goes to a second bill ("Новий рахунок")
         if (bills.length === 1 && bills[0].method === "PREPAYMENT" && cents(unpaidSum) < cents(remaining)) return null;
 
-        const reason = "Ймовірно, змінилась знижка або товари.";
+        const reason = t('Ймовірно, змінилась знижка або товари.');
         if (unpaid.length === 0) {
-            return { text: `Оплачено ${money(paidSum)} із ${money(final)} – решту не покриває жоден рахунок. ${reason}` };
+            return { text: `${t('Оплачено {{paid}} із {{total}} – решту не покриває жоден рахунок.', {paid: money(paidSum), total: money(final)})} ${reason}` };
         }
-        const mismatch = `Неоплачені рахунки (${money(unpaidSum)}) не відповідають сумі до сплати (${money(remaining)}). ${reason}`;
+        const mismatch = `${t('Неоплачені рахунки ({{unpaid}}) не відповідають сумі до сплати ({{remaining}}).', {unpaid: money(unpaidSum), remaining: money(remaining)})} ${reason}`;
         if (cents(remaining) <= 0) {
-            return { text: `Оплачені рахунки вже покривають суму замовлення – рахунок №${unpaid[unpaid.length - 1].number} більше не потрібен, видаліть його.` };
+            return { text: t('Оплачені рахунки вже покривають суму замовлення – рахунок №{{number}} більше не потрібен, видаліть його.', {number: unpaid[unpaid.length - 1].number}) };
         }
         // the bill that takes the rest: "Вся сума" or the second bill; else (only a prepayment left unpaid,
         // the second bill already paid) the prepayment itself
         const rest = [...unpaid].reverse().find(({ bill }) => bill.method === "FULL" || bill.method === "POSTPAID")
             ?? (bills.length === 2 && unpaid.length === 1 ? unpaid[0] : null);
         if (!rest) {
-            return { text: `${mismatch} Передоплата більша за суму до сплати – змініть суму рахунку №${unpaid[0].number}.` };
+            return { text: `${mismatch} ${t('Передоплата більша за суму до сплати – змініть суму рахунку №{{number}}.', {number: unpaid[0].number})}` };
         }
         const others = unpaid.filter((item) => item !== rest).reduce((acc, { bill }) => acc + (Number(bill.prepayment_amount) || 0), 0);
         const target = remaining - others;
         if (cents(target) <= 0) {
-            return { text: `${mismatch} Передоплата не менша за суму до сплати – змініть суму рахунку №1.` };
+            return { text: `${mismatch} ${t('Передоплата не менша за суму до сплати – змініть суму рахунку №1.')}` };
         }
         return { text: mismatch, fix: { id: rest.bill.id, number: rest.number, amount: cents(target) / 100 } };
     };
@@ -141,11 +142,11 @@ const OrderStatus = () => {
         <div className={`infoNote infoNote--warning ${styles.billsCheck}`}>
             <p>{billsCheck.text}</p>
             {billsCheck.fix && (isDisabled
-                ? <p>Щоб оновити суму рахунку, змініть статус замовлення на "В обробці".</p>
+                ? <p>{t('Щоб оновити суму рахунку, змініть статус замовлення на "В обробці".')}</p>
                 : (
                     <button type="button" className={styles.billsCheckBtn}
                         onClick={() => handleBillUpdate(billsCheck.fix.id, "prepayment_amount", billsCheck.fix.amount)}>
-                        Оновити рахунок №{billsCheck.fix.number}: {billsCheck.fix.amount} грн
+                        {t('Оновити рахунок №{{number}}', {number: billsCheck.fix.number})}: {billsCheck.fix.amount} {t('грн')}
                     </button>
                 ))}
         </div>
@@ -155,13 +156,13 @@ const OrderStatus = () => {
     const getOrderStatusName = (orderStatus) => {
         switch (orderStatus) {
             case "PAID":
-                return "Оплачено";
+                return t('Оплачено');
             case "IN_PROG":
-                return "В обробці";
+                return t('В обробці');
             case "PAY_WAIT":
-                return "Очікує оплати";
+                return t('Очікує оплати');
             case "NOT_PAID":
-                return "Не оплачено";
+                return t('Не оплачено');
             default:
                 console.log(orderStatus);
                 break;
@@ -172,13 +173,13 @@ const OrderStatus = () => {
     const getOrderGeneralStatusText = (status) => {
         switch (status) {
             case "NEW":
-                return "Замовлення створено";
+                return t('Замовлення створено');
             case "IN_PRODUCTION":
-                return "Товари із цього замовлення вже в процесі виготовлення";
+                return t('Товари із цього замовлення вже в процесі виготовлення');
             case "SHIPMENT_READY":
-                return "Це замовлення готове до відправки";
+                return t('Це замовлення готове до відправки');
             case "DELIVERED":
-                return "Це замовлення доставлено";
+                return t('Це замовлення доставлено');
             default:
                 console.log(status);
                 return status;
@@ -195,7 +196,7 @@ const OrderStatus = () => {
             payment?.status === "PAY_WAIT" &&
             getNumberValue(payment?.already_paid_amount) > 0
         ) {
-            return "Очікує повної оплати";
+            return t('Очікує повної оплати');
         }
 
     return getOrderStatusName(payment?.status);
@@ -616,7 +617,7 @@ const OrderStatus = () => {
     };
 
     if (isLoading) return <Preloader />;
-    if (!order) return <NotFound message={`Замовлення №${orderId} не знайдено`} />;
+    if (!order) return <NotFound message={t('Замовлення №{{id}} не знайдено', {id: orderId})} />;
 
     const desktopSpecialPadding = order?.customer?.url || deliveryInfo?.receiver?.department_number || deliveryInfo?.delivery?.ttn;
 
@@ -629,7 +630,7 @@ const OrderStatus = () => {
                     <div>
                         {order?.id && (
                             <h2 className={desktopSpecialPadding ? styles.desktopSpecialPadding : ""}>
-                                {order?.is_general ? "Замовлення" : "Підзамовлення"} № {order.id}
+                                {order?.is_general ? t('Замовлення № {{id}}', {id: order.id}) : t('Підзамовлення № {{id}}', {id: order.id})}
                             </h2>
                         )}
                         <OrderInfoBlock
@@ -656,7 +657,7 @@ const OrderStatus = () => {
                                     }`}
                             >
                                 <span>
-                                    Поточний статус оплати цього замовлення - <strong>{getPaymentStatusBarText(order.payment)}</strong>
+                                    {t('Поточний статус оплати цього замовлення')} - <strong>{getPaymentStatusBarText(order.payment)}</strong>
                                 </span>
                             </div>
                         )}
@@ -669,7 +670,7 @@ const OrderStatus = () => {
                         {isDesktop &&
                             (bills.length > 0 ? (
                                 <>
-                                    <h3 className={styles.desktopListTitle}>Список рахунків</h3>
+                                    <h3 className={styles.desktopListTitle}>{t('Список рахунків')}</h3>
                                     {billsCheckNote}
                                     <div className={styles.bills}>
                                         {bills.map((el, index) => (
@@ -688,7 +689,7 @@ const OrderStatus = () => {
                                     </div>
                                 </>
                             ) : (
-                                <h3>Рахунки відсутні</h3>
+                                <h3>{t('Рахунки відсутні')}</h3>
                             ))}
 
                         {isDesktop && order?.payment?.id && (
@@ -698,7 +699,7 @@ const OrderStatus = () => {
                                     onClick={handleAddNewBill}
                                     disabled={isDisabled || bills[0]?.method === "FULL" || availableSum <= 0 || isMaxBillsCountReached}
                                 >
-                                    <span>Новий рахунок</span>
+                                    <span>{t('Новий рахунок')}</span>
                                 </button>
 
                                 <div className={styles.notes}>
@@ -732,7 +733,7 @@ const OrderStatus = () => {
 
                         {order?.payment && (
                             <>
-                                <h3>Оплата</h3>
+                                <h3>{t('Оплата')}</h3>
                                 <Payment
                                     payment={order.payment}
                                     handleSaveFinalPrice={handleSaveFinalPrice}
@@ -745,7 +746,7 @@ const OrderStatus = () => {
                                 {!isDesktop &&
                                     (bills.length > 0 ? (
                                         <>
-                                            <h3>Список рахунків</h3>
+                                            <h3>{t('Список рахунків')}</h3>
                                             {billsCheckNote}
                                             <div className={styles.bills}>
                                                 {bills.map((el, index) => (
@@ -764,7 +765,7 @@ const OrderStatus = () => {
                                             </div>
                                         </>
                                     ) : (
-                                        <h3>Рахунки відсутні</h3>
+                                        <h3>{t('Рахунки відсутні')}</h3>
                                     ))}
 
                                 {!isDesktop && order?.payment?.id && (
@@ -774,7 +775,7 @@ const OrderStatus = () => {
                                             onClick={handleAddNewBill}
                                             disabled={isDisabled || bills[0]?.method === "FULL" || availableSum <= 0 || isMaxBillsCountReached}
                                         >
-                                            <span>Новий рахунок</span>
+                                            <span>{t('Новий рахунок')}</span>
                                         </button>
 
                                         <div className={styles.notes}>
@@ -802,7 +803,7 @@ const OrderStatus = () => {
                 {isEstimateSyncing && (
                     <div className={styles.syncOverlay}>
                         <div className={styles.syncOverlay__box}>
-                            Розраховуємо суму доставки...
+                            {t('Розраховуємо суму доставки...')}
                         </div>
                     </div>
                 )}

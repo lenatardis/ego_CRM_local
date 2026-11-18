@@ -6,6 +6,7 @@ import CallbackWorkTime from "./CallbackWorkTime";
 import Preloader from "../../Common/Preloader/Preloader";
 import { getWorkSchedule } from "../../../api/generalApi"
 import ArrBack from "../../Common/ArrBack/ArrBack";
+import { t } from '../../../i18n';
 
 const Callback = () => {
     const [data, setData] = useState(null);
@@ -35,9 +36,9 @@ const Callback = () => {
             <div className={styles.callback__logo}>
                 <img src={logo} alt=""/>
             </div>
-            <h2>Замовити дзвінок</h2>
+            <h2>{t('Замовити дзвінок')}</h2>
             <CallbackForm/>
-            <h2>Години роботи менеджерів</h2>
+            <h2>{t('Години роботи менеджерів')}</h2>
             {data && (
                 <CallbackWorkTime workingDay={data.working_day} workingStartTime={data.working_hours_start}
                                 workingEndTime={data.working_hours_end} weekend={data.weekend}/>

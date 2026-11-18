@@ -5,6 +5,7 @@ import {useAppDispatch} from "../../../../hooks/redux";
 import GlobalPopup from "../../../Common/GlobalPopup/GlobalPopup";
 import GlobalCalculator from "../../../Common/GlobalCalculator/GlobalCalculator";
 import {useIsDesktop} from "../../../../hooks/useIsDesktop";
+import { t } from '../../../../i18n';
 
 const NovaPoshtaWeight = ({weight, setWeight, auditDates, error, hasDepartment}) => {
     const dispatch = useAppDispatch();
@@ -111,21 +112,21 @@ const NovaPoshtaWeight = ({weight, setWeight, auditDates, error, hasDepartment})
         <>
             <div className={styles.weight}>
                 <button type='button' className={`${error ? 'baseInputError' : ''}`} onClick={() => onShowWeight()}>
-                    {!kg && !g ? <span className={styles.weightText}>Об'ємна вага, кг</span> : <span className={styles.weightText}>{!kg?'0': kg}.{!g?'00':g}</span>}
+                    {!kg && !g ? <span className={styles.weightText}>{t('Об\'ємна вага, кг')}</span> : <span className={styles.weightText}>{!kg?'0': kg}.{!g?'00':g}</span>}
                 </button>
             </div>
             {error && (
                 <p className={styles.errorText}>
                     {(Array.isArray(error) ? error[0] : error) === 'This field may not be blank.'
-                        ? 'Вкажіть вагу'
+                        ? t('Вкажіть вагу')
                         : !hasDepartment
-                            ? 'Для збереження і перевірки ваги спочатку введіть номер відділення!'
-                            : 'Вкажіть вагу, яка не перевищує максимальну вагу відділення'
+                            ? t('Для збереження і перевірки ваги спочатку введіть номер відділення!')
+                            : t('Вкажіть вагу, яка не перевищує максимальну вагу відділення')
                     }
                 </p>
             )}
             {showPopup && (
-                <GlobalPopup title={'Об\'ємна вага, кг'} onClose={() => setShowPopup(false)}  {...(isDesktop ? { centeredPopup: true } : {})}>
+                <GlobalPopup title={t('Об\'ємна вага, кг')} onClose={() => setShowPopup(false)}  {...(isDesktop ? { centeredPopup: true } : {})}>
                     <GlobalCalculator handleChange={handleChange} handleDelete={handleDelete} onSubmit={() => onSetWeight()}>
                         <div className={styles.weightInputWrap}>
                             <input

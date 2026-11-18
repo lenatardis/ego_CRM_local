@@ -1,5 +1,6 @@
 import React from "react";
 import styles from './Order.module.scss';
+import { t } from '../../../i18n';
 
 
 const UrgentlyField = ({setIsUrgently, isUrgently, auditDates, isDisabled}) => {
@@ -20,7 +21,7 @@ const UrgentlyField = ({setIsUrgently, isUrgently, auditDates, isDisabled}) => {
                     disabled={isDisabled}
                 />
                 <span className={styles.checkbox}/>
-                <span>Терміново</span>
+                <span>{t('Терміново')}</span>
             </label>
         </div>
     )

@@ -6,6 +6,7 @@ import GlobalPopup from "../../../Common/GlobalPopup/GlobalPopup";
 import PopupCheckboxes from "../../../Common/PopupCheckboxes/PopupCheckboxes";
 import InputMask from "react-input-mask";
 import { getReason, setCallOrder } from "../../../../api/generalApi";
+import i18n, { t } from '../../../../i18n';
 
 // Reasons in the instrumental case, as they read after "у зв'язку з"; an unknown reason is shown as it is, in lower case
 const REASONS_INSTRUMENTAL = {
@@ -19,6 +20,10 @@ const REASONS_INSTRUMENTAL = {
 
 // "з" becomes "зі" before з, с, ш, щ followed by a consonant ("зі статусом")
 const reasonCaption = (reasons) => {
+    // Demo build: English – "Regarding new order, payment" (reason names come translated from the mock)
+    if (i18n.language === 'en') {
+        return `${t('Звернення у зв\'язку з')} ${reasons.map((item) => item.title.toLowerCase()).join(', ')}`;
+    }
     const text = reasons.map((item) => REASONS_INSTRUMENTAL[item.title] ?? item.title.toLowerCase()).join(', ');
     const preposition = /^[зсшщ][^аеєиіїоуюяь]/i.test(text) ? 'зі' : 'з';
     return `Звернення у зв'язку ${preposition} ${text}`;
@@ -73,7 +78,7 @@ const CallbackForm = () => {
         <div className={styles.CallbackForm}>
             <input
                 type="text"
-                placeholder={'Ім’я'}
+                placeholder={t('Ім’я')}
                 value={callbackData.name}
                 onChange={(e) => {
                     const { value } = e.target;
@@ -91,7 +96,7 @@ const CallbackForm = () => {
                 {(inputProps) => (
                     <input
                         {...inputProps}
-                        placeholder={"Номер телефону"}
+                        placeholder={t('Номер телефону')}
                         className={"baseInput"}
                         aria-label={"phone"}
                         id="phone"
@@ -104,15 +109,15 @@ const CallbackForm = () => {
                 <span>
                     {callbackData.reason.length
                         ? reasonCaption(callbackData.reason)
-                        : 'Звернення у зв\'язку з'}
+                        : t('Звернення у зв\'язку з')}
                 </span>
             </button>
             <button onClick={() => onSubmit()} type='submit' className={styles.action}
                     disabled={!callbackData.name.length || validPhone.length !== 13 || !callbackData.phone.length || isLoading}>
-                <span>Замовити дзвінок</span>
+                <span>{t('Замовити дзвінок')}</span>
             </button>
             {optionsPopup && (
-                <GlobalPopup title={'Причина звернення'} onClose={() => setOptionsPopup(false)} centeredPopup>
+                <GlobalPopup title={t('Причина звернення')} onClose={() => setOptionsPopup(false)} centeredPopup>
                     {chooseList && chooseList.length > 0 && (
                         <PopupCheckboxes
                             values={callbackData.reason}

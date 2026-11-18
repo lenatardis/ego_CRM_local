@@ -1,5 +1,6 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import styles from "./InfoHint.module.scss";
+import { t } from '../../../../i18n';
 
 const VIEWPORT_PADDING = 12;
 const TOOLTIP_GAP = 8;
@@ -8,7 +9,7 @@ const MAX_TOOLTIP_HEIGHT = 320;
 const EDGE_PADDING = 16; // demo build: an open tooltip stays this far from the screen's sides
 
 // size: icon size in px (demo build; default 18 as in the stylesheet)
-const InfoHint = ({ text, ariaLabel = "Інформація", size }) => {
+const InfoHint = ({ text, ariaLabel = t('Інформація'), size }) => {
     const [open, setOpen] = useState(false);
     const [placement, setPlacement] = useState("top");
     const [maxHeight, setMaxHeight] = useState(MAX_TOOLTIP_HEIGHT);

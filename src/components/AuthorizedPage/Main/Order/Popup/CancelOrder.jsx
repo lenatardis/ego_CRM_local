@@ -1,6 +1,7 @@
 import React from "react";
 import styles from './CancelOrder.module.scss';
 import Button from './Button/Button';
+import { t } from '../../../../../i18n';
 
 // `text` (demo build): another question with the same look and buttons, e.g. the suborder create confirmation;
 // `note`: a smaller explanation under it (info note)
@@ -10,11 +11,11 @@ const CancelOrder = ({onConfirm, onCancel, suborder, ttn, text, note}) => {
             <h2>
                 {text ? text : !ttn ? (
                     <>
-                        Ви бажаєте<br />
-                        видалити {!suborder ? 'замовлення' : 'підзамовлення'}?
+                        {t('Ви бажаєте')}<br />
+                        {!suborder ? t('видалити замовлення?') : t('видалити підзамовлення?')}
                     </>
                 ) : (
-                    <>Ви дійсно бажаєте роздрукувати ТТН?<br/>Після цього її не можна буде редагувати</>
+                    <>{t('Ви дійсно бажаєте роздрукувати ТТН?')}<br/>{t('Після цього її не можна буде редагувати')}</>
                 )}
             </h2>
 

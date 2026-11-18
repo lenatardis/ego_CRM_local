@@ -1,6 +1,7 @@
 import React, {useEffect, useRef} from "react";
 import searchIcon from "../../../assets/icons/search.svg";
 import styles from './Search.module.scss';
+import { t } from '../../../i18n';
 
 const Search = ({ searchValue, setSearchValue, onSearch }) => {
     const timeout = useRef(null);
@@ -20,7 +21,7 @@ const Search = ({ searchValue, setSearchValue, onSearch }) => {
 
     return (
         <div className={styles.fabrics__search}>
-            <input type="search" placeholder={'Пошук'} className={'baseInput'} value={searchValue || ''}
+            <input type="search" placeholder={t('Пошук')} className={'baseInput'} value={searchValue || ''}
                    onChange={(e) => setSearchValue(e.target.value)}/>
             <img src={searchIcon} alt=""/>
         </div>

@@ -5,6 +5,7 @@ import FabricArticles from "./FabricArticles/FabricArticles";
 import { useNavigate } from "react-router-dom";
 import { getAccessToken } from "../../../../utils/authTokens";
 import { createProduct } from "../../../../api/calculatorApi";
+import { t } from '../../../../i18n';
 
 const FabricType = ({
     setTemplate,
@@ -154,7 +155,7 @@ const FabricType = ({
 
     return (
         <div className={styles.type}>
-            <h3>Пара тканин</h3>
+            <h3>{t('Пара тканин')}</h3>
             <FabricArticles fabric={fabric}/>
             {fabrics && (
                 <FabricTypeFabrics

@@ -20,6 +20,7 @@ import { getPriceWithDiscount } from "../../../utils/getPriceWithDiscount";
 import { Suborder } from "../Main/Order/Suborder";
 import { useIsDesktop } from "../../../hooks/useIsDesktop";
 import GlobalPopup from "../../Common/GlobalPopup/GlobalPopup";
+import { t } from '../../../i18n';
 
 const Products = () => {
     const { id } = useParams();
@@ -332,7 +333,7 @@ const Products = () => {
                 await updateDeliveryEstimateAfterSuborderDelete(accessToken);
             } else if (status === 400) {
                 // the server refuses to delete a suborder the ERP depends on (money received or production started)
-                setDeleteError('Підзамовлення не можна видалити: по ньому вже є оплата або воно у виробництві.');
+                setDeleteError(t('Підзамовлення не можна видалити: по ньому вже є оплата або воно у виробництві.'));
                 dispatch(setIsActivePopup(true));
             }
         }).catch(error => {
@@ -346,7 +347,7 @@ const Products = () => {
         )
     } else if (!order) {
         return (
-            <NotFound message={`Замовлення №${id} не знайдено`} />
+            <NotFound message={t('Замовлення №{{id}} не знайдено', {id})} />
         )
     }
 
@@ -361,12 +362,12 @@ const Products = () => {
             <div className={styles.wrap}>
                 <ArrBack/>
                 <div className={styles.grid}>
-                    <div><h2 className={styles.products__title}>Товари</h2></div>
+                    <div><h2 className={styles.products__title}>{t('Товари')}</h2></div>
                     <div></div>
                 </div>
                 <div className={`${styles.grid} ${styles.mobileWrap}`}>
                     <div>
-                        {!warehouseItems.length && <p className={`${styles.emptyNote} infoNote`}>На даний момент немає товарів у замовленні</p>}
+                        {!warehouseItems.length && <p className={`${styles.emptyNote} infoNote`}>{t('На даний момент немає товарів у замовленні')}</p>}
                         {warehouseItems && (
                             <CartProducts
                                 items={warehouseItems}
@@ -378,7 +379,7 @@ const Products = () => {
                         )}
                         {isDesktop && (suborders.length > 0 && (
                             <div className={styles.suborderWrapper}>
-                                <h3>Підзамовлення</h3>
+                                <h3>{t('Підзамовлення')}</h3>
                                 {suborders.map(item => (
                                     <Suborder key={item.id} item={item} onDelete={deleteSuborder} />
                                 ))}
@@ -386,7 +387,7 @@ const Products = () => {
                         ))}
                         {isDesktop && <div className="globalBtnWrap">
                             <button className="globalBtn button-xs" onClick={nextPage}>
-                                <span>Далі</span>
+                                <span>{t('Далі')}</span>
                             </button>
                         </div>}
                     </div>
@@ -420,7 +421,7 @@ const Products = () => {
                         />
                         {!isDesktop && (suborders.length > 0 && (
                             <div className={styles.suborderWrapper}>
-                                <h3>Підзамовлення</h3>
+                                <h3>{t('Підзамовлення')}</h3>
                                 {suborders.map(item => (
                                     <Suborder key={item.id} item={item} onDelete={deleteSuborder} />
                                 ))}
@@ -428,14 +429,14 @@ const Products = () => {
                         ))}
                         {!isDesktop && <div className="globalBtnWrap">
                             <button className="globalBtn button-xs" onClick={nextPage}>
-                                <span>Далі</span>
+                                <span>{t('Далі')}</span>
                             </button>
                         </div>}
                     </div>
                 </div>
 
                 {deleteError && (
-                    <GlobalPopup title={'Видалення замовлення'} onClose={() => setDeleteError('')} centeredPopup={isDesktop}>
+                    <GlobalPopup title={t('Видалення замовлення')} onClose={() => setDeleteError('')} centeredPopup={isDesktop}>
                         <p>{deleteError}</p>
                     </GlobalPopup>
                 )}
@@ -443,7 +444,7 @@ const Products = () => {
                 {isEstimateSyncing && (
                     <div className={styles.syncOverlay}>
                         <div className={styles.syncOverlay__box}>
-                            Розраховуємо суму доставки...
+                            {t('Розраховуємо суму доставки...')}
                         </div>
                     </div>
                 )}

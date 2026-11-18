@@ -2,6 +2,7 @@ import { http, HttpResponse } from 'msw';
 import { API, withAuth, notFound } from './utils';
 import { nextId } from '../db';
 import { loadCustomers, loadOrders, nowIso, saveCustomers, saveOrders } from '../data/orders';
+import { t } from '../../i18n';
 
 // POST customers/ { order_id, ...fields } (src/api/customersApi.js) – an upsert of the order's customer:
 // creates one when the order has none yet (OrderWrapper.jsx sends { first_name: null } for a new order),
@@ -28,7 +29,7 @@ export const customerHandlers = [
         // an untouched phone mask comes back as "+38" / "+380"
         if (fields.phone && fields.phone.length <= 4) fields.phone = null;
         if (fields.phone && !PHONE_RE.test(fields.phone)) {
-            return HttpResponse.json({ phone: ['Введіть коректний номер телефону.'] }, { status: 400, statusText: 'Bad Request' });
+            return HttpResponse.json({ phone: [t('Введіть коректний номер телефону.')] }, { status: 400, statusText: 'Bad Request' });
         }
 
         const customers = loadCustomers();

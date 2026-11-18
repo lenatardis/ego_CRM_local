@@ -12,6 +12,7 @@ import { useRef, useEffect, useState } from "react";
 import ImagePopup from "../../ImagePopup/ImagePopup";
 import InfoHint from "../InfoHint/InfoHint"
 import {photoSkeleton} from "../../../../utils/photoSkeleton";
+import { t } from '../../../../i18n';
 
 const OpenItemDesktop = ({ product, onDelete, isClient, isDisabled = false, sourceName, originalSourceName }) => {
     const navigate = useNavigate();
@@ -39,10 +40,10 @@ const OpenItemDesktop = ({ product, onDelete, isClient, isDisabled = false, sour
 
  const hintText = !isClient
     ? sourceName && originalSourceName && sourceName !== originalSourceName
-        ? `Ціну цього товару було взято зі списку "${originalSourceName}", хоча в самому замовленні джерело було змінено на "${sourceName}"`
+        ? t('Ціну цього товару було взято зі списку "{{original}}", хоча в самому замовленні джерело було змінено на "{{source}}"', {original: originalSourceName, source: sourceName})
         : sourceName
-            ? `Ціну було взято зі списку "${sourceName}"`
-            : "Ціну було взято зі стандартного списку цін"
+            ? t('Ціну було взято зі списку "{{source}}"', {source: sourceName})
+            : t('Ціну було взято зі стандартного списку цін')
     : "";
 
 
@@ -114,20 +115,20 @@ const OpenItemDesktop = ({ product, onDelete, isClient, isDisabled = false, sour
                                 <div
                                     className={product.images?.length > 1 ? `${styles.inputRow} ${styles.withSlider}` : styles.inputRow}>
                                     <div className={styles.formGroup}>
-                                        <label htmlFor="product_input1">Код тканини</label>
+                                        <label htmlFor="product_input1">{t('Код тканини')}</label>
                                         <div className={styles.inputWrap}>
                                             <input type="text" id="product_input1" value={product.fabric_type}
                                                 readOnly />
                                         </div>
                                     </div>
                                     <div className={styles.formGroup}>
-                                        <label htmlFor="product_input2">Тип комплекту</label>
+                                        <label htmlFor="product_input2">{t('Тип комплекту')}</label>
                                         <input type="text" id="product_input2" value={product.kit_type} readOnly />
                                     </div>
                                 </div>
                                 {product.components.length > 0 && (
                                     <div className={styles.productInfo}>
-                                        <p className={styles.title}>Склад комплекту</p>
+                                        <p className={styles.title}>{t('Склад комплекту')}</p>
                                         <ul className={styles.content}>
                                             {product.components.map((el, idx) => (
                                                 <li key={idx} className={styles.value}>{el.name}</li>
@@ -137,7 +138,7 @@ const OpenItemDesktop = ({ product, onDelete, isClient, isDisabled = false, sour
                                 )}
                                 {product.options.length > 0 && (
                                     <div className={styles.productInfo}>
-                                        <p className={styles.title}>Додаткові опції:</p>
+                                        <p className={styles.title}>{t('Додаткові опції:')}</p>
                                         <ul className={styles.content}>
                                             {product.options.map((el, idx) => (
                                                 <li key={idx} className={styles.value}>{el.name}</li>
@@ -151,24 +152,24 @@ const OpenItemDesktop = ({ product, onDelete, isClient, isDisabled = false, sour
                                 <div
                                     className={product.images?.length > 1 ? `${styles.inputRow} ${styles.withSlider}` : styles.inputRow}>
                                     <div className={styles.formGroup}>
-                                        <label htmlFor="product_input1">Назва</label>
+                                        <label htmlFor="product_input1">{t('Назва')}</label>
                                         <div className={styles.inputWrap}>
                                             <input type="text" id="product_input1" value={product.name} readOnly />
                                             {!product.quantity && <img src={IconWarning} alt="" />}
                                         </div>
                                     </div>
                                     <div className={styles.formGroup}>
-                                        <label htmlFor="product_input2">Тип</label>
-                                        <input type="text" id="product_input2" value="Товар зі складу" readOnly />
+                                        <label htmlFor="product_input2">{t('Тип')}</label>
+                                        <input type="text" id="product_input2" value={t('Товар зі складу')} readOnly />
                                     </div>
                                 </div>
-                                {!product.quantity && <p className={styles.warning}>Тканини немає в наявності</p>}
+                                {!product.quantity && <p className={styles.warning}>{t('Тканини немає в наявності')}</p>}
                                 {product.size && <div className={styles.productInfo}>
-                                    <label>Розмір</label>
+                                    <label>{t('Розмір')}</label>
                                     <textarea readOnly value={product.size}></textarea>
                                 </div>}
                                 {product.color && <div className={styles.productInfo}>
-                                    <label htmlFor="product_options">Колір</label>
+                                    <label htmlFor="product_options">{t('Колір')}</label>
                                     <input type="text" id="product_options" value={product.color} readOnly />
                                 </div>}
                             </>
@@ -179,21 +180,21 @@ const OpenItemDesktop = ({ product, onDelete, isClient, isDisabled = false, sour
                             <div className={styles.inputRow}
                                 ref={(product?.manufacturing?.id || product?.manufacturing?.status) ? inputRowRef : null}>
                                 <div className={styles.formGroup}>
-                                    <label htmlFor="manufactiring_id">ID на виробництві</label>
+                                    <label htmlFor="manufactiring_id">{t('ID на виробництві')}</label>
                                     <div className={styles.inputWrap}>
                                         <input type="text" id="manufactiring_id" value={product?.manufacturing?.id}
                                             readOnly />
                                     </div>
                                 </div>
                                 <div className={styles.formGroup}>
-                                    <label htmlFor="manufacturing_status">Статус виробництва</label>
+                                    <label htmlFor="manufacturing_status">{t('Статус виробництва')}</label>
                                     <input type="text" id="manufacturing_status" className={styles.manufacturingStatus}
                                         value={product?.manufacturing?.status} readOnly />
                                 </div>
                             </div>
                         </>)}
                         {commentTempFlag && <div className={styles.productInfo}>
-                            <p className={styles.title} ref={commentTitleRef}>Коментар</p>
+                            <p className={styles.title} ref={commentTitleRef}>{t('Коментар')}</p>
                             <ul className={styles.content} ref={commentContentRef}
                                 style={{ height: commentContentHeight, overflow: 'auto' }}>
                                 <p>{product?.kitComment || product?.warehouseComment}</p>
@@ -205,7 +206,7 @@ const OpenItemDesktop = ({ product, onDelete, isClient, isDisabled = false, sour
                     {product.components ? (
                         <>
                             {(product.price || product.price === 0) && (
-                                <span className={styles.price}>{product.price} грн</span>
+                                <span className={styles.price}>{product.price} {t('грн')}</span>
                             )}
 
                             {!isClient && (
@@ -213,13 +214,13 @@ const OpenItemDesktop = ({ product, onDelete, isClient, isDisabled = false, sour
                                     <button className={styles.changeBtn} onClick={() => onDelete(product.id)}
                                         disabled={isDisabled}>
                                         <img src={removeIcon} alt="Remove" />
-                                        <span>Видалити комплект</span>
+                                        <span>{t('Видалити комплект')}</span>
                                     </button>
                                     <button className={styles.changeBtn}
                                         onClick={() => navigate(`/calculator/${orderId}/${product.id}`)}
                                         disabled={isDisabled}>
                                         <img src={pencilIcon} alt="Edit" />
-                                        <span>Змінити комплект</span>
+                                        <span>{t('Змінити комплект')}</span>
                                     </button>
                                 </div>
                             )}
@@ -228,7 +229,7 @@ const OpenItemDesktop = ({ product, onDelete, isClient, isDisabled = false, sour
                         <>
                             {(product.price || product.price === 0) && (
                                 <div className={styles.priceRow}>
-                                    <span className={styles.price}>{product.price} грн</span>
+                                    <span className={styles.price}>{product.price} {t('грн')}</span>
                                         {!isClient && <InfoHint text={hintText} />}
                                 </div>
 
@@ -238,7 +239,7 @@ const OpenItemDesktop = ({ product, onDelete, isClient, isDisabled = false, sour
                                     <button className={styles.changeBtn} onClick={() => onDelete(product.id)}
                                         disabled={isDisabled}>
                                         <img src={removeIcon} alt="Remove" />
-                                        <span>Видалити товар</span>
+                                        <span>{t('Видалити товар')}</span>
                                     </button>
                                 </div>
                             )}

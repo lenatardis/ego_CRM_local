@@ -5,6 +5,7 @@ import {setIsActivePopup} from "../../../../../store/main-slice";
 import GlobalPopup from "../../../../Common/GlobalPopup/GlobalPopup";
 import ClientInfo from "../../ClientInfo/ClientInfo";
 import { getUserInfoPhone } from "../../../../../api/ordersApi";
+import { t } from '../../../../../i18n';
 
 const DetailsInput = ({orderId}) => {
     const dispatch = useAppDispatch();
@@ -48,13 +49,13 @@ const DetailsInput = ({orderId}) => {
     return (
         <div className={`${styles.inputBlock} ${isPhoneError ? 'baseInputError' : ''}`}>
             <input type="text" name="order_digits" value={phoneDigits}
-                   placeholder="Введіть 4 останніх цифри телефону отримувача"
+                   placeholder={t('Введіть 4 останніх цифри телефону отримувача')}
                    onChange={(e) => handleChange(e)} maxLength="4"/>
             <button className={styles.inputBlock__button} disabled={phoneDigits.length !== 4} onClick={() => sendNumber(phoneDigits)}>
                 <span>OK</span>
             </button>
             {showInfo && (
-                <GlobalPopup title={'Інформація клієнта'} centeredPopup onClose={() => onClose()}>
+                <GlobalPopup title={t('Інформація клієнта')} centeredPopup onClose={() => onClose()}>
                     <ClientInfo clientInfo={clientInfo}/>
                 </GlobalPopup>
             )}

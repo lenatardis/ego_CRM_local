@@ -14,6 +14,7 @@ import dayjs from 'dayjs';
 import "dayjs/locale/uk";
 import { getFormattedDate } from "../../../utils/getFormattedDate";
 import {useIsDesktop} from "../../../hooks/useIsDesktop";
+import { t } from '../../../i18n';
 
 dayjs.locale('uk');
 
@@ -120,18 +121,18 @@ const DateTimeField = ({date, placeholder = 'оплати', auditDates, name = '
         <>
             <div className={styles.dateTimeField}>
                 <button type='button' onClick={() => onShowPopup('date')} disabled={isDisabled}>
-                    <span>{getFormattedDate(date) || `Дата ${placeholder}`}</span>
+                    <span>{getFormattedDate(date) || t(`Дата ${placeholder}`)}</span>
                     <img src={arrow} alt=""/>
                 </button>
                 {!dateOnly && (
                     <button type='button' onClick={() => onShowPopup('time')} disabled={isDisabled}>
-                        <span>{(!hours ) && (!minutes) ? `Час ${placeholder}` : `${String(hours).padStart(2, '0')} : ${String(minutes).padStart(2, '0')}`}</span>
+                        <span>{(!hours ) && (!minutes) ? t(`Час ${placeholder}`) : `${String(hours).padStart(2, '0')} : ${String(minutes).padStart(2, '0')}`}</span>
                         <img src={arrow} alt=""/>
                     </button>
                 )}
             </div>
             {popup === 'date' && (
-                <GlobalPopup title={'Дата відправки'} onClose={handleClosePopup} {...(isDesktop ? { centeredPopup: true } : {})}>
+                <GlobalPopup title={t('Дата відправки')} onClose={handleClosePopup} {...(isDesktop ? { centeredPopup: true } : {})}>
                     <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="uk">
                         <DemoContainer
                             components={[
@@ -149,7 +150,7 @@ const DateTimeField = ({date, placeholder = 'оплати', auditDates, name = '
                 </GlobalPopup>
             )}
             {popup === 'time' && (
-                <GlobalPopup title={'Час оплати'} onClose={handleClosePopup} {...(isDesktop ? { centeredPopup: true } : {})}>
+                <GlobalPopup title={t('Час оплати')} onClose={handleClosePopup} {...(isDesktop ? { centeredPopup: true } : {})}>
                     <GlobalCalculator handleChange={handleChange} handleDelete={handleDelete} onSubmit={() => totalDate()}>
                         <div className={styles.timeInputWrap}>
                             <input

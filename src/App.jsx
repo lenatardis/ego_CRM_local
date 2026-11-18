@@ -9,6 +9,7 @@ import Preloader from "./components/Common/Preloader/Preloader";
 import { useUserAuth } from "./hooks/useUserAuth";
 import { login } from "./store/account-slice";
 import './App.scss';
+import { useTranslation } from "react-i18next";
 
 function App() {
     const dispatch = useAppDispatch();
@@ -17,6 +18,9 @@ function App() {
     const urlString = params.search;
     const hash = queryString.parse(urlString);
     const { userData, isUserDataFetching } = useUserAuth();
+    // Demo build (2026-11-18): a language switch re-mounts the pages, so everything – data from the mock
+    // backend included (catalog names, messages) – is shown again in the new language
+    const { i18n } = useTranslation();
 
     useEffect(() => {
         if (userData) {
@@ -36,7 +40,7 @@ function App() {
     }
 
     return (
-        <div className='wrapper'>
+        <div className='wrapper' key={i18n.language}>
             {userData?.id
                 ? <AuthorizedPage/>
                 : <ClientPage/>

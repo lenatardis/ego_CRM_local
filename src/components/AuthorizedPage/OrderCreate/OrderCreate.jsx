@@ -22,6 +22,7 @@ import arrow from "../../../assets/icons/arrowDownGray.svg";
 import ArrBack from "../../Common/ArrBack/ArrBack";
 import { ORDER_PARSER_HINT } from "../../Common/Parser/parserHints";
 import { getServerErrorMessage } from "../../../utils/getServerErrorMessage";
+import { t } from '../../../i18n';
 
 const OrderCreate = ({ order, sourcesList }) => {
     const manager = useAppSelector(getUser);
@@ -35,7 +36,7 @@ const OrderCreate = ({ order, sourcesList }) => {
     const [popup, setPopup] = useState(null);
     const isDesktop = useIsDesktop();
     const [chosenSource, setChosenSource] = useState(order?.source?.name || '');
-    const statusCaption = isDisabled ? 'Для того щоб відредагувати значення змініть статус замовлення на "В обробці"' : null;
+    const statusCaption = isDisabled ? t('Для того щоб відредагувати значення змініть статус замовлення на "В обробці"') : null;
     const [serverError, setServerError] = useState('');
     const location = useLocation();
     const isNewOrder = location.state?.isNewOrder;
@@ -130,7 +131,7 @@ const OrderCreate = ({ order, sourcesList }) => {
                 })
                 .catch((e) => {
                     console.log(e);
-                    setServerError('Не вдалося зберегти дані');
+                    setServerError(t('Не вдалося зберегти дані'));
                 });
 
         } else if (saveData !== value && type === 'payment') {
@@ -144,7 +145,7 @@ const OrderCreate = ({ order, sourcesList }) => {
                 })
                 .catch((err) => {
                     console.error(err);
-                    setServerError('Не вдалося зберегти дані');
+                    setServerError(t('Не вдалося зберегти дані'));
                 });
 
         } else if (saveData !== value && type === 'order') {
@@ -158,7 +159,7 @@ const OrderCreate = ({ order, sourcesList }) => {
                 })
                 .catch((e) => {
                     console.log(e);
-                    setServerError('Не вдалося зберегти дані');
+                    setServerError(t('Не вдалося зберегти дані'));
                 });
         }
     }
@@ -193,7 +194,7 @@ const OrderCreate = ({ order, sourcesList }) => {
                 })
                 .catch((e) => {
                     console.log(e);
-                    setServerError('Не вдалося зберегти дані');
+                    setServerError(t('Не вдалося зберегти дані'));
                 });
         } else {
             try {
@@ -212,7 +213,7 @@ const OrderCreate = ({ order, sourcesList }) => {
                 }
             } catch (e) {
                 console.log(e);
-                setServerError('Не вдалося зберегти дані');
+                setServerError(t('Не вдалося зберегти дані'));
             }
         }
     }
@@ -232,7 +233,7 @@ const OrderCreate = ({ order, sourcesList }) => {
                 }
             }).catch((e) => {
                 console.log(e);
-                setServerError('Не вдалося оновити дані доставки');
+                setServerError(t('Не вдалося оновити дані доставки'));
             });
         }
     }
@@ -329,7 +330,7 @@ const OrderCreate = ({ order, sourcesList }) => {
             <div className={styles.orderWrap}>
                 <ArrBack/>
                 <form onSubmit={handleSubmit}>
-                    <h2 className={styles.order__title}>Замовлення</h2>
+                    <h2 className={styles.order__title}>{t('Замовлення')}</h2>
                     <div className={styles.order__content}>
                         <p className={styles.order__header}>
                             <span>{order.id}</span>
@@ -340,7 +341,7 @@ const OrderCreate = ({ order, sourcesList }) => {
                         {statusCaption && <p className={`${styles.statusCaption} infoNote infoNote--tinted`}>{statusCaption}</p>}
                         <div className={styles.form}>
                             <div className={styles.inputWrap}>
-                                <label for="userUrl" className={styles.form__label}>Посилання на профіль замовника</label>
+                                <label for="userUrl" className={styles.form__label}>{t('Посилання на профіль замовника')}</label>
                                 <div className={styles.form__userUrl}>
                                     <input
                                         placeholder={'User URL'}
@@ -368,7 +369,7 @@ const OrderCreate = ({ order, sourcesList }) => {
                                                 })
                                                 .catch((e) => {
                                                     console.log(e);
-                                                    setServerError('Не вдалося зберегти дані');
+                                                    setServerError(t('Не вдалося зберегти дані'));
                                                 });
                                         }}
                                     />
@@ -383,9 +384,9 @@ const OrderCreate = ({ order, sourcesList }) => {
                                 </div> </div>
                             <div>
                                 <div className={styles.inputWrap}>
-                                    <label for="nickName" className={styles.form__label}>Нік замовника</label>
+                                    <label for="nickName" className={styles.form__label}>{t('Нік замовника')}</label>
                                     <input
-                                        placeholder={'Нік'}
+                                        placeholder={t('Нік')}
                                         className={`baseInput ${isDisabled ? styles.disabled : ''}`}
                                         aria-label={'username'}
                                         id="nickName"
@@ -401,20 +402,20 @@ const OrderCreate = ({ order, sourcesList }) => {
                                 </div>
                             </div>
                             <div className={styles.inputWrap}>
-                                <label for="sourceBtn" className={styles.form__label}>Джерело замовлення</label>
+                                <label for="sourceBtn" className={styles.form__label}>{t('Джерело замовлення')}</label>
                                 <button id="sourceBtn" className={`${styles.sourceBox}`} onClick={() => onSourceBtn()}>
                                     <span
-                                        style={{ 'color': '#201827' }}>{chosenSource ? chosenSource : 'Оберіть джерело замовлення'}</span>
+                                        style={{ 'color': '#201827' }}>{chosenSource ? chosenSource : t('Оберіть джерело замовлення')}</span>
                                     <img src={arrow} alt="" />
                                 </button>
                             </div>
                             <div className={styles.form__name}>
                                 <div className={styles.inputWrap}>
-                                    <label for="first_name" className={styles.form__label}><span>Ім'я</span>&nbsp;<span className={styles.desktop_visible}>замовника</span></label>
+                                    <label for="first_name" className={styles.form__label}><span>{t('Ім\'я')}</span>&nbsp;<span className={styles.desktop_visible}>{t('замовника')}</span></label>
                                     <div className="baseInputContainer">
                                         <span className="coloredLabel colored--first_name"></span>
                                         <input
-                                            placeholder={'Ім`я'}
+                                            placeholder={t('Ім`я')}
                                             className={`baseInput ${isDisabled ? styles.disabled : errors.first_name ? 'baseInputError' : ''}`}
                                             aria-label={'first_name'}
                                             id={'first_name'}
@@ -428,11 +429,11 @@ const OrderCreate = ({ order, sourcesList }) => {
                                     </div>
                                 </div>
                                 <div className={styles.inputWrap}>
-                                    <label for="last_name" className={styles.form__label}><span>Прізвище</span>&nbsp;<span className={styles.desktop_visible}>замовника</span></label>
+                                    <label for="last_name" className={styles.form__label}><span>{t('Прізвище')}</span>&nbsp;<span className={styles.desktop_visible}>{t('замовника')}</span></label>
                                     <div className="baseInputContainer">
                                         <span className="coloredLabel colored--last_name"></span>
                                         <input
-                                            placeholder={'Прізвище'}
+                                            placeholder={t('Прізвище')}
                                             className={`baseInput ${isDisabled ? styles.disabled : errors.last_name ? 'baseInputError' : ''}`}
                                             aria-label={'last_name'}
                                             id="last_name"
@@ -447,11 +448,11 @@ const OrderCreate = ({ order, sourcesList }) => {
                                 </div>
                             </div>
                             <div className={styles.inputWrap}>
-                                <label for="middle_name" className={styles.form__label}><span>По батькові</span>&nbsp;<span className={styles.desktop_visible}>замовника</span></label>
+                                <label for="middle_name" className={styles.form__label}><span>{t('По батькові')}</span>&nbsp;<span className={styles.desktop_visible}>{t('замовника')}</span></label>
                                 <div className="baseInputContainer">
                                     <span className="coloredLabel colored--middle_name"></span>
                                     <input
-                                        placeholder={'По батькові'}
+                                        placeholder={t('По батькові')}
                                         className={`baseInput ${isDisabled ? styles.disabled : errors.middle_name ? 'baseInputError' : ''}`}
                                         aria-label={'middle_name'}
                                         id="middle_name"
@@ -465,7 +466,7 @@ const OrderCreate = ({ order, sourcesList }) => {
                                 </div>
                             </div>
                             <div className={styles.inputWrap}>
-                                <label for="phone" className={styles.form__label}><span>Телефон</span>&nbsp;<span className={styles.desktop_visible}>замовника</span></label>
+                                <label for="phone" className={styles.form__label}><span>{t('Телефон')}</span>&nbsp;<span className={styles.desktop_visible}>{t('замовника')}</span></label>
                                 <div className="baseInputContainer">
                                     <span className="coloredLabel colored--phone"></span>
                                     <InputMask
@@ -478,7 +479,7 @@ const OrderCreate = ({ order, sourcesList }) => {
                                         {(inputProps) => (
                                             <input
                                                 {...inputProps}
-                                                placeholder={"Телефон"}
+                                                placeholder={t('Телефон')}
                                                 className={`baseInput ${isDisabled ? styles.disabled : errors.phone ? 'baseInputError' : ''}`}
                                                 aria-label={"phone"}
                                                 id="phone"
@@ -489,13 +490,13 @@ const OrderCreate = ({ order, sourcesList }) => {
                                 </div>
                             </div>
                             <div className={styles.inputWrap}>
-                                <label className={styles.form__label}>Терміновість замовлення</label>
+                                <label className={styles.form__label}>{t('Терміновість замовлення')}</label>
                                 <UrgentlyField setIsUrgently={setIsUrgently} isUrgently={isUrgently} auditDates={auditDates} isDisabled={isDisabled} />
                             </div>
                             <div className={styles.inputWrap}>
-                                <label className={styles.form__label}>Коментар до замовлення</label>
+                                <label className={styles.form__label}>{t('Коментар до замовлення')}</label>
                                 <textarea
-                                    placeholder={'Коментар'}
+                                    placeholder={t('Коментар')}
                                     className={'baseInput'}
                                     aria-label={'comment'}
                                     id="comment"
@@ -520,12 +521,12 @@ const OrderCreate = ({ order, sourcesList }) => {
                 />
                 <div className="globalBtnWrap">
                     <button className="globalBtn button-xs" onClick={nextPage}>
-                        <span>Далі</span>
+                        <span>{t('Далі')}</span>
                     </button>
                 </div>
             </div>
             {popup === 'source' && (
-                <GlobalPopup title={'Джерело замовлення'} onClose={() => setPopup(null)}  {...(isDesktop ? { centeredPopup: true } : { topPopup: true })}>
+                <GlobalPopup title={t('Джерело замовлення')} onClose={() => setPopup(null)}  {...(isDesktop ? { centeredPopup: true } : { topPopup: true })}>
                     {/* demo build: on phones a top popup with a scrolling list, like the fabric tags popup – a long list pushed the header off the screen */}
                     <div className={isDesktop ? undefined : styles.sourcePopupList}>
                         <PopupCheckboxes values={chosenSource ?? null} setValues={onChangeSource} chooseList={sources} isRadio />

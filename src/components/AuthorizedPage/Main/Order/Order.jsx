@@ -20,6 +20,7 @@ import addIcon from "../../../../assets/icons/plusDark.svg";
 import arrowIcon from "../../../../assets/icons/arrowDown.svg";
 import linkIcon from "../../../../assets/icons/paperclip.svg";
 import { useIsDesktop } from "../../../../hooks/useIsDesktop";
+import { t } from '../../../../i18n';
 
 // the server refuses to delete an order the ERP depends on (money received or production started)
 const DELETE_ERROR_TEXT = 'Замовлення не можна видалити: по ньому вже є оплата або воно у виробництві.';
@@ -62,7 +63,7 @@ const Order = ({ item, tabName }) => {
             if (result && result === 204) {
                 dispatch(removeStateOrder(item.id));
             } else if (result === 400) {
-                setDeleteError(DELETE_ERROR_TEXT);
+                setDeleteError(t(DELETE_ERROR_TEXT));
             }
         })
     }
@@ -92,7 +93,7 @@ const Order = ({ item, tabName }) => {
             sourceError.includes('Invalid pk') &&
             sourceError.includes('object does not exist')
         ) {
-            return 'Вибачте, на жаль, Ви не можете створити підзамовлення, так як було видалено джерело цін головного замовлення.';
+            return t('Вибачте, на жаль, Ви не можете створити підзамовлення, так як було видалено джерело цін головного замовлення.');
         }
 
         if (sourceError) {
@@ -107,7 +108,7 @@ const Order = ({ item, tabName }) => {
             return response.error;
         }
 
-        return 'Не вдалося створити підзамовлення.';
+        return t('Не вдалося створити підзамовлення.');
     }
 
     // demo build: the "+" button asks first (popup like the delete confirmation), creating happens on "Підтвердити"
@@ -134,7 +135,7 @@ const Order = ({ item, tabName }) => {
                     setSuborderCreateError(getSuborderCreateErrorMessage(response));
                 })
                 .catch((error) => {
-                    setSuborderCreateError(error?.message || 'Не вдалося створити підзамовлення.');
+                    setSuborderCreateError(error?.message || t('Не вдалося створити підзамовлення.'));
                 });
         }
     }
@@ -176,7 +177,7 @@ const Order = ({ item, tabName }) => {
 
                 await updateDeliveryEstimateAfterSuborderDelete(accessToken);
             } else if (status === 400) {
-                setDeleteError(DELETE_ERROR_TEXT);
+                setDeleteError(t(DELETE_ERROR_TEXT));
             }
         }).catch(error => {
             console.error('Failed to delete suborder and update estimate_order_price', error);
@@ -194,7 +195,7 @@ const Order = ({ item, tabName }) => {
             onEditOrder()
         }}>
             <p className={styles.order__header}>
-                <span>{!item.is_general ? 'Підзамовлення ' : ''}#{item.id}{item.is_immediate && <span className={styles.immediate}> (термінове)</span>}</span>
+                <span>{!item.is_general ? `${t('Підзамовлення')} ` : ''}#{item.id}{item.is_immediate && <span className={styles.immediate}> {t('(термінове)')}</span>}</span>
                 {item?.source?.name && <span>{item.source.name}</span>}
                 <span>{getFormattedDate(item.created)}</span>
             </p>
@@ -207,13 +208,13 @@ const Order = ({ item, tabName }) => {
                     }}
                 >
                     <img src={linkIcon} width={12} alt="link" />
-                    <span>Головне замовлення</span>
+                    <span>{t('Головне замовлення')}</span>
                 </button>
             )}
             <div className={styles.content}>
                 <div className={styles.content__boxes}>
                     <div className={styles.box}>
-                        <span className={styles.box__role}>Замовник</span>
+                        <span className={styles.box__role}>{t('Замовник')}</span>
                         {item?.customer?.username && (
                             <a
                                 href={item.customer.url}
@@ -234,7 +235,7 @@ const Order = ({ item, tabName }) => {
                         )}
                     </div>
                     <div className={styles.box}>
-                        <span className={styles.box__role}>Менеджер</span>
+                        <span className={styles.box__role}>{t('Менеджер')}</span>
                         <p className={styles.box__text}>{item.managerNickname}</p>
                         {item && item.manager && (
                             <p className={styles.box__text}>{item.manager.username}</p>
@@ -247,15 +248,15 @@ const Order = ({ item, tabName }) => {
                 </div>
                 <div className={styles.content__count}>
                     <img src={items} alt="" />
-                    <p>Склад: {item.warehouse_item_count ? item.warehouse_item_count : 0}</p>
-                    <p>Виробництво: {item.kit_count ? item.kit_count : 0}</p>
+                    <p>{t('Склад')}: {item.warehouse_item_count ? item.warehouse_item_count : 0}</p>
+                    <p>{t('Виробництво')}: {item.kit_count ? item.kit_count : 0}</p>
                     <span className={styles.separateLine}></span>
-                    <p className={styles.totalCount}>Всього товарів: {(item?.warehouse_item_count || 0) + (item?.kit_count || 0)}</p>
+                    <p className={styles.totalCount}>{t('Всього товарів')}: {(item?.warehouse_item_count || 0) + (item?.kit_count || 0)}</p>
                 </div>
             </div>
             <div className={styles.order__footerWrapper}>
                 <div className={styles.order__footer}>
-                    <span>{item?.payment?.final_amount ? item.payment.final_amount : item?.payment?.amount ? item.payment.amount : 0} грн</span>
+                    <span>{item?.payment?.final_amount ? item.payment.final_amount : item?.payment?.amount ? item.payment.amount : 0} {t('грн')}</span>
                     <div className={styles.actions}>
                         {item.is_general && subordersCount < 1 && (
                             <button
@@ -264,7 +265,7 @@ const Order = ({ item, tabName }) => {
                                     e.stopPropagation();
                                     setIsShowCreatePopup(true);
                                 }}
-                                title="Додати підзамовлення"
+                                title={t('Додати підзамовлення')}
                             >
                                 <img src={addIcon} width={16} height={16} alt="" />
                             </button>
@@ -310,9 +311,9 @@ const Order = ({ item, tabName }) => {
                         }`}
                         onClick={(e) => e.stopPropagation()}>
                         <div className={styles.header}>
-                            <p className={`${styles.header__title} popupTitle`}>Видалення замовлення</p>
+                            <p className={`${styles.header__title} popupTitle`}>{t('Видалення замовлення')}</p>
                             <div className={styles.header__close} onClick={() => closePopup()}>
-                                <span className="popupCloseCaption">Закрити</span>
+                                <span className="popupCloseCaption">{t('Закрити')}</span>
                                 <button>
                                     <img src={closeIcon} className="popupCloseIcon" alt="" />
                                 </button>
@@ -336,9 +337,9 @@ const Order = ({ item, tabName }) => {
                     <div className={`${styles.globalPopupActive} ${isDesktop ? styles.centeredPopup : ''}`}
                         onClick={(e) => e.stopPropagation()}>
                         <div className={styles.header}>
-                            <p className={`${styles.header__title} popupTitle`}>Створення підзамовлення</p>
+                            <p className={`${styles.header__title} popupTitle`}>{t('Створення підзамовлення')}</p>
                             <div className={styles.header__close} onClick={() => setIsShowCreatePopup(false)}>
-                                <span className="popupCloseCaption">Закрити</span>
+                                <span className="popupCloseCaption">{t('Закрити')}</span>
                                 <button>
                                     <img src={closeIcon} className="popupCloseIcon" alt="" />
                                 </button>
@@ -346,7 +347,7 @@ const Order = ({ item, tabName }) => {
                         </div>
                         <div className={styles.globalPopup__content}>
                             <CancelOrder
-                                text={<>Ви впевнені, що бажаєте<br />створити підзамовлення?</>}
+                                text={<>{t('Ви впевнені, що бажаєте')}<br />{t('створити підзамовлення?')}</>}
                                 onCancel={() => setIsShowCreatePopup(false)}
                                 onConfirm={createSuborder}
                             />
@@ -362,13 +363,13 @@ const Order = ({ item, tabName }) => {
                         </div>
                     ) : suborders.length > 0 ? (
                         <>
-                            <h3>Підзамовлення</h3>
+                            <h3>{t('Підзамовлення')}</h3>
                             {suborders.map(item => (
                                 <Suborder key={item.id} item={item} onDelete={deleteSuborder} />
                             ))}
                         </>
                     ) : (
-                        <h3>Підзамовлення відсутні</h3>
+                        <h3>{t('Підзамовлення відсутні')}</h3>
                     )}
                 </div>
             )}
@@ -387,9 +388,9 @@ const Order = ({ item, tabName }) => {
                         onClick={(e) => e.stopPropagation()}
                     >
                         <div className={styles.header}>
-                            <p className={`${styles.header__title} popupTitle`}>{deleteError ? 'Видалення замовлення' : 'Створення підзамовлення'}</p>
+                            <p className={`${styles.header__title} popupTitle`}>{deleteError ? t('Видалення замовлення') : t('Створення підзамовлення')}</p>
                             <div className={styles.header__close} onClick={() => { setSuborderCreateError(''); setDeleteError(''); }}>
-                                <span className="popupCloseCaption">Закрити</span>
+                                <span className="popupCloseCaption">{t('Закрити')}</span>
                                 <button>
                                     <img src={closeIcon} className="popupCloseIcon" alt="" />
                                 </button>

@@ -11,6 +11,7 @@ import {
     computeKitPrice, findOrderProduct, loadOrderProducts, saveOrderProducts, serializeKitForEdit,
 } from '../data/orderProducts';
 import { manufacturingOf } from '../data/production';
+import { t } from '../../i18n';
 
 // Kit calculator (src/api/calculatorApi.js, components/AuthorizedPage/Calculator/):
 //   GET    calculator/kit/templates/size/[?order_product_id]
@@ -49,7 +50,7 @@ const toComponent = (c, isCustom, previous = null) => ({
 });
 
 // a kit the ERP is already making can't be changed (data/production.js); Calculator.jsx shows `errors.detail`
-const inProduction = () => badRequest({ errors: { detail: 'Комплект у виробництві: змінити його не можна.' } });
+const inProduction = () => badRequest({ errors: { detail: t('Комплект у виробництві: змінити його не можна.') } });
 
 const kitResponse = (record, status = 200) =>
     HttpResponse.json({ order_product_id: record.id, kit_id: record.id, price: record.kit.price }, { status });
@@ -80,7 +81,7 @@ export const calculatorHandlers = [
         const fabric = findFabric(q.get('fabric_id'));
         const sourceId = q.get('source_id');
         const templates = fabric ? kitTemplatesFor(fabric, q.get('kit_template_size_id')) : [];
-        if (!templates.length) return HttpResponse.json({ detail: 'Комплект не знайдено.' }, { status: 404, statusText: 'Not Found' });
+        if (!templates.length) return HttpResponse.json({ detail: t('Комплект не знайдено.') }, { status: 404, statusText: 'Not Found' });
         return HttpResponse.json({
             kit: templates.map((t) => serializeKitVariant(t, fabric, sourceId)),
             kit_options: kitOptions(sourceId),
@@ -138,7 +139,7 @@ export const calculatorHandlers = [
         if (!order) return notFound();
         const fabric = findFabric(body.fabric_id);
         if (!fabric || fabricTotalLength(fabric) <= 0) {
-            return HttpResponse.json({ detail: 'Залишок тканини дорівнює 0.' }, { status: 404, statusText: 'Not Found' });
+            return HttpResponse.json({ detail: t('Залишок тканини дорівнює 0.') }, { status: 404, statusText: 'Not Found' });
         }
 
         const templateComponents = body.template_components ?? [];
@@ -156,7 +157,7 @@ export const calculatorHandlers = [
                 ...(body.additional_components ?? []).map((c) => toComponent(c, true)),
             ],
         };
-        if (!kit.components.length) return badRequest({ errors: { detail: 'Комплект порожній.' } });
+        if (!kit.components.length) return badRequest({ errors: { detail: t('Комплект порожній.') } });
 
         const { price, error } = computeKitPrice(kit, order.source_id);
         if (error) return badRequest({ errors: { component_price: error } });

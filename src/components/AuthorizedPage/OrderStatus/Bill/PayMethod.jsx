@@ -1,4 +1,5 @@
 import styles from './bill.module.scss';
+import { t } from '../../../../i18n';
 
 const PAY_METHODS = [
     { value: 'FULL', label: 'Вся сума' },
@@ -26,7 +27,7 @@ export const PayMethod = ({ payMethod, payType, isFirstBill, auditDates, isDisab
 
     return (
         <div className={`${styles.payChanger} ${isDisabled ? styles.disabled : ''}`}>
-            <span>Метод оплати</span>
+            <span>{t('Метод оплати')}</span>
             <div className={styles.items}>
                 {PAY_METHODS.filter(({ value }) => availableMethods.includes(value)).map(({ value, label }) => (
                     <label key={value} className={getMethodClass(value, isDisabled, isFullDisabled)}>
@@ -36,7 +37,7 @@ export const PayMethod = ({ payMethod, payType, isFirstBill, auditDates, isDisab
                             onChange={() => auditDates('method', value)}
                             disabled={isMethodDisabled(value, isDisabled, isFullDisabled)}
                         />
-                        <span>{label}</span>
+                        <span>{t(label)}</span>
                     </label>
                 ))}
             </div>

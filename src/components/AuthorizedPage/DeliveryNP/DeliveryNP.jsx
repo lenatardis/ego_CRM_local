@@ -22,6 +22,7 @@ import { DELIVERY_PARSER_HINT } from "../../Common/Parser/parserHints";
 import { getServerErrorMessage } from "../../../utils/getServerErrorMessage";
 import InfoHint from "../../Common/ProductItem/InfoHint/InfoHint";
 import { getOrderInfo, getSuborders } from "../../../api/ordersApi";
+import { t } from '../../../i18n';
 
 
 
@@ -39,11 +40,11 @@ const DeliveryNP = ({ deliveryOrder, lastOrderId }) => {
     const [errors, setErrors] = useState({});
     const [serverError, setServerError] = useState('');
     const isAllRequiredValuesFilled = requiredNPValues?.first_name &&  requiredNPValues?.middle_name && requiredNPValues?.last_name && requiredNPValues?.phone && requiredNPValues?.city && requiredNPValues?.address && requiredNPValues?.specified_weight && requiredNPValues?.estimate_order_price;
-    const caption = 'Для створення ТТН необхідно заповнити всі обов\'язкові поля (з зірочкою)';
-    const captionRefresh = 'Для оновлення ТТН необхідно заповнити всі обов\'язкові поля';
-    const captionRefresh2 = 'Якщо бажаєте оновити ТТН, внесіть зміни хоча б в одному з полів';
-    const captionSaved = 'Зміни збережено. Щоб вони потрапили в ТТН, натисніть «Оновити ТТН»';
-    const captionSum = 'Сума оголошеної вартості повинна бути більше 0. Додайте, будь ласка, товари';
+    const caption = t('Для створення ТТН необхідно заповнити всі обов\'язкові поля (з зірочкою)');
+    const captionRefresh = t('Для оновлення ТТН необхідно заповнити всі обов\'язкові поля');
+    const captionRefresh2 = t('Якщо бажаєте оновити ТТН, внесіть зміни хоча б в одному з полів');
+    const captionSaved = t('Зміни збережено. Щоб вони потрапили в ТТН, натисніть «Оновити ТТН»');
+    const captionSum = t('Сума оголошеної вартості повинна бути більше 0. Додайте, будь ласка, товари');
     const navigate = useNavigate();
 
     const applyServerError = (response) => {
@@ -59,15 +60,15 @@ const DeliveryNP = ({ deliveryOrder, lastOrderId }) => {
     };
 
     const formatPrice = (value) => {
-        return `${getNumberValue(value)} грн`;
+        return `${getNumberValue(value)} ${t('грн')}`;
     };
 
     const getEstimatePriceHintText = (generalOrderAmount, suborderAmount, hasSuborder) => {
         if (hasSuborder) {
-            return `Оголошена вартість складається із суми основного замовлення (${formatPrice(generalOrderAmount)}) та суми підзамовлення (${formatPrice(suborderAmount)}).`;
+            return t('Оголошена вартість складається із суми основного замовлення ({{general}}) та суми підзамовлення ({{suborder}}).', {general: formatPrice(generalOrderAmount), suborder: formatPrice(suborderAmount)});
         }
 
-        return `Оголошена вартість складається із суми основного замовлення (${formatPrice(generalOrderAmount)}).`;
+        return t('Оголошена вартість складається із суми основного замовлення ({{general}}).', {general: formatPrice(generalOrderAmount)});
     };
 
     const getRequiredNPValues = (updatedDeliveryOrder) => {
@@ -162,7 +163,7 @@ const DeliveryNP = ({ deliveryOrder, lastOrderId }) => {
                     }
                 }).catch((e) => {
                     console.log(e);
-                    setServerError('Не вдалося зберегти дані доставки');
+                    setServerError(t('Не вдалося зберегти дані доставки'));
                 });
             } else {
                 setDeliverNP(accessToken, lastOrderId, value).then((res) => {
@@ -214,13 +215,13 @@ const DeliveryNP = ({ deliveryOrder, lastOrderId }) => {
                                 }
                             }).catch((e) => {
                                 console.log(e);
-                                setServerError('Не вдалося зберегти вагу доставки');
+                                setServerError(t('Не вдалося зберегти вагу доставки'));
                             });
                         }
                     }
                 }).catch((e) => {
                     console.log(e);
-                    setServerError('Не вдалося зберегти дані доставки');
+                    setServerError(t('Не вдалося зберегти дані доставки'));
                 });
             }
         }
@@ -331,7 +332,7 @@ const DeliveryNP = ({ deliveryOrder, lastOrderId }) => {
                 setSubmitting(false);
             } catch (error) {
                 console.log(error);
-                setServerError('Не вдалося оновити ТТН');
+                setServerError(t('Не вдалося оновити ТТН'));
                 setSubmitting(false);
             }
         } else {
@@ -367,7 +368,7 @@ const DeliveryNP = ({ deliveryOrder, lastOrderId }) => {
                 })
                 .catch((error) => {
                     console.log(error);
-                    setServerError('Не вдалося створити ТТН');
+                    setServerError(t('Не вдалося створити ТТН'));
                 })
                 .finally(() => {
                     setSubmitting(false);
@@ -425,11 +426,11 @@ const DeliveryNP = ({ deliveryOrder, lastOrderId }) => {
                     <div className={styles.deliveryNP__content}>
                         <div className={styles.deliveryNP__row}>
                             <div className={styles.inputWrap}>
-                                <label className={styles.formLabel} htmlFor="first_name"><span>Ім'я</span>&nbsp;<span className={styles.desktop_visible}>Отримувача</span><span className={styles.requiredMark}>&nbsp;*</span></label>
+                                <label className={styles.formLabel} htmlFor="first_name"><span>{t('Ім\'я')}</span>&nbsp;<span className={styles.desktop_visible}>{t('Отримувача')}</span><span className={styles.requiredMark}>&nbsp;*</span></label>
                                 <div className="baseInputContainer">
                                     <span className="coloredLabel colored--first_name"></span>
                                     <input
-                                        placeholder={'Ім`я'}
+                                        placeholder={t('Ім`я')}
                                         className={`baseInput ${errors.first_name ? 'baseInputError' : ''}`}
                                         id="first_name"
                                         name="first_name"
@@ -442,11 +443,11 @@ const DeliveryNP = ({ deliveryOrder, lastOrderId }) => {
                                 </div>
                             </div>
                             <div className={styles.inputWrap}>
-                                <label htmlFor="last_name" className={styles.formLabel}><span>Прізвище</span>&nbsp;<span className={styles.desktop_visible}>Отримувача</span><span className={styles.requiredMark}>&nbsp;*</span></label>
+                                <label htmlFor="last_name" className={styles.formLabel}><span>{t('Прізвище')}</span>&nbsp;<span className={styles.desktop_visible}>{t('Отримувача')}</span><span className={styles.requiredMark}>&nbsp;*</span></label>
                                 <div className="baseInputContainer">
                                     <span className="coloredLabel colored--last_name"></span>
                                     <input
-                                        placeholder={'Прізвище'}
+                                        placeholder={t('Прізвище')}
                                         className={`baseInput ${errors.last_name ? 'baseInputError' : ''}`}
                                         id="last_name"
                                         name="last_name"
@@ -460,11 +461,11 @@ const DeliveryNP = ({ deliveryOrder, lastOrderId }) => {
                             </div>
                         </div>
                         <div className={styles.inputWrap}>
-                            <label htmlFor="middle_name" className={styles.formLabel}><span>По батькові</span>&nbsp;<span className={styles.desktop_visible}>Отримувача</span><span className={styles.requiredMark}>&nbsp;*</span></label>
+                            <label htmlFor="middle_name" className={styles.formLabel}><span>{t('По батькові')}</span>&nbsp;<span className={styles.desktop_visible}>{t('Отримувача')}</span><span className={styles.requiredMark}>&nbsp;*</span></label>
                             <div className="baseInputContainer">
                                 <span className="coloredLabel colored--middle_name"></span>
                                 <input
-                                    placeholder={'По батькові'}
+                                    placeholder={t('По батькові')}
                                     className={`baseInput ${errors.middle_name ? 'baseInputError' : ''}`}
                                     id="middle_name"
                                     name="middle_name"
@@ -477,7 +478,7 @@ const DeliveryNP = ({ deliveryOrder, lastOrderId }) => {
                             </div>
                         </div>
                         <div className={styles.inputWrap}>
-                            <label htmlFor="phone" className={styles.formLabel}>Телефон<span className={styles.requiredMark}>&nbsp;*</span></label>
+                            <label htmlFor="phone" className={styles.formLabel}>{t('Телефон')}<span className={styles.requiredMark}>&nbsp;*</span></label>
                             <div className="baseInputContainer">
                                 <span className="coloredLabel colored--phone"></span>
                                 <InputMask
@@ -490,7 +491,7 @@ const DeliveryNP = ({ deliveryOrder, lastOrderId }) => {
                                     {(inputProps) => (
                                         <input
                                             {...inputProps}
-                                            placeholder={'Телефон'}
+                                            placeholder={t('Телефон')}
                                             className={`baseInput ${errors.phone ? 'baseInputError' : ''}`}
                                             aria-label={"phone"}
                                             id="phone"
@@ -502,7 +503,7 @@ const DeliveryNP = ({ deliveryOrder, lastOrderId }) => {
                         </div>
                         <div className={styles.deliveryNP__row}>
                             <div className={styles.inputWrap}>
-                                <label className={styles.formLabel}>Місто доставки<span className={styles.requiredMark}>&nbsp;*</span></label>
+                                <label className={styles.formLabel}>{t('Місто доставки')}<span className={styles.requiredMark}>&nbsp;*</span></label>
                                 <NovaPoshtaCities
                                     cityValue={cityValue}
                                     setCityValue={setCityValue}
@@ -511,7 +512,7 @@ const DeliveryNP = ({ deliveryOrder, lastOrderId }) => {
                                 />
                             </div>
                             <div className={styles.inputWrap}>
-                                <label className={styles.formLabel}>Відділення<span className={styles.requiredMark}>&nbsp;*</span></label>
+                                <label className={styles.formLabel}>{t('Відділення')}<span className={styles.requiredMark}>&nbsp;*</span></label>
                                 <NovaPoshtaDepartments
                                     cityId={requiredNPValues?.city_ref}
                                     department={requiredNPValues?.address || ''}
@@ -522,7 +523,7 @@ const DeliveryNP = ({ deliveryOrder, lastOrderId }) => {
 
                         </div>
                         <div className={styles.inputWrap}>
-                            <label className={styles.formLabel}>Об'ємна вага, кг<span className={styles.requiredMark}>&nbsp;*</span></label>
+                            <label className={styles.formLabel}>{t('Об\'ємна вага, кг')}<span className={styles.requiredMark}>&nbsp;*</span></label>
                             <NovaPoshtaWeight
                                 weight={requiredNPValues?.specified_weight || ''}
                                 setWeight={(specified_weight) => setRequiredNPValues(prevValues => ({ ...prevValues, specified_weight }))}
@@ -535,7 +536,7 @@ const DeliveryNP = ({ deliveryOrder, lastOrderId }) => {
                         <DeliveryIPay isIPay={requiredNPValues?.payer === 'Sender'} auditDates={auditDates} />
                         <div className={styles.inputWrap}>
                             <label className={styles.formLabel}>
-                                <span>Оголошена вартість</span>
+                                <span>{t('Оголошена вартість')}</span>
                                 {estimatePriceHintText && (
                                     <>
                                         &nbsp;
@@ -544,7 +545,7 @@ const DeliveryNP = ({ deliveryOrder, lastOrderId }) => {
                                 )}
                             </label>
                             <input
-                                placeholder={'Оголошена вартість'}
+                                placeholder={t('Оголошена вартість')}
                                 className={`baseInput ${errors.estimate_order_price ? 'baseInputError' : ''}`}
                                 id="declared_order_price"
                                 name="declared_order_price"
@@ -558,8 +559,8 @@ const DeliveryNP = ({ deliveryOrder, lastOrderId }) => {
                         </div>
                         <div className={styles.paymentRow}>
                             <div className={styles.inputWrap}>
-                                <label className={styles.formLabel}>Сума до сплати</label>
-                                <input placeholder={'Сума до сплати'} id="postpaid_amount"
+                                <label className={styles.formLabel}>{t('Сума до сплати')}</label>
+                                <input placeholder={t('Сума до сплати')} id="postpaid_amount"
                                     className={`baseInput ${errors.postpaid_amount ? 'baseInputError' : ''}`}
                                     name="postpaid_amount"
                                     type="number"
@@ -601,9 +602,9 @@ const DeliveryNP = ({ deliveryOrder, lastOrderId }) => {
                             />
                         </div>}
                         {values.payment_method === 'CASH' && <div className={styles.inputWrap}>
-                            <label className={styles.formLabel}>Сума зворотньої доставки</label>
+                            <label className={styles.formLabel}>{t('Сума зворотньої доставки')}</label>
                             <input
-                                placeholder={'Сума зворотньої доставки'}
+                                placeholder={t('Сума зворотньої доставки')}
                                 className={`baseInput ${errors.backward_amount ? 'baseInputError' : ''}`}
                                 id="backward_amount"
                                 name="backward_amount"
@@ -616,7 +617,7 @@ const DeliveryNP = ({ deliveryOrder, lastOrderId }) => {
                             />
                         </div>}
                         <div className={styles.inputWrap}>
-                            <label className={styles.formLabel}>Дата відправки</label>
+                            <label className={styles.formLabel}>{t('Дата відправки')}</label>
                             <DateTimeField
                                 date={values?.delivery_date}
                                 name="delivery_date"
@@ -631,9 +632,9 @@ const DeliveryNP = ({ deliveryOrder, lastOrderId }) => {
                             />
                         </div>
                         <div className={`${styles.closedInput} ${styles.inputWrap}`}>
-                            <label className={styles.formLabel}>Орієнтовна вартість доставки</label>
+                            <label className={styles.formLabel}>{t('Орієнтовна вартість доставки')}</label>
                             <input
-                                placeholder={'Орієнтовна Вартість Доставки'}
+                                placeholder={t('Орієнтовна Вартість Доставки')}
                                 className={'baseInput'}
                                 id="declared_delivery_price"
                                 name="declared_delivery_price"
@@ -643,10 +644,10 @@ const DeliveryNP = ({ deliveryOrder, lastOrderId }) => {
                             />
                         </div>
                         <div className={styles.inputWrap}>
-                            <label className={styles.formLabel}>Номер ТТН</label>
+                            <label className={styles.formLabel}>{t('Номер ТТН')}</label>
                             <div className={styles.transportNumber}>
                                 <input
-                                    placeholder={'ТТН'}
+                                    placeholder={t('ТТН')}
                                     className={'baseInput'}
                                     id="ttn"
                                     name="ttn"
@@ -662,11 +663,11 @@ const DeliveryNP = ({ deliveryOrder, lastOrderId }) => {
                             </div>
                         </div>
                         <div className={styles.inputWrap}>
-                            <label className={styles.formLabel}>Коментар до доставки</label>
+                            <label className={styles.formLabel}>{t('Коментар до доставки')}</label>
                             <textarea
                                 cols="30"
                                 rows="10"
-                                placeholder={'Коментар'}
+                                placeholder={t('Коментар')}
                                 id="comment"
                                 name="comment"
                                 onChange={handleChange}
@@ -685,7 +686,7 @@ const DeliveryNP = ({ deliveryOrder, lastOrderId }) => {
                         {(values.ttn && !isAllRequiredValuesFilled) && <p className={`${styles.caption} infoNote infoNote--tinted`}>{captionRefresh}</p>}
                         {(values.ttn && isAllRequiredValuesFilled && requiredNPValues && oldRequiredNPValues && areObjectsEqual(requiredNPValues, oldRequiredNPValues)) && (
                             ttnResult
-                                ? <p className={`${styles.caption} infoNote infoNote--success`}>{ttnResult === 'created' ? 'ТТН створено' : 'ТТН оновлено'}</p>
+                                ? <p className={`${styles.caption} infoNote infoNote--success`}>{ttnResult === 'created' ? t('ТТН створено') : t('ТТН оновлено')}</p>
                                 : <p className={`${styles.caption} infoNote infoNote--tinted`}>{captionRefresh2}</p>
                         )}
                         {(values.ttn && isAllRequiredValuesFilled && requiredNPValues && oldRequiredNPValues && !areObjectsEqual(requiredNPValues, oldRequiredNPValues) && !serverError) && (
@@ -704,11 +705,11 @@ const DeliveryNP = ({ deliveryOrder, lastOrderId }) => {
                                         || areObjectsEqual(requiredNPValues, oldRequiredNPValues) || !!serverError
                                     }
                                 >
-                                    <span>Оновити ТТН</span>
+                                    <span>{t('Оновити ТТН')}</span>
                                 </button>
                             ) : (
                                 <button className={'globalBtn'} type='submit' disabled={!isAllRequiredValuesFilled || isSubmitting  || !!serverError}>
-                                    <span>Створити ТТН</span>
+                                    <span>{t('Створити ТТН')}</span>
                                 </button>
                             )}
                         </div>
@@ -732,7 +733,7 @@ const DeliveryNP = ({ deliveryOrder, lastOrderId }) => {
             </div>
             <div className="globalBtnWrap">
                 <button className="globalBtn button-xs" onClick={nextPage}>
-                    <span>Далі</span>
+                    <span>{t('Далі')}</span>
                 </button>
             </div>
         </div>

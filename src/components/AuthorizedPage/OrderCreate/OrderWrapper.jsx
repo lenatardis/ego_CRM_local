@@ -9,6 +9,7 @@ import { getAccessToken } from "../../../utils/authTokens";
 import {getOrderInfo, getSources} from "../../../api/ordersApi";
 import { updatePayment } from "../../../api/paymentApi";
 import { updateCustomer } from "../../../api/customersApi";
+import { t } from '../../../i18n';
 
 
 const OrderWrapper = () => {
@@ -61,7 +62,7 @@ const OrderWrapper = () => {
                 <Preloader />
             )}
             {!isLoading && !order && (
-                <NotFound message={`Замовлення №${id} не знайдено`} />
+                <NotFound message={t('Замовлення №{{id}} не знайдено', {id})} />
             )}
         </>
     )

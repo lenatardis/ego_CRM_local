@@ -5,6 +5,7 @@ import { CircularProgress } from "@mui/material";
 import { useDebouncedValue } from "../../../../hooks/useDebouncedValue";
 import { getAccessToken } from "../../../../utils/authTokens";
 import { getDepartment } from "../../../../api/novaPoshtaApi";
+import { t } from '../../../../i18n';
 
 const NovaPoshtaDepartments = ({cityId, department, updateData, error}) => {
     const [departments, setDepartments] = useState([]);
@@ -83,7 +84,7 @@ const NovaPoshtaDepartments = ({cityId, department, updateData, error}) => {
                 renderInput={(params) => (
                     <TextField
                         {...params}
-                        label="Номер відділення"
+                        label={t('Номер відділення')}
                         slotProps={{
                             input: {
                               ...params.InputProps,

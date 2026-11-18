@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import styles from './AuthForm.module.scss';
 import { login } from "../../../../api/authApi";
 import { DEMO_USERS } from "../../../../mocks/data/demoUsers";
+import { useTranslation } from "react-i18next";
 
 const AuthForm = () => {
+    const { t } = useTranslation();
     const [authLogin, setAuthLogin] = useState('');
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
@@ -58,14 +60,14 @@ const AuthForm = () => {
         <form onSubmit={submitForm} className={styles.authForm}>
             <div className={styles.form}>
                 <div className={styles.form__field}>
-                    <label htmlFor="demoUser">Демо-користувач:</label>
+                    <label htmlFor="demoUser">{t('Демо-користувач:')}</label>
                     <select
                         id={'demoUser'}
                         value={demoUserId}
                         className={'baseInput'}
                         onChange={onDemoUserChange}
                     >
-                        <option value="" disabled>Оберіть менеджера</option>
+                        <option value="" disabled>{t('Оберіть менеджера')}</option>
                         {DEMO_USERS.map((u) => (
                             <option key={u.id} value={u.id}>
                                 {`${u.profile.last_name} ${u.profile.first_name}`}
@@ -75,7 +77,7 @@ const AuthForm = () => {
                 </div>
 
                 <div className={styles.form__field}>
-                    <label htmlFor="login">Логін:</label>
+                    <label htmlFor="login">{t('Логін:')}</label>
                     <input
                         id={'login'}
                         name={'login'}
@@ -91,7 +93,7 @@ const AuthForm = () => {
                 </div>
 
                 <div className={styles.form__field}>
-                    <label htmlFor="password">Пароль:</label>
+                    <label htmlFor="password">{t('Пароль:')}</label>
                     <input
                         id={'password'}
                         name={'password'}
@@ -110,12 +112,12 @@ const AuthForm = () => {
 
             {authError && (
                 <p className={styles.authError}>
-                    {authError}
+                    {t(authError)}
                 </p>
             )}
 
             <button className={`${styles.action} globalBtn`} disabled={isLoading}>
-                <span>Увійти</span>
+                <span>{t('Увійти')}</span>
             </button>
         </form>
     )

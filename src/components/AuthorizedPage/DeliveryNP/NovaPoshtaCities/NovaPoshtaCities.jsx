@@ -4,6 +4,7 @@ import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
 import { getAccessToken } from "../../../../utils/authTokens";
 import { getCities } from "../../../../api/novaPoshtaApi";
+import { t } from '../../../../i18n';
 
 
 const NovaPoshtaCities = ({cityValue, setCityValue, updateData, error}) => {
@@ -65,7 +66,7 @@ const NovaPoshtaCities = ({cityValue, setCityValue, updateData, error}) => {
                         });
                     }
                 }}
-                renderInput={(params) => <TextField {...params} label="Місто" />}
+                renderInput={(params) => <TextField {...params} label={t('Місто')} />}
             />
         </div>
     )

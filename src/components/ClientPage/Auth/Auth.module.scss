@@ -12,12 +12,20 @@
 }
 
 .card {
+  position: relative;
   width: 100%;
   max-width: 400px;
   padding: 24px 20px;
   background-color: #F1EEF3;
   border-radius: 12px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+
+  // Demo build (2026-11-18): UA / EN switch in the card's top right corner
+  &__lang {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+  }
 
   &__logo {
     display: block;

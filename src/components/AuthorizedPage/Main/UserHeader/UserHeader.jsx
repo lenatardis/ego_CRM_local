@@ -4,6 +4,7 @@ import arrowRight from '../../../../assets/icons/arrowRight.svg';
 import {useAppSelector} from "../../../../hooks/redux";
 import {getUser} from "../../../../store/selectors";
 import {Link} from "react-router-dom";
+import { t } from '../../../../i18n';
 
 
 const UserHeader = () => {
@@ -17,7 +18,7 @@ const UserHeader = () => {
                 </div>
                 <p>
                     <span className={styles.name}>{user.name}</span>
-                    <span className={styles.role}>Менеджер</span>
+                    <span className={styles.role}>{t('Менеджер')}</span>
                 </p>
             </div>
             <img src={arrowRight} alt="" />

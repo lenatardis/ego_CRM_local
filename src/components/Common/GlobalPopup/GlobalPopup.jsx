@@ -4,6 +4,7 @@ import closeIcon from '../../../assets/icons/closeCross.svg';
 import {useAppDispatch, useAppSelector} from "../../../hooks/redux";
 import {getIsActivePopup} from "../../../store/selectors";
 import {setIsActivePopup} from "../../../store/main-slice";
+import { t } from '../../../i18n';
 
 const GlobalPopup = ({children, topPopup, title, onClose = () => {}, isNested = false, centeredPopup}) => {
     const activePopup = useAppSelector(getIsActivePopup);
@@ -28,7 +29,7 @@ const GlobalPopup = ({children, topPopup, title, onClose = () => {}, isNested = 
                 <div className={styles.header}>
                     <p className={`${styles.header__title} popupTitle`}>{title}</p>
                     <div className={styles.header__close} onClick={(e) => close(e)}>
-                        <span className="popupCloseCaption">Закрити</span>
+                        <span className="popupCloseCaption">{t('Закрити')}</span>
                         <button>
                             <img src={closeIcon} className="popupCloseIcon" alt="" />
                         </button>

@@ -7,6 +7,7 @@ import closeIcon from "../../../../assets/icons/closeCross.svg";
 import CancelOrder from "./Popup/CancelOrder";
 import React, {useState} from "react";
 import {useIsDesktop} from "../../../../hooks/useIsDesktop";
+import { t } from '../../../../i18n';
 
 export const Suborder = ({ item, onDelete }) => {
     const isDesktop = useIsDesktop();
@@ -33,21 +34,21 @@ export const Suborder = ({ item, onDelete }) => {
                 </div>
                 <div className={styles.suborder__info}>
                     <div>
-                        <p>{item?.payment?.final_amount || 0} грн</p>
+                        <p>{item?.payment?.final_amount || 0} {t('грн')}</p>
                     </div>
                     <div>
-                        <span className={styles.text}>Всього товарів: {item.warehouse_item_count + item.kit_count}</span>
+                        <span className={styles.text}>{t('Всього товарів')}: {item.warehouse_item_count + item.kit_count}</span>
                     </div>
                 </div>
                 <hr />
                 <div className={styles.actions}>
                     <button className={styles.btn} onClick={openPopup}>
                         <img src={removeIcon} width={12} alt="Remove" />
-                        <span>Видалити</span>
+                        <span>{t('Видалити')}</span>
                     </button>
                     <a href={`${process.env.PUBLIC_URL}/products/${item.id}`} className={styles.btn} alt="Edit">
                         <img src={editIcon} width={12} alt="Edit" />
-                        <span>Змінити</span>
+                        <span>{t('Змінити')}</span>
                     </a>
                 </div>
             </div>
@@ -65,9 +66,9 @@ export const Suborder = ({ item, onDelete }) => {
                     }`}
                          onClick={(e) => e.stopPropagation()}>
                         <div className={styles.header}>
-                            <p className={`${styles.header__title} popupTitle`}>Видалення підзамовлення</p>
+                            <p className={`${styles.header__title} popupTitle`}>{t('Видалення підзамовлення')}</p>
                             <div className={styles.header__close} onClick={() => closePopup()}>
-                                <span className="popupCloseCaption">Закрити</span>
+                                <span className="popupCloseCaption">{t('Закрити')}</span>
                                 <button>
                                     <img src={closeIcon} className="popupCloseIcon" alt=""/>
                                 </button>

@@ -7,6 +7,7 @@ import { setIsNotFound } from "../../../store/main-slice";
 import NotFound from "../../Common/NotFound/NotFound";
 import { getAccessToken } from "../../../utils/authTokens";
 import { getDeliverNP, setDeliverNP } from "../../../api/novaPoshtaApi";
+import { t } from '../../../i18n';
 
 
 const DeliveryNPWrapper = () => {
@@ -49,7 +50,7 @@ const DeliveryNPWrapper = () => {
                 <Preloader />
             )}
             {!deliveryOrder && !isLoading && (
-                <NotFound message={`Замовлення №${id} не знайдено`} />
+                <NotFound message={t('Замовлення №{{id}} не знайдено', {id})} />
             )}
         </>
     )

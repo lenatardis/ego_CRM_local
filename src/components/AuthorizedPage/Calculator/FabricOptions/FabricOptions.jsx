@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import styles from './FabricOptions.module.scss';
 import imgPlaceholder from "../../../../assets/icons/typePlaceholder.svg";
 import {photoSkeleton} from "../../../../utils/photoSkeleton";
+import { t } from '../../../../i18n';
 
 const FabricOptions = ({options, selectedOptionIds, setSelectedOptionIds, openFabricConsumptionPopup, fabricConsumption}) => {
     const toggleSelectedOption = (optionId) => {
@@ -34,7 +35,7 @@ const FabricOptions = ({options, selectedOptionIds, setSelectedOptionIds, openFa
                                 <img src={imgPlaceholder} alt=""/>
                             )}
                         </div>
-                        <p>{`${item.name} (${item.price} грн)`}</p>
+                        <p>{`${item.name} (${item.price} ${t('грн')})`}</p>
                         <input
                             type="checkbox"
                             checked={selectedOptionIds.includes(item.id)}
@@ -45,12 +46,12 @@ const FabricOptions = ({options, selectedOptionIds, setSelectedOptionIds, openFa
             </div>
             {fabricConsumption !== undefined && (
                 <div className={styles.options__fabricAmount}>
-                    <span>Витрата тканини:</span>
+                    <span>{t('Витрата тканини:')}</span>
                     <input
                         type="text"
                         readOnly
                         onClick={openFabricConsumptionPopup}
-                        value={fabricConsumption + ' см'}
+                        value={fabricConsumption + ' ' + t('см')}
                     />
                 </div>
             )}

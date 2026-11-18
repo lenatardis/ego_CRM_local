@@ -6,6 +6,7 @@ import {getBaseUrl} from "../../../../../store/selectors";
 import ImgPlaceholder from '../../../../../assets/img/FabricImgPlaceholder.png';
 import ImagePopup from "../../../../Common/ImagePopup/ImagePopup";
 import {photoSkeleton} from "../../../../../utils/photoSkeleton";
+import { t } from '../../../../../i18n';
 
 const FabricItem = ({item, selectedFabricId, onFabricSelect, isCalculator}) => {
     const baseUrl = getBaseUrl;
@@ -31,10 +32,10 @@ const FabricItem = ({item, selectedFabricId, onFabricSelect, isCalculator}) => {
                         <img {...(item.images[0] ? photoSkeleton(styles.clickable) : photoSkeleton(null, false))} src={item.images[0] ? item.images[0] : ImgPlaceholder} onClick={item?.images[0] ? (e) => showImagePopup(e, item?.images[0]) : null} alt=""/>
                     </div>
                     <div className={styles.fabric__info}>
-                        <h5>{item.type?.type || 'Невідомий тип тканини'}</h5>
+                        <h5>{item.type?.type || t('Невідомий тип тканини')}</h5>
                         <p>{item.name}</p>
-                        <span className={styles.fabric__remainder}>Залишок <span
-                            className={item?.total_length <= 10 ? styles.red : null}>{`(${item?.total_length}м)`}</span>,
+                        <span className={styles.fabric__remainder}>{t('Залишок')} <span
+                            className={item?.total_length <= 10 ? styles.red : null}>{`(${item?.total_length}${t('м')})`}</span>,
                                     </span>
                     </div>
                 </div>

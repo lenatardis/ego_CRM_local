@@ -6,6 +6,7 @@ import {
 } from '../data/orders';
 import { nextId } from '../db';
 import { toIso } from '../shared/seed';
+import { t } from '../../i18n';
 
 // POST payments/ { order_id, ...fields } (src/api/paymentApi.js updatePayment) – an upsert of the order's
 // payment, which is embedded in the shared order record. OrderWrapper.jsx creates it for a new order with
@@ -128,7 +129,7 @@ export const paymentHandlers = [
         const bill = bills.find((b) => String(b.id) === params.id);
         if (!bill) return notFound();
         // a paid bill is money received (the ERP may have a Privat payment linked to it): Bill.jsx disables its delete
-        if (bill.status === 'PAID') return badRequest({ detail: 'Оплачений рахунок не можна видалити.' });
+        if (bill.status === 'PAID') return badRequest({ detail: t('Оплачений рахунок не можна видалити.') });
         savePaymentBills(bills.filter((b) => b.id !== bill.id));
         return new HttpResponse(null, { status: 204 });
     })),

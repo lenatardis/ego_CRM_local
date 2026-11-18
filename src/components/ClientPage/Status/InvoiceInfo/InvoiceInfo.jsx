@@ -1,6 +1,7 @@
 import React from "react";
 import styles from './InvoiceInfo.module.scss';
 import SearchInput from "./Input/SearchInput";
+import { t } from '../../../../i18n';
 
 const InvoiceInfo = ({ order }) => {
     const getNumberValue = (value) => {
@@ -13,14 +14,14 @@ const InvoiceInfo = ({ order }) => {
             payment?.status === 'PAY_WAIT' &&
             getNumberValue(payment?.already_paid_amount) > 0
         ) {
-            return 'Очікує повної оплати';
+            return t('Очікує повної оплати');
         }
 
         switch (payment?.status) {
-            case 'PAID': return 'Оплачено';
-            case 'IN_PROG': return 'В обробці';
-            case 'PAY_WAIT': return 'Очікує оплати';
-            case 'NOT_PAID': return 'Не оплачено';
+            case 'PAID': return t('Оплачено');
+            case 'IN_PROG': return t('В обробці');
+            case 'PAY_WAIT': return t('Очікує оплати');
+            case 'NOT_PAID': return t('Не оплачено');
             default:
                 console.log(payment?.status);
                 break;

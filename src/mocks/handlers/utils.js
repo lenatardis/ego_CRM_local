@@ -1,5 +1,6 @@
 import { HttpResponse, delay } from 'msw';
 import { findDemoUserById, parseDemoToken } from '../data/demoUsers';
+import { localizeResponse } from '../localize';
 
 // Same path the API layer uses (src/api/apiConfig.js baseUrl, without the trailing slash).
 export const API = '/api/v1';
@@ -28,13 +29,13 @@ export const withAuth = (resolver) => async (info) => {
     await delay(LATENCY_MS);
     const user = getRequestUser(info.request);
     if (!user) return unauthorized();
-    return resolver({ ...info, user });
+    return localizeResponse(await resolver({ ...info, user }), info.request);
 };
 
 /** Adds latency only (for public endpoints: login, token refresh, client pages). */
 export const withLatency = (resolver) => async (info) => {
     await delay(LATENCY_MS);
-    return resolver(info);
+    return localizeResponse(await resolver(info), info.request);
 };
 
 export const isSet = (v) => v !== undefined && v !== null && String(v).trim() !== '';

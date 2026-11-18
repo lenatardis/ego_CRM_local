@@ -8,9 +8,10 @@ import {setIsActivePopup} from "../../../../store/main-slice";
 import ChoosePopup from "./ChoosePopup/ChoosePopup";
 import RemoveFiltersIcon from "../../../../assets/icons/filter-remove-icon.svg";
 import {useIsDesktop} from "../../../../hooks/useIsDesktop";
+import { t } from '../../../../i18n';
 
 
-const FabricChooserList = ({fabricFilters, handleChange, selectedFabric, title = 'Типи тканин:', isNested = false, removeFilters, type}) => {
+const FabricChooserList = ({fabricFilters, handleChange, selectedFabric, title = t('Типи тканин:'), isNested = false, removeFilters, type}) => {
     const dispatch = useAppDispatch();
     const [isChooserPopup, setIsChooserPopup] = useState(false);
     const isDesktop = useIsDesktop();

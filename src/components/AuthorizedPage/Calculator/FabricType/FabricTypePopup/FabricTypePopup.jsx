@@ -11,6 +11,7 @@ import { FabricsSort } from "../../../Fabrics/FabricsSort/FabricsSort";
 import eyeIcon from "../../../../../assets/icons/eye.svg";
 import eyeClosedIcon from "../../../../../assets/icons/eyeClosed.svg";
 import {useIsDesktop} from "../../../../../hooks/useIsDesktop";
+import { t } from '../../../../../i18n';
 
 const FabricTypePopup = ({
     searchValue,
@@ -57,7 +58,7 @@ const FabricTypePopup = ({
                 </button>
             </div>
             {fabricTags.length > 0 && (
-                <FabricChooser handleChange={handleChangeTags} fabricFilters={fabricTags} selectedFabric={selectedTags} title="Теги тканин:" isNested={true} />
+                <FabricChooser handleChange={handleChangeTags} fabricFilters={fabricTags} selectedFabric={selectedTags} title={t('Теги тканин:')} isNested={true} />
             )}
             {Array.isArray(list) && list.length > 0 && (
                 <FabricsContent
@@ -69,7 +70,7 @@ const FabricTypePopup = ({
                 />
             )}
             {isSortPopup && (
-                <GlobalPopup title={'Сортування тканини:'} onClose={() => setIsSortPopup(false)} isNested {...(isDesktop ? { centeredPopup: true } : {})}>
+                <GlobalPopup title={t('Сортування тканини:')} onClose={() => setIsSortPopup(false)} isNested {...(isDesktop ? { centeredPopup: true } : {})}>
                     <FabricsSort
                         sortOptions={sortOptions}
                         selectedSortParam={selectedSortParam}

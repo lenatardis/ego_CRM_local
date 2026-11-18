@@ -5,6 +5,7 @@ import TextField from "@mui/material/TextField";
 import '../DeliveryUKR.scss';
 import { getAccessToken } from "../../../../utils/authTokens";
 import { getCities } from "../../../../api/novaPoshtaApi";
+import { t } from '../../../../i18n';
 
 
 const UkrPoshtaIndex = ({index, setIndex}) => {
@@ -54,7 +55,7 @@ const UkrPoshtaIndex = ({index, setIndex}) => {
                 noOptionsText="No index"
                 onKeyUp={(e) => setValue(e.target.value)}
                 onChange={(event, newValue) => setIndex(newValue)}
-                renderInput={(params) => <TextField {...params} label="Поштовий індекс *" />}
+                renderInput={(params) => <TextField {...params} label={t('Поштовий індекс *')} />}
             />
         </div>
     )

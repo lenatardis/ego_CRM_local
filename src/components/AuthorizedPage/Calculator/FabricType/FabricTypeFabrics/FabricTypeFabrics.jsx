@@ -7,6 +7,7 @@ import GlobalPopup from "../../../../Common/GlobalPopup/GlobalPopup";
 import FabricTypePopup from "../FabricTypePopup/FabricTypePopup";
 import { getAccessToken } from "../../../../../utils/authTokens";
 import { getFabrics } from "../../../../../api/productsApi";
+import { t } from '../../../../../i18n';
 
 const initialFilterParams = {
     page: 1,
@@ -129,7 +130,7 @@ const FabricTypeFabrics = ({
                     .map((item) => <FabricTypeItem key={item.name} item={item} isActive onClick={() => handleSelectFabricItem(item)}/>)}
             </div>
             {showFabricPopup && filterParams.type.length > 0 && (
-                <GlobalPopup topPopup title="Вибір тканини" onClose={() => closeFabricPopup()}>
+                <GlobalPopup topPopup title={t('Вибір тканини')} onClose={() => closeFabricPopup()}>
                     <FabricTypePopup
                         searchValue={filterParams.search}
                         setSearchValue={(value) => setFilterParams(prevParams => ({ ...prevParams, search: value }))}

@@ -27,8 +27,11 @@ import { setNewOrder } from "../../api/ordersApi";
 import { logout } from "../../store/account-slice";
 import { useIsDesktop } from "../../hooks/useIsDesktop";
 import MobileBar, { getPageTitle, useMobileMenu } from "./MobileBar";
+import { useTranslation } from "react-i18next";
+import LanguageSwitcher from "../Common/LanguageSwitcher/LanguageSwitcher";
 
 const MainMenu = () => {
+    const { t } = useTranslation();
     const [isDeliveryMenu, setIsDeliveryMenu] = useState(false);
     const [ordersAccordionOpen, setOrdersAccordionOpen] = useState(false);
     const [storageAccordionOpen, setStorageAccordionOpen] = useState(false);
@@ -131,7 +134,7 @@ const MainMenu = () => {
         <>
             <button onClick={() => checkPageNav()} className={styles.userMenu__link}>
                 <img src={authIcon} alt="" />
-                <span>Замовлення +</span>
+                <span>{t('Замовлення +')}</span>
             </button>
 
             <div className={styles.accordionBlock}>
@@ -144,7 +147,7 @@ const MainMenu = () => {
                 >
                     <div className={styles.desktopAccordionLabel}>
                         <img src={isAllOrdersActive ? mainBrownIcon : mainIcon} alt="" />
-                        <span>Усі замовлення</span>
+                        <span>{t('Усі замовлення')}</span>
                     </div>
                 </div>
 
@@ -155,7 +158,7 @@ const MainMenu = () => {
                     >
                         <div className={styles.desktopAccordionLabel}>
                             <img src={mainIcon} alt="" />
-                            <span>Деталі</span>
+                            <span>{t('Деталі')}</span>
                         </div>
 
                         <img
@@ -175,7 +178,7 @@ const MainMenu = () => {
                         >
                             <img src={pathname.startsWith('/order/') ? mainBrownIcon : mainIcon} alt="" />
                             <span className={generalOrderId ? styles.backToMain : ''}>
-                                {generalOrderId ? 'Головне замовлення' : 'Замовлення'}
+                                {generalOrderId ? t('Головне замовлення') : t('Замовлення')}
                             </span>
                         </Link>
 
@@ -186,7 +189,7 @@ const MainMenu = () => {
                             onClick={() => closeMobileMenu()}
                         >
                             <img src={pathname.startsWith('/products/') ? productsBrownIcon : productsIcon} alt="" />
-                            <span>Товари</span>
+                            <span>{t('Товари')}</span>
                         </Link>
 
                           {!generalOrderId && (
@@ -204,7 +207,7 @@ const MainMenu = () => {
                                             : styles.userMenu__link} ${styles.innerShift}`}
                                     >
                                         <img src={novaMailIcon} alt="" />
-                                        <span>Доставка</span>
+                                        <span>{t('Доставка')}</span>
                                     </Link>
                                 ) : (
                                     <Link
@@ -219,7 +222,7 @@ const MainMenu = () => {
                                             : styles.userMenu__link} ${styles.innerShift}`}
                                     >
                                         <img src={ukrMailIcon} alt="" />
-                                        <span>Доставка</span>
+                                        <span>{t('Доставка')}</span>
                                     </Link>
                                 )}
                             </>
@@ -231,7 +234,7 @@ const MainMenu = () => {
                             onClick={() => closeMobileMenu()}
                         >
                             <img src={pathname.startsWith('/order_status/') ? statusBrownIcon : statusIcon} alt="" />
-                            <span>Статус</span>
+                            <span>{t('Статус')}</span>
                         </Link>
                     </div>
                 )}
@@ -244,7 +247,7 @@ const MainMenu = () => {
                 >
                     <div className={styles.desktopAccordionLabel}>
                         <img src={storageIcon} alt="" />
-                        <span>Склад</span>
+                        <span>{t('Склад')}</span>
                     </div>
 
                     <img
@@ -261,7 +264,7 @@ const MainMenu = () => {
                         onClick={() => closeMobileMenu()}
                     >
                         <img src={pathname.startsWith('/fabrics/') || pathname === '/fabrics/' ? fabricsBrownIcon : fabricsIcon} alt="" />
-                        <span>Тканини</span>
+                        <span>{t('Тканини')}</span>
                     </Link>
 
                     <Link
@@ -270,7 +273,7 @@ const MainMenu = () => {
                         onClick={() => closeMobileMenu()}
                     >
                         <img src={pathname.startsWith('/storage/') || pathname === '/storage/' ? storageBrownIcon : storageIcon} alt="" />
-                        <span>Продукція</span>
+                        <span>{t('Продукція')}</span>
                     </Link>
                 </div>
             </div>
@@ -291,8 +294,10 @@ const MainMenu = () => {
                 </div>
 
                 <div className={styles.btnWrap}>
+                    <LanguageSwitcher dark className={styles.langSwitcher}/>
+
                     <a className={`${styles.userMenu__link} ${styles.ERP}`} href="/ego_ERP_local/">
-                        <span>Перейти в ERP</span>
+                        <span>{t('Перейти в ERP')}</span>
                     </a>
 
                     <button
@@ -300,14 +305,14 @@ const MainMenu = () => {
                         className={`${styles.userMenu__link} ${styles.logoutLink}`}
                     >
                         <img src={logoutIcon} alt="" />
-                        <span>Вийти</span>
+                        <span>{t('Вийти')}</span>
                     </button>
                 </div>
             </div>
 
             {showPopup && (
                 <GlobalPopup
-                    title={'Зміна доставки'}
+                    title={t('Зміна доставки')}
                     onClose={() => setShowPopup(false)}
                     {...(isDesktop ? { centeredPopup: true } : {})}
                 >
@@ -317,7 +322,7 @@ const MainMenu = () => {
 
             {showPagePopup && (
                 <GlobalPopup
-                    title={'Перехід на сторінку Замовлення +'}
+                    title={t('Перехід на сторінку Замовлення +')}
                     onClose={() => setShowPagePopup(false)}
                     {...(isDesktop ? { centeredPopup: true } : {})}
                 >

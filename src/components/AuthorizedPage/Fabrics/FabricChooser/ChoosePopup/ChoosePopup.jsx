@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from './ChoosePopup.module.scss';
 import FabricChooseItem from "./FabricChooseItem";
+import { t } from '../../../../../i18n';
 
 const ChoosePopup = ({ fabricFilters, handleChange, selectedFabric, type }) => {
     const [showApplied, setShowApplied] = useState(false);
@@ -30,7 +31,7 @@ const ChoosePopup = ({ fabricFilters, handleChange, selectedFabric, type }) => {
     return (
         <div className={`${styles.chooserPopup} ${type ? styles.typePopup : ""}`}>
             {showApplied && (
-                <p className={styles.appliedMessage}>Зміни застосовано</p>
+                <p className={styles.appliedMessage}>{t('Зміни застосовано')}</p>
             )}
 
             {fabricFilters && fabricFilters.length > 0 && (

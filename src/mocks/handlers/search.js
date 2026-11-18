@@ -4,6 +4,7 @@ import { byNewest, loadCustomers, loadOrders, serializeOrders } from '../data/or
 import { findSource, loadSources } from '../data/sources';
 import { loadOrderProducts } from '../data/orderProducts';
 import { findFabric, findKitTemplate, findProduct } from '../data/catalog';
+import { localizeCatalogText } from '../shared/catalog/en';
 
 // Global search on the main page (src/api/searchApi.js, Main/OrderSearchFilters.jsx):
 //   GET search/?query&is_order&is_fabric&is_warehouse_item&page
@@ -18,7 +19,12 @@ import { findFabric, findKitTemplate, findProduct } from '../data/catalog';
 
 const PAGE_SIZE = 26; // demo page size for lists without their own page_size (2026-11-11, at the user's request)
 
-const normalize = (text) => String(text ?? '').toLowerCase().replace(/ё/g, 'е');
+// the catalog names are matched in English too (English version, 2026-11-18): "satin" finds сатин kits
+const normalize = (text) => {
+    const raw = String(text ?? '');
+    const english = localizeCatalogText(raw);
+    return (english === raw ? raw : `${raw} ${english}`).toLowerCase().replace(/ё/g, 'е');
+};
 const digits = (text) => String(text ?? '').replace(/\D/g, '');
 
 const orderText = (order, customers, sources) => {

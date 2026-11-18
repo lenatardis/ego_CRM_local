@@ -5,6 +5,7 @@ import { useAppDispatch } from "../../../hooks/redux";
 import GlobalPopup from "../GlobalPopup/GlobalPopup";
 import GlobalCalculator from "../GlobalCalculator/GlobalCalculator";
 import { useIsDesktop } from "../../../hooks/useIsDesktop";
+import { t } from '../../../i18n';
 
 const DiscountField = ({
     percentInputValue,
@@ -67,7 +68,7 @@ const DiscountField = ({
         if (!maxDiscount) return true;
 
         if (value >= maxDiscount) {
-            setUAHDiscountError('Знижка не може бути більшою або дорівнювати сумі замовлення');
+            setUAHDiscountError(t('Знижка не може бути більшою або дорівнювати сумі замовлення'));
             return false;
         }
 
@@ -113,7 +114,7 @@ const DiscountField = ({
 
     return (
         <div className={styles.discountField}>
-            <span>Знижка:</span>
+            <span>{t('Знижка:')}</span>
             <div className={`${styles.discountField__wrapper} ${isDisabled ? styles.disabled : ''}`}>
                 <label className={styles.field}>
                     <input
@@ -133,13 +134,13 @@ const DiscountField = ({
                         onChange={() => onChangeDiscount('VAL')}
                         disabled={isDisabled}
                     />
-                    <span>{UAHInputValue} грн</span>
+                    <span>{UAHInputValue} {t('грн')}</span>
                 </label>
             </div>
 
             {popup === 'PERC' && (
                 <GlobalPopup
-                    title={'Знижка'}
+                    title={t('Знижка')}
                     onClose={() => setPopup(null)}
                     {...(isDesktop ? { centeredPopup: true } : {})}
                 >
@@ -165,7 +166,7 @@ const DiscountField = ({
 
             {popup === 'VAL' && (
                 <GlobalPopup
-                    title={'Знижка'}
+                    title={t('Знижка')}
                     onClose={() => setPopup(null)}
                     {...(isDesktop ? { centeredPopup: true } : {})}
                 >
@@ -183,7 +184,7 @@ const DiscountField = ({
                                 type="text"
                                 readOnly
                             />
-                            <span>&nbsp;грн</span>
+                            <span>&nbsp;{t('грн')}</span>
                         </div>
                         {UAHDiscountError && (
                             <p className={styles.discountError}>{UAHDiscountError}</p>

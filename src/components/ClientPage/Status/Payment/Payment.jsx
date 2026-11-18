@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Bill } from "./Bill/Bill";
 import { setReceipt as sendReceipt } from "../../../../api/receiptApi";
 import styles from "./Payment.module.scss";
+import { t } from '../../../../i18n';
 
 const Payment = ({bills, setBills, IBanDetail, isClientPage = false}) => {
     const [isFileUploading, setIsFileUploading] = useState(false);
@@ -30,7 +31,7 @@ const Payment = ({bills, setBills, IBanDetail, isClientPage = false}) => {
         <div className={styles.payment}>
             {bills.length > 0 && (
                 <>
-                    <h3 className={styles.title}>Список рахунків</h3>
+                    <h3 className={styles.title}>{t('Список рахунків')}</h3>
                     {bills.map((bill, idx) => bill.prepayment_amount > 0 && (
                         <Bill
                             key={idx}

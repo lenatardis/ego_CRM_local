@@ -4,6 +4,7 @@ import history from '../../../../assets/icons/history.svg';
 import historyActive from '../../../../assets/icons/historyActive.svg';
 import favorites from '../../../../assets/icons/favorites.svg';
 import favoritesActive from '../../../../assets/icons/favoritesActive.svg';
+import { t } from '../../../../i18n';
 
 const MainTabs = ({orders, setOrders, onChangeList, setPage}) => {
     const onSubmit = (value) => {
@@ -21,7 +22,7 @@ const MainTabs = ({orders, setOrders, onChangeList, setPage}) => {
                             onSubmit('my');
                             setPage(1);
                         }}>
-                    <span>Мої замовлення</span>
+                    <span>{t('Мої замовлення')}</span>
                 </button>
                 <button className={orders === 'all' ? styles.tabActive : styles.tab}
                         onClick={() => {
@@ -29,7 +30,7 @@ const MainTabs = ({orders, setOrders, onChangeList, setPage}) => {
                             onSubmit('all');
                             setPage(1);
                         }}>
-                    <span>Всі замовлення</span>
+                    <span>{t('Всі замовлення')}</span>
                 </button>
                 <button className={orders === 'history' ? styles.tabActive : styles.tab}
                         onClick={() => {

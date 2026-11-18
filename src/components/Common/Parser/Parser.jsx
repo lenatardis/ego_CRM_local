@@ -12,6 +12,7 @@ import { getAccessToken } from "../../../utils/authTokens";
 import { getCities } from "../../../api/novaPoshtaApi";
 import { useIsDesktop } from "../../../hooks/useIsDesktop";
 import InfoHint from "../ProductItem/InfoHint/InfoHint";
+import { t } from '../../../i18n';
 
 // const smoothScrollToBottom = (duration = 150) => {
 //     const start = window.scrollY;
@@ -328,10 +329,10 @@ const Parser = ({ values, setValues, updateData = () => {}, parserStyles = {}, h
         <div className={`${styles.parser} ${!isParserOpen ? styles.closeParser : ''}`} style={parserStyles}>
             <div className={styles.parserHead} onClick={() => setIsParserOpen(prev => !prev)}>
                 <div className={styles.parserHeadLeft}>
-                    <h3>Парсер</h3>
+                    <h3>{t('Парсер')}</h3>
                     {!!hintText && (
                         <span onClick={(e) => e.stopPropagation()}>
-                            <InfoHint text={hintText} ariaLabel="Підказка по парсеру" size={16} />
+                            <InfoHint text={t(hintText)} ariaLabel={t('Підказка по парсеру')} size={16} />
                         </span>
                     )}
                 </div>
@@ -361,7 +362,7 @@ const Parser = ({ values, setValues, updateData = () => {}, parserStyles = {}, h
                                     className={`${styles.parsedValue} ${isEdit || (isAddValue && !newValue[Object.keys(newValue)[0]].length) ? styles.disabled : ""} ${styles.label} colored--${key}`}
                                     onClick={() => handleAddValue(key)}
                                 >
-                                    <span>{item.label}</span>
+                                    <span>{t(item.label)}</span>
                                     <span className={styles.plusSign}><img src={plusIcon} alt="Plus sign" /></span>
                                 </div>
                             )

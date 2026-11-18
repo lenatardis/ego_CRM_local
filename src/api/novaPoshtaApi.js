@@ -1,6 +1,7 @@
 import { baseUrl } from "./apiConfig";
 import { refreshAccessToken } from "./authApi";
 import { parseResponseSafely } from "./apiUtils";
+import { t } from '../i18n';
 
 export const getDeliverNP = async (token, value) => {
     try {
@@ -19,7 +20,7 @@ export const getDeliverNP = async (token, value) => {
                     return getDeliverNP(res.access, value);
                 }
 
-                return { _serverError: "Помилка авторизації" };
+                return { _serverError: t('Помилка авторизації') };
             });
         }
 
@@ -29,10 +30,10 @@ export const getDeliverNP = async (token, value) => {
             return data;
         }
 
-        return data || { _serverError: `Помилка сервера (${response.status})` };
+        return data || { _serverError: t('Помилка сервера ({{status}})', {status: response.status}) };
     } catch (error) {
         console.log(error);
-        return { _serverError: "Не вдалося виконати запит. Спробуй ще раз." };
+        return { _serverError: t('Не вдалося виконати запит. Спробуй ще раз.') };
     }
 };
 
@@ -56,7 +57,7 @@ export const setDeliverNP = async (token, id, value = null) => {
                 if (res) {
                     return setDeliverNP(res.access, id, value);
                 }
-                return { _serverError: 'Помилка авторизації' };
+                return { _serverError: t('Помилка авторизації') };
             });
         }
 
@@ -66,10 +67,10 @@ export const setDeliverNP = async (token, id, value = null) => {
             return data;
         }
 
-        return data || { _serverError: `Помилка сервера (${response.status})` };
+        return data || { _serverError: t('Помилка сервера ({{status}})', {status: response.status}) };
     } catch (error) {
         console.log(error);
-        return { _serverError: 'Не вдалося виконати запит. Перевір підключення або спробуй ще раз.' };
+        return { _serverError: t('Не вдалося виконати запит. Перевір підключення або спробуй ще раз.') };
     }
 };
 
@@ -118,7 +119,7 @@ export const updateDeliveryNPTTN = async (token, id) => {
                     return updateDeliveryNPTTN(res.access, id);
                 }
 
-                return { _serverError: 'Помилка авторизації' };
+                return { _serverError: t('Помилка авторизації') };
             });
         }
 
@@ -144,10 +145,10 @@ export const updateDeliveryNPTTN = async (token, id) => {
             return data;
         }
 
-        return data || { _serverError: `Помилка сервера (${response.status})` };
+        return data || { _serverError: t('Помилка сервера ({{status}})', {status: response.status}) };
     } catch (error) {
         console.log(error);
-        return { _serverError: 'Не вдалося виконати запит. Спробуй ще раз.' };
+        return { _serverError: t('Не вдалося виконати запит. Спробуй ще раз.') };
     }
 }
 

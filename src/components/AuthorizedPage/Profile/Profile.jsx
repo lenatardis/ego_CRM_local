@@ -6,6 +6,7 @@ import { getUser } from "../../../store/selectors";
 import { getAccessToken } from "../../../utils/authTokens";
 import { updateUserInfo } from "../../../api/authApi";
 import Preloader from "../../Common/Preloader/Preloader";
+import { t } from '../../../i18n';
 
 const Profile = () => {
     const user = useAppSelector(getUser);
@@ -24,7 +25,7 @@ const Profile = () => {
 
     const handleSubmit = () => {
         if (value.length < 10 || !/[A-Z]/.test(value)) {
-            setError('Пароль має містити щонайменше 10 символів та хоча б одну велику літеру');
+            setError(t('Пароль має містити щонайменше 10 символів та хоча б одну велику літеру'));
             setIsShowConfirm(false);
             return;
         }
@@ -46,7 +47,7 @@ const Profile = () => {
             <div className={styles.profile}>
 
                 <div className={styles.profile__header}>
-                    <h2>Персональна сторінка</h2>
+                    <h2>{t('Персональна сторінка')}</h2>
                 </div>
 
                 {user && (
@@ -65,10 +66,10 @@ const Profile = () => {
 
                 <div className={styles.box}>
                     <form onSubmit={handleSubmit}>
-                        <h3>Зміна паролю</h3>
+                        <h3>{t('Зміна паролю')}</h3>
                         <div className="baseInputContainer">
                             <input
-                                placeholder="Новий пароль"
+                                placeholder={t('Новий пароль')}
                                 className={`baseInput ${error ? 'baseInputError' : ''}`}
                                 id="password"
                                 name="password"
@@ -77,11 +78,11 @@ const Profile = () => {
                                 onChange={(e) => handleChange(e.target.value)}
                             />
                             {error && <p className={styles.errorText}>{error}</p>}
-                            {isSuccess && <p className={styles.successText}>Пароль успішно змінено</p>}
+                            {isSuccess && <p className={styles.successText}>{t('Пароль успішно змінено')}</p>}
                         </div>
                         <div className={styles.profile__action}>
                             <button type="button" onClick={() => setIsShowConfirm(true)}>
-                                <span>Змінити</span>
+                                <span>{t('Змінити')}</span>
                             </button>
                         </div>
                     </form>

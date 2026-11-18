@@ -8,6 +8,7 @@ import Preloader from "../Common/Preloader/Preloader";
 import { getFabricItem, getProductDetail } from "../../api/productsApi";
 import logo from "../../assets/img/logoEgo.svg";
 import {photoSkeleton} from "../../utils/photoSkeleton";
+import { t } from '../../i18n';
 
 const Fabric = () => {
     const params = useLocation();
@@ -18,8 +19,8 @@ const Fabric = () => {
     const [isLoading, setIsLoading] = useState(true);
 
     const item = {
-        name: fabric?.name ? fabric.name : product?.name ? product.name : 'Невідома назва',
-        type: fabric?.type?.type ? fabric.type.type :  product?.type?.type ? product.type.type : 'Невідомий тип',
+        name: fabric?.name ? fabric.name : product?.name ? product.name : t('Невідома назва'),
+        type: fabric?.type?.type ? fabric.type.type :  product?.type?.type ? product.type.type : t('Невідомий тип'),
         images: fabric?.images ? fabric.images : product?.images ? product.images : []
     }
 
@@ -72,10 +73,10 @@ const Fabric = () => {
                             <>
                                 <h3>{item.name}</h3>
                                 <div className={`${styles.table} ${styles.productTable}`}>
-                                    <div><span>Розмір</span></div>
-                                    <div><span>Колір</span></div>
-                                    <div><span>Вартість</span></div>
-                                    <div><span>Доступно</span></div>
+                                    <div><span>{t('Розмір')}</span></div>
+                                    <div><span>{t('Колір')}</span></div>
+                                    <div><span>{t('Вартість')}</span></div>
+                                    <div><span>{t('Доступно')}</span></div>
                                     {product.sizes && product.sizes.length > 0 && product.sizes.map((size, idx) => (
                                         <React.Fragment key={idx}>
                                             <div
@@ -91,10 +92,10 @@ const Fabric = () => {
                                                         style={{ backgroundColor: color.name }}
                                                     ></div>
                                                     <div className={styles.price}>
-                                                        <span>{color.price} грн</span>
+                                                        <span>{color.price} {t('грн')}</span>
                                                     </div>
                                                     <div className={styles.quantity}>
-                                                        <span>{color.quantity} шт.</span>
+                                                        <span>{color.quantity} {t('шт.')}</span>
                                                     </div>
                                                 </React.Fragment>
                                             ))}
@@ -108,18 +109,18 @@ const Fabric = () => {
                             <>
                                 <h3>{item.name} {item.type}</h3>
                                 <div className={`${styles.table} ${styles.fabricTable}`}>
-                                    <div><span>Назва</span></div>
-                                    <div><span>Вартість</span></div>
-                                    <div><span>Доступно</span></div>
+                                    <div><span>{t('Назва')}</span></div>
+                                    <div><span>{t('Вартість')}</span></div>
+                                    <div><span>{t('Доступно')}</span></div>
                                     {fabric.available_kit_templates && fabric.available_kit_templates.length > 0 && fabric.available_kit_templates.map((template, idx) => (
                                         <React.Fragment key={idx}>
                                             <div><span>{template.name}</span></div>
-                                            <div><span>{template.price} грн</span></div>
-                                            <div><span>{template.count} шт.</span></div>
+                                            <div><span>{template.price} {t('грн')}</span></div>
+                                            <div><span>{template.count} {t('шт.')}</span></div>
                                         </React.Fragment>
                                     ))}
                                 </div>
-                                <p>Доступно в компанії</p>
+                                <p>{t('Доступно в компанії')}</p>
                             </>
                         )}
                     </div>

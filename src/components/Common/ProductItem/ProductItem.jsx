@@ -6,6 +6,7 @@ import OpenItemDesktop from "./OpenItem/OpenItemDesktop";
 import ClosedItem from "./ClosedItem/ClosedItem";
 import {useIsDesktop} from "../../../hooks/useIsDesktop";
 import ConfirmPopup from "../ConfirmPopup/ConfirmPopup";
+import { t } from '../../../i18n';
 
 const ProductItem = ({isOpen, item, onDelete, isClient, isDisabled, sourceName}) => {
     const [open, setOpen] = useState(isOpen);
@@ -65,8 +66,10 @@ const ProductItem = ({isOpen, item, onDelete, isClient, isDisabled, sourceName})
             }
             {confirmDeleteId !== null && (
                 <ConfirmPopup
-                    title={item.kit ? 'Видалення комплекту' : 'Видалення товару'}
-                    text={<>Ви впевнені, що бажаєте<br />видалити {item.kit ? 'комплект' : 'товар'}?</>}
+                    title={item.kit ? t('Видалення комплекту') : t('Видалення товару')}
+                    text={item.kit
+                        ? <>{t('Ви впевнені, що бажаєте')}<br />{t('видалити комплект?')}</>
+                        : <>{t('Ви впевнені, що бажаєте')}<br />{t('видалити товар?')}</>}
                     onConfirm={confirmDelete}
                     onCancel={() => setConfirmDeleteId(null)}
                 />

@@ -14,6 +14,7 @@ import {
     SEED_CUSTOMERS, SEED_MANAGERS, SEED_ORDERS, SEED_PAYMENT_BILLS, money, resolveDemoAsset, toIso,
 } from '../shared/seed';
 import { APP_BASE_URL } from '../appBaseUrl';
+import { t } from '../../i18n';
 
 export const loadOrders = () => getSharedCollection('orders', SEED_ORDERS);
 export const saveOrders = (orders) => saveSharedCollection('orders', orders);
@@ -176,8 +177,8 @@ export const nextPaymentId = (orders) => orders.reduce((max, o) => Math.max(max,
 export const deleteBlocker = (orderId, orders = loadOrders(), bills = loadPaymentBills()) => {
     if (!orders.some((o) => o.id === orderId)) return null;
     const ids = new Set(orders.filter((o) => o.id === orderId || o.general_order_id === orderId).map((o) => o.id));
-    if (bills.some((b) => ids.has(b.order_id) && b.status === 'PAID')) return 'По замовленню вже є оплата.';
-    if (loadProduction().some((p) => ids.has(p.order_id))) return 'Замовлення у виробництві.';
+    if (bills.some((b) => ids.has(b.order_id) && b.status === 'PAID')) return t('По замовленню вже є оплата.');
+    if (loadProduction().some((p) => ids.has(p.order_id))) return t('Замовлення у виробництві.');
     return '';
 };
 

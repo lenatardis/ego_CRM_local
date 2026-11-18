@@ -5,6 +5,7 @@ import TextField from "@mui/material/TextField";
 import '../DeliveryUKR.scss';
 import { getCities } from "../../../../api/novaPoshtaApi";
 import { getAccessToken } from "../../../../utils/authTokens";
+import { t } from '../../../../i18n';
 
 
 const UkrPoshtaArea = ({area, setArea}) => {
@@ -54,7 +55,7 @@ const UkrPoshtaArea = ({area, setArea}) => {
                 noOptionsText="No districts"
                 onKeyUp={(e) => setValue(e.target.value)}
                 onChange={(event, newValue) => setArea(newValue)}
-                renderInput={(params) => <TextField {...params} label="Район - опціонально" />}
+                renderInput={(params) => <TextField {...params} label={t('Район - опціонально')} />}
             />
         </div>
     )

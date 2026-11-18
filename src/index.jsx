@@ -5,6 +5,7 @@ import App from './App';
 import {BrowserRouter} from "react-router-dom"
 
 import {store} from './store/store';
+import './i18n';
 import {startMockBackend} from './mocks/browser';
 import {startVersionCheck} from './utils/versionCheck';
 

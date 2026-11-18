@@ -6,6 +6,7 @@ import {
 } from '../data/orders';
 import { loadOrderProducts, serializeOrderProduct } from '../data/orderProducts';
 import { emptyItem, findNpItem, loadDirectory, serializeNpItem } from '../data/novaPoshta';
+import { t } from '../../i18n';
 
 // The customer's side (ClientPage/*), all public – the customer has no account, only the order link:
 //   GET  orders/free-access/?order_hash=          -> { order, general_order, payment, products, kits, payment_bills,
@@ -84,7 +85,7 @@ export const clientHandlers = [
         const npItem = findNpItem((i) => i.order_id === order.id);
         const receiverPhone = npItem?.receiver.delivery_receiver.phone || customer?.phone;
         if (!receiverPhone || lastDigits(receiverPhone) !== String(phone_last_digits ?? '')) {
-            return badRequest({ phone_last_digits: ['Невірні цифри номера телефону.'] });
+            return badRequest({ phone_last_digits: [t('Невірні цифри номера телефону.')] });
         }
         // an order without a delivery yet has an empty one (orders created in the CRM always get an item)
         return HttpResponse.json({
@@ -102,10 +103,10 @@ export const clientHandlers = [
         const { bills, bill, order } = ctx;
 
         if (!(file instanceof File) || !RECEIPT_TYPES.includes(file.type) || file.size > RECEIPT_MAX_SIZE) {
-            return badRequest({ receipt: ['Завантажте PDF, JPG, PNG або GIF до 5 МБ.'] });
+            return badRequest({ receipt: [t('Завантажте PDF, JPG, PNG або GIF до 5 МБ.')] });
         }
         if (bill.type !== 'IBAN' || bill.status === 'PAID' || (bill.customer_receipt && bill.customer_receipt_approved !== 'DECLINED')) {
-            return badRequest({ receipt: ['Для цього рахунку чек уже надіслано або він не потрібен.'] });
+            return badRequest({ receipt: [t('Для цього рахунку чек уже надіслано або він не потрібен.')] });
         }
 
         bill.customer_receipt = CUSTOMER_RECEIPT_URL;
@@ -122,7 +123,7 @@ export const clientHandlers = [
         if (!ctx) return notFound();
         const { bills, bill } = ctx;
         if (bill.type !== 'ONLINE' || bill.status !== 'PAY_WAIT' || !(Number(bill.prepayment_amount) > 0)) {
-            return badRequest({ payment_bill: ['Рахунок не можна оплатити онлайн.'] });
+            return badRequest({ payment_bill: [t('Рахунок не можна оплатити онлайн.')] });
         }
 
         const invoiceId = newInvoiceId();
@@ -136,7 +137,7 @@ export const clientHandlers = [
     http.post(`${API}/payments_types/:provider/:invoiceId/successful/`, withLatency(({ params }) => {
         const bills = loadPaymentBills();
         const bill = bills.find((b) => b.provider_payment?.type === params.provider && b.provider_payment?.order_id === params.invoiceId);
-        if (!bill) return badRequest({ invoice: ['Рахунок не знайдено.'] });
+        if (!bill) return badRequest({ invoice: [t('Рахунок не знайдено.')] });
 
         const orders = loadOrders();
         const order = orders.find((o) => o.id === bill.order_id);
@@ -164,7 +165,7 @@ export const clientHandlers = [
         const ctx = findBillContext(payment_id);
         if (!ctx) return notFound();
         const { bills, bill, order } = ctx;
-        if (bill.status !== 'PAID') return badRequest({ payment: ['Рахунок ще не оплачено.'] });
+        if (bill.status !== 'PAID') return badRequest({ payment: [t('Рахунок ще не оплачено.')] });
 
         if (!bill.receipt_url) {
             bill.receipt_id = uuid();

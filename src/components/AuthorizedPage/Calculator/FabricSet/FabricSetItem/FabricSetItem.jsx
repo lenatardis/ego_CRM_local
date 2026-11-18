@@ -18,6 +18,7 @@ import GlobalPopup from "../../../../Common/GlobalPopup/GlobalPopup";
 import ConfirmPopup from "../../../../Common/ConfirmPopup/ConfirmPopup";
 import { useIsDesktop } from "../../../../../hooks/useIsDesktop";
 import {photoSkeleton} from "../../../../../utils/photoSkeleton";
+import { t } from '../../../../../i18n';
 
 const FabricSetItem = ({
                            inPopup,
@@ -93,7 +94,7 @@ const FabricSetItem = ({
     }, [customSizeStr, pickedSizeObj, item]);
 
     const baseName = useMemo(() => {
-        const rawName = pickedSizeObj?.name || item?.name || "Невідома назва";
+        const rawName = pickedSizeObj?.name || item?.name || t('Невідома назва');
         return stripSizeFromEnd(rawName);
     }, [pickedSizeObj?.name, item?.name]);
 
@@ -278,7 +279,7 @@ const FabricSetItem = ({
                                 <div className={`${styles.grid} ${styles.titleRow}`}>
                                     <p className={styles.name}>{name}:</p>
 
-                                    {(!componentSize || isKitSplitted) && <p className={styles.price}>{totalPrice} грн</p>}
+                                    {(!componentSize || isKitSplitted) && <p className={styles.price}>{totalPrice} {t('грн')}</p>}
 
                                     <OptionButton img={CommentIcon} action={!inPopup ? handleCommentPopup : () => setContainerPosition(2)} />
                                 </div>
@@ -367,7 +368,7 @@ const FabricSetItem = ({
 
                     {!inPopup && !isDesktop && (
                         <button type="button" className={styles.returnButton} onClick={handleSwipeHint}
-                            aria-label="Проведіть картку вправо або вліво: розмір / видалення">
+                            aria-label={t('Проведіть картку вправо або вліво: розмір / видалення')}>
                             <img src={SwipeIcon} alt="" />
                         </button>
                     )}
@@ -378,7 +379,7 @@ const FabricSetItem = ({
                     onClick={() => { if (!canDelete) dispatch(setIsActivePopup(true)); setBinPopup(canDelete ? "confirm" : "locked"); }}
                     className={`${styles.hiddenRightBtn} ${canDelete ? "" : styles.binLocked}`}
                     ref={rightHiddenLinkRef}
-                    aria-label={canDelete ? "Видалити компонент" : "Компонент можна видалити після розформування комплекту"}
+                    aria-label={canDelete ? t('Видалити компонент') : t('Компонент можна видалити після розформування комплекту')}
                 >
                     <img src={DeleteSet} alt="" />
                 </button>
@@ -386,31 +387,31 @@ const FabricSetItem = ({
 
             {binPopup === "confirm" && (
                 <ConfirmPopup
-                    title="Видалення компонента"
-                    text={<>Ви впевнені, що бажаєте<br />видалити компонент «{name}»?</>}
+                    title={t('Видалення компонента')}
+                    text={<>{t('Ви впевнені, що бажаєте')}<br />{t('видалити компонент «{{name}}»?', {name})}</>}
                     onConfirm={() => { setBinPopup(null); handleDeleteComponent(item?.id); }}
                     onCancel={() => { setBinPopup(null); setContainerPosition(2); }}
                 />
             )}
 
             {binPopup === "locked" && (
-                <GlobalPopup title="Видалення компонента" onClose={() => { setBinPopup(null); setContainerPosition(2); }}
+                <GlobalPopup title={t('Видалення компонента')} onClose={() => { setBinPopup(null); setContainerPosition(2); }}
                     {...(isDesktop ? { centeredPopup: true } : {})}>
                     <p className={`infoNote ${styles.binLockedNote}`}>
-                        Це компонент комплекту за шаблоном. Щоб видалити його, спершу розформуйте комплект –
-                        кнопка «Розформувати комплект» над компонентами.
+                        {t('Це компонент комплекту за шаблоном. Щоб видалити його, спершу розформуйте комплект –')}
+                        {t('кнопка «Розформувати комплект» над компонентами.')}
                     </p>
                 </GlobalPopup>
             )}
 
             {showCommentPopup && (
-                <GlobalPopup title={"Коментар"} onClose={closeCommentPopup} {...(isDesktop ? { centeredPopup: true } : {})}>
+                <GlobalPopup title={t('Коментар')} onClose={closeCommentPopup} {...(isDesktop ? { centeredPopup: true } : {})}>
                     <CommentPopup componentIndex={componentIndex} onChangeOptions={onChangeOptions} form={form} close={closeCommentPopup} isCustom={isCustom} />
                 </GlobalPopup>
             )}
 
             {showCustomSizePopup && (
-                <GlobalPopup title={"Розмір"} onClose={closeCustomSizePopup} {...(isDesktop ? { centeredPopup: true } : {})}>
+                <GlobalPopup title={t('Розмір')} onClose={closeCustomSizePopup} {...(isDesktop ? { centeredPopup: true } : {})}>
                     <CustomSizePopup
                         show={showCustomSizePopup}
                         close={closeCustomSizePopup}
@@ -423,7 +424,7 @@ const FabricSetItem = ({
             )}
 
             {showOptionPopup && (
-                <GlobalPopup title={"Опції"} onClose={closeOptionPopup} {...(isDesktop ? { centeredPopup: true } : {})}>
+                <GlobalPopup title={t('Опції')} onClose={closeOptionPopup} {...(isDesktop ? { centeredPopup: true } : {})}>
                     <OptionPopup
                         show={showOptionPopup}
                         close={closeOptionPopup}

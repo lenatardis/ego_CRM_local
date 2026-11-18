@@ -8,6 +8,7 @@ import {
 } from '../data/catalog';
 import { findOrderProduct, loadOrderProducts, saveOrderProducts, serializeOrderProduct } from '../data/orderProducts';
 import { manufacturingOf } from '../data/production';
+import { t } from '../../i18n';
 
 // Catalog (read-only, from the seed shared with the ERP) and order carts, following src/api/productsApi.js:
 //   GET    products/fabric/?page&search&type&tags&order_by&is_hide_out_of_stock&is_available
@@ -72,7 +73,7 @@ export const productHandlers = [
             count: list.length,
             fabric_types: FABRIC_TYPE_LIST,
             tags: FABRIC_TAG_LIST,
-            order_by: FABRIC_ORDER_BY,
+            order_by: FABRIC_ORDER_BY.map((o) => ({ ...o, value: t(o.value) })),
         });
     })),
 
@@ -120,14 +121,14 @@ export const productHandlers = [
         const product = findProduct(item?.template);
         const variant = findVariant(product, item?.type);
         if (!variant) {
-            return HttpResponse.json({ errors: { warehouse_item: ['Товар не знайдено.'] } }, { status: 400, statusText: 'Bad Request' });
+            return HttpResponse.json({ errors: { warehouse_item: [t('Товар не знайдено.')] } }, { status: 400, statusText: 'Bad Request' });
         }
         const sourceId = isSet(item.source) ? Number(item.source) : order.source_id;
         const price = priceFor('warehouse_item_type', variant.id, sourceId);
         if (price === null) {
             // StorageItem.jsx asks to add a price when it sees this key
             return HttpResponse.json(
-                { errors: { 'warehouse item price': ['Ціну для цього товару не знайдено.'] } },
+                { errors: { 'warehouse item price': [t('Ціну для цього товару не знайдено.')] } },
                 { status: 400, statusText: 'Bad Request' },
             );
         }
@@ -150,7 +151,7 @@ export const productHandlers = [
         if (!record) return notFound();
         // the ERP is making it (data/production.js)
         if (manufacturingOf(record.id)) {
-            return HttpResponse.json({ detail: 'Товар у виробництві.' }, { status: 400, statusText: 'Bad Request' });
+            return HttpResponse.json({ detail: t('Товар у виробництві.') }, { status: 400, statusText: 'Bad Request' });
         }
         const items = loadOrderProducts();
         items.splice(items.indexOf(record), 1);

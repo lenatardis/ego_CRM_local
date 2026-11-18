@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import styles from '../../FabricSet.module.scss';
+import { t } from '../../../../../../i18n';
 
 const FabricSetItemOptions = ({
                                   chosenOptions,
@@ -14,7 +15,7 @@ const FabricSetItemOptions = ({
     const optionsInfo = item?.options || [];
 
     const noPriceText =
-        "Ви не можете вибрати опцію без ціни, бо вона не вказана в списку цін";
+        t('Ви не можете вибрати опцію без ціни, бо вона не вказана в списку цін');
 
     const [hint, setHint] = useState(null);
     const timerRef = useRef(null);
@@ -78,7 +79,7 @@ const FabricSetItemOptions = ({
 
     return (
         <div>
-            {optionsInfo.length > 0 && <span>Опції:</span>}
+            {optionsInfo.length > 0 && <span>{t('Опції:')}</span>}
 
             <div className={styles.optionGroup}>
                 {optionsInfo.map((el, index) => {
@@ -93,7 +94,7 @@ const FabricSetItemOptions = ({
                             onClick={(e) => handleOptionClick(el, e)}
                             aria-disabled={isDisabled ? "true" : "false"}
                         >
-                            <span>{`${el.name} (${el.price} грн)`}</span>
+                            <span>{`${el.name} (${el.price} ${t('грн')})`}</span>
                         </button>
                     );
                 })}

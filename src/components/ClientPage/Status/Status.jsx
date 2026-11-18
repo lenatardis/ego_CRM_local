@@ -10,6 +10,7 @@ import Preloader from "../../Common/Preloader/Preloader";
 import { sendOrderHash } from "../../../api/ordersApi";
 import { getPaymentDetail } from "../../../api/generalApi";
 import ArrBack from "../../Common/ArrBack/ArrBack";
+import { t } from '../../../i18n';
 
 const Status = ({ orderHash }) => {
     const [order, setOrder] = useState(null);
@@ -39,7 +40,7 @@ const Status = ({ orderHash }) => {
                             if (result?.length > 0) {
                                 setIBanDetail({
                                     ...result[0],
-                                    purpose_of_payment: (result[0].purpose_of_payment ?? '') + ', платіж #' + response.payment.id
+                                    purpose_of_payment: (result[0].purpose_of_payment ?? '') + t(', платіж #') + response.payment.id
                                 });
                             }
                         })
@@ -65,7 +66,7 @@ const Status = ({ orderHash }) => {
                             <img src={logo} alt=""/>
                         </div>
                         {order && (
-                            <h2>Замовлення № {order.order.id}</h2>
+                            <h2>{t('Замовлення № {{id}}', {id: order.order.id})}</h2>
                         )}
 
                         {order && (
@@ -96,7 +97,7 @@ const Status = ({ orderHash }) => {
                     <div className={styles.notFound__back}>
                         <ArrBack/>
                     </div>
-                    <h2 className={styles.message}>Замовлення не знайдено, зверніться до вашого менеджера Ego-textile для уточнення інформації.</h2>
+                    <h2 className={styles.message}>{t('Замовлення не знайдено, зверніться до вашого менеджера Ego-textile для уточнення інформації.')}</h2>
                 </div>
             )}
         </>

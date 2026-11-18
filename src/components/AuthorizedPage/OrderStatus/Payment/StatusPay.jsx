@@ -6,6 +6,7 @@ import GlobalPopup from "../../../Common/GlobalPopup/GlobalPopup";
 import PopupCheckboxes from "../../../Common/PopupCheckboxes/PopupCheckboxes";
 import styles from './payment.module.scss';
 import {useIsDesktop} from "../../../../hooks/useIsDesktop";
+import { t } from '../../../../i18n';
 
 const StatusPay = ({ setPopup, popup, status, chooseList, updateStatus, isDisabled }) => {
     const dispatch = useAppDispatch();
@@ -27,7 +28,7 @@ const StatusPay = ({ setPopup, popup, status, chooseList, updateStatus, isDisabl
 
     let statusCaption = chooseList.some((el) => {
         return el.value === 'PAY_WAIT' && el.disabled
-    })? '* Заповніть інформацію про клієнта та/або додайте товар(и)' : '';
+    })? t('* Заповніть інформацію про клієнта та/або додайте товар(и)') : '';
 
 
     return (
@@ -36,11 +37,11 @@ const StatusPay = ({ setPopup, popup, status, chooseList, updateStatus, isDisabl
                 className={`${styles.statusPay} ${isDisabled ? styles.disabled : ''}`}
                 onClick={() => OnButton('statusPay')} disabled={isDisabled}
             >
-                <span style={status ? {color: '#201827'} : null}>{status?.title ?? 'Статус оплати'}</span>
+                <span style={status ? {color: '#201827'} : null}>{status?.title ?? t('Статус оплати')}</span>
                 <img src={arrow} alt=""/>
             </button>
             {popup === 'statusPay' && (
-                <GlobalPopup title={'Статус оплати'} onClose={() => setPopup(null)}  {...(isDesktop ? { centeredPopup: true } : {})}>
+                <GlobalPopup title={t('Статус оплати')} onClose={() => setPopup(null)}  {...(isDesktop ? { centeredPopup: true } : {})}>
                     <PopupCheckboxes values={status?.value ?? null} setValues={onChangeStatus} chooseList={chooseList} isRadio statusCaption={statusCaption}/>
                 </GlobalPopup>
             )}

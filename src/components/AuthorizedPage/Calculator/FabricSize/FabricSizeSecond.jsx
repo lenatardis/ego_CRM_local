@@ -1,4 +1,5 @@
 import styles from './FabricSize.module.scss';
+import { t } from '../../../../i18n';
 
 export default function FabricSizeSecond({
     activeSecondSize,
@@ -82,7 +83,7 @@ export default function FabricSizeSecond({
                             </div>
 
                             <p className={styles.item__fullName}>
-                                {el.name} <span>({el.starting_price} грн)</span>
+                                {el.name} <span>({el.starting_price} {t('грн')})</span>
                             </p>
 
                             {isZeroPrice && (

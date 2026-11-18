@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import PopupCheckboxes from "../../../../Common/PopupCheckboxes/PopupCheckboxes";
 import styles from "./OptionPopup.module.scss";
+import { t } from '../../../../../i18n';
 
 const OptionPopup = ({
     item,
@@ -79,7 +80,7 @@ const OptionPopup = ({
     return (
         <div className={styles.optionPopup}>
             {showApplied && (
-                <p className={styles.appliedMessage}>Зміни застосовано</p>
+                <p className={styles.appliedMessage}>{t('Зміни застосовано')}</p>
             )}
 
             <PopupCheckboxes

@@ -63,3 +63,70 @@ export const DELIVERY_PARSER_HINT = `Правила заповнення дан�
 → Місто: Масівці
 
 Зверніть увагу! Порядок значень є важливим. Якщо якесь значення відсутнє – відповідне поле залишиться порожнім або може бути заповнене некоректно.`;
+// Demo build (2026-11-18): English versions (src/i18n/en.js maps the texts above to these). The parser reads
+// Ukrainian names, phones and places, so the examples stay Ukrainian.
+export const ORDER_PARSER_HINT_EN = `How to enter the data:
+
+The entered line is split into values in this order:
+1) First value – first name
+2) Second value – patronymic
+3) Third value – last name
+4) Fourth value – phone number
+
+Separate the values with a space.
+
+Examples:
+* Іван Іванович Петренко 0991234567
+→ First name: Іван
+→ Patronymic: Іванович
+→ Last name: Петренко
+→ Phone: 0991234567
+
+* Олена Сергіївна Коваль 0509876543
+→ First name: Олена
+→ Patronymic: Сергіївна
+→ Last name: Коваль
+→ Phone: 0509876543
+
+* Петро Олексійович Бондар 0671112233
+→ First name: Петро
+→ Patronymic: Олексійович
+→ Last name: Бондар
+→ Phone: 0671112233
+
+Note: the order of the values matters. If a value is missing, its field stays empty or may be filled in wrongly.`;
+
+export const DELIVERY_PARSER_HINT_EN = `How to enter the data:
+
+The entered line is split into values in this order:
+1) First value – first name
+2) Second value – patronymic
+3) Third value – last name
+4) Fourth value – phone number
+5) Fifth value – city, village or other locality
+
+Separate the values with a space.
+
+Examples:
+* Іван Іванович Петренко 0991234567 м. Київ
+→ First name: Іван
+→ Patronymic: Іванович
+→ Last name: Петренко
+→ Phone: 0991234567
+→ City: Київ
+
+* Олена Сергіївна Коваль 0509876543 Черкаси
+→ First name: Олена
+→ Patronymic: Сергіївна
+→ Last name: Коваль
+→ Phone: 0509876543
+→ City: Черкаси
+
+* Петро Олексійович Бондар 0671112233 с. Масівці
+→ First name: Петро
+→ Patronymic: Олексійович
+→ Last name: Бондар
+→ Phone: 0671112233
+→ City: Масівці
+
+Note: the order of the values matters. If a value is missing, its field stays empty or may be filled in wrongly.`;

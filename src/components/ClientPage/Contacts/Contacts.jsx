@@ -5,6 +5,7 @@ import ContactsContent from "./ContactsContent/ContactsContent";
 import Preloader from "../../Common/Preloader/Preloader";
 import { getCompanyInfo } from "../../../api/generalApi";
 import ArrBack from "../../Common/ArrBack/ArrBack";
+import { t } from '../../../i18n';
 
 const Contacts = () => {
     const [data, setData] = useState(null);
@@ -34,7 +35,7 @@ const Contacts = () => {
             <div className={styles.contacts__logo}>
                 <img src={logo} alt=""/>
             </div>
-            <h2>Контакти</h2>
+            <h2>{t('Контакти')}</h2>
             {data && (
                 <ContactsContent phone={data.phone} email={data.email} site={data.site}/>
             )}

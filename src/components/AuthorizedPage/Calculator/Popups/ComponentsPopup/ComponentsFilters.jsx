@@ -4,6 +4,7 @@ import arrow from '../../../../../assets/icons/arrowDown.svg';
 import GlobalPopup from "../../../../Common/GlobalPopup/GlobalPopup";
 import { useState } from "react";
 import ChoosePopup from "./ChoosePopup";
+import { t } from '../../../../../i18n';
 
 export default function ComponentsFilters({ allFilters, selectedFilters, handleSelectFilter }) {
     const [isFiltersPopupOpen, setIsFiltersPopupOpen] = useState(false);
@@ -45,7 +46,7 @@ export default function ComponentsFilters({ allFilters, selectedFilters, handleS
                 )
             }
             {isFiltersPopupOpen && (
-                <GlobalPopup title={'Типи комплектуючих:'} onClose={() => setIsFiltersPopupOpen(false)}>
+                <GlobalPopup title={t('Типи комплектуючих:')} onClose={() => setIsFiltersPopupOpen(false)}>
                     <ChoosePopup allFilters={allFilters} selectedFilters={selectedFilters} handleSelectFilter={handleSelectFilter}/>
                 </GlobalPopup>
             )}

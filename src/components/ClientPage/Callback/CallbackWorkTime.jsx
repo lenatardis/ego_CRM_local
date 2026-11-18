@@ -1,5 +1,6 @@
 import React from "react";
 import styles from './Callback.module.scss';
+import { t } from '../../../i18n';
 
 const CallbackWorkTime = ({workingDay, workingStartTime, workingEndTime, weekend}) => {
     return (
@@ -10,7 +11,7 @@ const CallbackWorkTime = ({workingDay, workingStartTime, workingEndTime, weekend
             </div>
             <div className={styles.workTime__right}>
                 <span>{weekend}</span>
-                <p>Вихідний</p>
+                <p>{t('Вихідний')}</p>
             </div>
         </div>
     )

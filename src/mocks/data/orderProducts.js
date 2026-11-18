@@ -20,6 +20,7 @@ import {
 } from './catalog';
 import { manufacturingOf } from './production';
 import { findSource } from './sources';
+import { t } from '../../i18n';
 
 // --- seed: the carts of the shared seed orders (../shared/seed.js), whose totals the order amounts are --
 
@@ -81,7 +82,7 @@ export const computeKitPrice = (kit, sourceId) => {
     price += optionSum(kitOptions(sourceId), kit.option ?? []);
 
     if (missing.length) {
-        return { error: `Не вказана ціна в списку цін: ${missing.join(', ')}` };
+        return { error: `${t('Не вказана ціна в списку цін:')} ${missing.join(', ')}` };
     }
     return { price };
 };

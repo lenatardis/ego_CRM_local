@@ -9,6 +9,7 @@ import removeIcon from "../../../../assets/icons/removeIcon.svg";
 import pencilIcon from "../../../../assets/icons/pencil.svg";
 import styles from '../ProductItem.module.scss';
 import {photoSkeleton} from "../../../../utils/photoSkeleton";
+import { t } from '../../../../i18n';
 
 const OpenItemMobile = ({product, onDelete, isClient, isDisabled = false}) => {
     const navigate = useNavigate();
@@ -45,19 +46,19 @@ const OpenItemMobile = ({product, onDelete, isClient, isDisabled = false}) => {
                     <>
                         <div className={product.images?.length > 1 ? `${styles.inputRow} ${styles.withSlider}` : styles.inputRow}>
                             <div className={styles.formGroup}>
-                                <label htmlFor="product_input1">Код тканини</label>
+                                <label htmlFor="product_input1">{t('Код тканини')}</label>
                                 <div className={styles.inputWrap}>
                                     <input type="text" id="product_input1" value={product.fabric_type} readOnly/>
                                 </div>
                             </div>
                             <div className={styles.formGroup}>
-                                <label htmlFor="product_input2">Тип комплекту</label>
+                                <label htmlFor="product_input2">{t('Тип комплекту')}</label>
                                 <input type="text" id="product_input2" value={product.kit_type} readOnly/>
                             </div>
                         </div>
                         {product.components.length > 0 && (
                             <div className={styles.productInfo}>
-                                <p className={styles.title}>Склад комплекту</p>
+                                <p className={styles.title}>{t('Склад комплекту')}</p>
                                 <ul className={styles.content}>
                                     {product.components.map((el, idx) => (
                                         <li key={idx} className={styles.value}>{el.name}</li>
@@ -67,7 +68,7 @@ const OpenItemMobile = ({product, onDelete, isClient, isDisabled = false}) => {
                         )}
                         {product.options.length > 0 && (
                             <div className={styles.productInfo}>
-                                <p className={styles.title}>Додаткові опції:</p>
+                                <p className={styles.title}>{t('Додаткові опції:')}</p>
                                 <ul className={styles.content}>
                                     {product.options.map((el, idx) => (
                                         <li key={idx} className={styles.value}>{el.name}</li>
@@ -76,27 +77,27 @@ const OpenItemMobile = ({product, onDelete, isClient, isDisabled = false}) => {
                             </div>
                         )}
                         {(product.price || product.price === 0) && <div className={styles.productInfo}>
-                            <label htmlFor="product_options">Ціна </label>
-                            <input type="text" id="product_options" value={`${product.price} грн`} readOnly/>
+                            <label htmlFor="product_options">{t('Ціна')} </label>
+                            <input type="text" id="product_options" value={`${product.price} ${t('грн')}`} readOnly/>
                         </div>}
                         <div>
                             {(product?.manufacturing?.id || product?.manufacturing?.status) && (<>
                                 <div className={styles.inputRow}>
                                     <div className={styles.formGroup}>
-                                        <label htmlFor="manufactiring_id">ID на виробництві</label>
+                                        <label htmlFor="manufactiring_id">{t('ID на виробництві')}</label>
                                         <div className={styles.inputWrap}>
                                             <input type="text" id="manufactiring_id" value={product?.manufacturing?.id} readOnly/>
                                         </div>
                                     </div>
                                     <div className={styles.formGroup}>
-                                        <label htmlFor="manufacturing_status">Статус виробництва</label>
+                                        <label htmlFor="manufacturing_status">{t('Статус виробництва')}</label>
                                         <input type="text" id="manufacturing_status" className={styles.manufacturingStatus}
                                                value={product?.manufacturing?.status} readOnly/>
                                     </div>
                                 </div>
                             </>)}
                             {commentTempFlag && <div className={styles.productInfo}>
-                                <p className={styles.title}>Коментар</p>
+                                <p className={styles.title}>{t('Коментар')}</p>
                                 <ul className={styles.content}>
                                     <p>{product?.kitComment || product?.warehouseComment}</p>
                                 </ul>
@@ -106,11 +107,11 @@ const OpenItemMobile = ({product, onDelete, isClient, isDisabled = false}) => {
                             <div className={styles.changeRow}>
                                 <button className={styles.changeBtn} onClick={() => onDelete(product.id)} disabled={isDisabled}>
                                     <img src={removeIcon} alt="Remove" />
-                                    <span>Видалити комплект</span>
+                                    <span>{t('Видалити комплект')}</span>
                                 </button>
                                 <button className={styles.changeBtn} onClick={() => navigate(`/calculator/${orderId}/${product.id}`)} disabled={isDisabled}>
                                     <img src={pencilIcon} alt="Edit" />
-                                    <span>Змінити комплект</span>
+                                    <span>{t('Змінити комплект')}</span>
                                 </button>
                             </div>
                         )}
@@ -119,32 +120,32 @@ const OpenItemMobile = ({product, onDelete, isClient, isDisabled = false}) => {
                     <>
                         <div className={product.images?.length > 1 ? `${styles.inputRow} ${styles.withSlider}` : styles.inputRow}>
                             <div className={styles.formGroup}>
-                                <label htmlFor="product_input1">Назва</label>
+                                <label htmlFor="product_input1">{t('Назва')}</label>
                                 <div className={styles.inputWrap}>
                                     <input type="text" id="product_input1" value={product.name} readOnly/>
                                     {!product.quantity && <img src={IconWarning} alt=""/>}
                                 </div>
                             </div>
                             <div className={styles.formGroup}>
-                                <label htmlFor="product_input2">Тип</label>
-                                <input type="text" id="product_input2" value="Товар зі складу" readOnly/>
+                                <label htmlFor="product_input2">{t('Тип')}</label>
+                                <input type="text" id="product_input2" value={t('Товар зі складу')} readOnly/>
                             </div>
                         </div>
-                        {!product.quantity && <p className={styles.warning}>Тканини немає в наявності</p>}
+                        {!product.quantity && <p className={styles.warning}>{t('Тканини немає в наявності')}</p>}
                         {product.size && <div className={styles.productInfo}>
-                            <label>Розмір</label>
+                            <label>{t('Розмір')}</label>
                             <textarea readOnly value={product.size}></textarea>
                         </div>}
                         {product.color && <div className={styles.productInfo}>
-                            <label htmlFor="product_options">Колір</label>
+                            <label htmlFor="product_options">{t('Колір')}</label>
                             <input type="text" id="product_options" value={product.color} readOnly/>
                         </div>}
                         {(product.price || product.price === 0) && <div className={styles.productInfo}>
-                            <label htmlFor="product_options">Ціна</label>
-                            <input type="text" id="product_options" value={`${product.price} грн`} readOnly/>
+                            <label htmlFor="product_options">{t('Ціна')}</label>
+                            <input type="text" id="product_options" value={`${product.price} ${t('грн')}`} readOnly/>
                         </div>}
                         {commentTempFlag && <div className={styles.productInfo}>
-                            <p className={styles.title}>Коментар</p>
+                            <p className={styles.title}>{t('Коментар')}</p>
                             <ul className={styles.content}>
                                 <p>{product?.kitComment || product?.warehouseComment}</p>
                             </ul>
@@ -153,7 +154,7 @@ const OpenItemMobile = ({product, onDelete, isClient, isDisabled = false}) => {
                             <div className={styles.changeRow}>
                                 <button className={styles.changeBtn} onClick={() => onDelete(product.id)} disabled={isDisabled}>
                                     <img src={removeIcon} alt="Remove" />
-                                    <span>Видалити товар</span>
+                                    <span>{t('Видалити товар')}</span>
                                 </button>
                             </div>
                         )}

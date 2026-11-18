@@ -13,6 +13,7 @@
 
 import { getCollection, saveCollection, nextId } from '../db';
 import { SEED_CUSTOMERS, SEED_ORDER_PRODUCTS, SEED_ORDERS, SEED_PAYMENT_BILLS, mulberry32, toIso } from '../shared/seed';
+import i18n, { t } from '../../i18n';
 
 // --- directory -------------------------------------------------------------------------------
 // A snapshot of the real Nova Poshta directory (npDirectory.json, made by scripts/fetch-np-directory.mjs):
@@ -95,7 +96,7 @@ export const waybillErrors = (item) => {
     Object.entries(required).forEach(([key, value]) => {
         if (!value) errors[key] = ['This field may not be blank.'];
     });
-    if (!(Number(item.delivery.estimate_order_price) > 0)) errors.estimate_order_price = ['Оголошена вартість повинна бути більше 0.'];
+    if (!(Number(item.delivery.estimate_order_price) > 0)) errors.estimate_order_price = [t('Оголошена вартість повинна бути більше 0.')];
     return errors;
 };
 
@@ -273,11 +274,11 @@ export const applyItemFields = (item, body) => {
     if ('specified_weight' in body && isFinite(parseFloat(body.specified_weight))) {
         const weight = Math.round(parseFloat(body.specified_weight) * 100) / 100;
         if (!next.receiver.address_identifier) {
-            return { errors: { specified_weight: ['Спочатку оберіть відділення.'] } };
+            return { errors: { specified_weight: [t('Спочатку оберіть відділення.')] } };
         }
         const limit = weightLimit(next.receiver);
         if (limit && weight > limit) {
-            return { errors: { specified_weight: [`Вага перевищує допустиму для відділення (${limit} кг).`] } };
+            return { errors: { specified_weight: [t('Вага перевищує допустиму для відділення ({{limit}} кг).', { limit })] } };
         }
         next.specified_weight = weight;
     } else if ('specified_weight' in body) {
@@ -294,13 +295,13 @@ const escapeHtml = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&am
 export const waybillHtml = (item, orderId) => {
     const r = item.receiver;
     const p = r.delivery_receiver;
-    const row = (label, value) => `<tr><th>${escapeHtml(label)}</th><td>${escapeHtml(value)}</td></tr>`;
-    return `<!doctype html><html lang="uk"><head><meta charset="utf-8"><title>ТТН ${escapeHtml(item.delivery.ttn)}</title>
+    const row = (label, value) => `<tr><th>${escapeHtml(t(label))}</th><td>${escapeHtml(value)}</td></tr>`;
+    return `<!doctype html><html lang="${i18n.language}"><head><meta charset="utf-8"><title>${t('ТТН')} ${escapeHtml(item.delivery.ttn)}</title>
 <style>body{font:14px/1.45 Arial,sans-serif;margin:32px;color:#222}h1{font-size:20px;margin:0 0 4px}
 .ttn{font:bold 28px monospace;letter-spacing:2px;margin:12px 0 20px}table{border-collapse:collapse;width:100%;max-width:640px}
 th,td{border:1px solid #bbb;padding:6px 10px;text-align:left;vertical-align:top}th{width:45%;background:#f4f4f4;font-weight:normal}
 .note{color:#777;font-size:12px;margin-top:16px}@media print{.note{display:none}}</style></head><body>
-<h1>Експрес-накладна</h1><div>Замовлення №${escapeHtml(orderId)}</div><div class="ttn">${escapeHtml(item.delivery.ttn)}</div>
+<h1>${t('Експрес-накладна')}</h1><div>${escapeHtml(t('Замовлення №{{id}}', { id: orderId }))}</div><div class="ttn">${escapeHtml(item.delivery.ttn)}</div>
 <table>${[
         row('Відправник', 'Ego Textile'),
         row('Отримувач', [p.last_name, p.first_name, p.middle_name].filter(Boolean).join(' ')),
@@ -309,11 +310,11 @@ th,td{border:1px solid #bbb;padding:6px 10px;text-align:left;vertical-align:top}
         row('Відділення', r.address),
         row('Вага, кг', item.specified_weight),
         row('Оголошена вартість, грн', item.delivery.estimate_order_price),
-        row('Платник доставки', item.delivery.payer === 'Sender' ? 'Відправник' : 'Отримувач'),
-        row('Форма оплати', item.delivery.payment_method === 'CASH' ? 'Готівкова' : 'Безготівкова'),
+        row('Платник доставки', t(item.delivery.payer === 'Sender' ? 'Відправник' : 'Отримувач')),
+        row('Форма оплати', t(item.delivery.payment_method === 'CASH' ? 'Готівкова' : 'Безготівкова')),
         row('Зворотна доставка (наложений платіж), грн', item.with_backward_delivery ? item.backward_amount : '–'),
         row('Дата відправки', item.delivery_date ?? '–'),
         row('Орієнтовна вартість доставки, грн', item.delivery.estimate_delivery_price),
     ].join('')}</table>
-<p class="note">Демо-накладна: сформована в браузері, сервіс Нової Пошти не викликався.</p></body></html>`;
+<p class="note">${t('Демо-накладна: сформована в браузері, сервіс Нової Пошти не викликався.')}</p></body></html>`;
 };

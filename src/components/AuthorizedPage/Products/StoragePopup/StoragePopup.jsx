@@ -7,6 +7,7 @@ import { getAccessToken } from "../../../../utils/authTokens";
 import { getStorageProducts } from "../../../../api/productsApi";
 import Search from "../../../Common/Search/Search";
 import { Filters } from "../../Storage/Filters/Filters";
+import { t } from '../../../../i18n';
 
 
 const StoragePopup = ({ orderId, setOrder, setPopup, sourceID, onAfterProductAdd }) => {
@@ -118,7 +119,7 @@ const StoragePopup = ({ orderId, setOrder, setPopup, sourceID, onAfterProductAdd
                 </div>
 
                 {(!storageList.length) && (
-                    <p>Товари не знайдені</p>
+                    <p>{t('Товари не знайдені')}</p>
                 )}
 
                 {totalPages > 1 && (

@@ -16,6 +16,7 @@ import eyeIcon from "../../../assets/icons/eye.svg";
 import eyeClosedIcon from "../../../assets/icons/eyeClosed.svg";
 import {useIsDesktop} from "../../../hooks/useIsDesktop";
 import ArrBack from "../../Common/ArrBack/ArrBack";
+import { t } from '../../../i18n';
 
 const Fabrics = () => {
     const dispatch = useAppDispatch();
@@ -156,8 +157,8 @@ const Fabrics = () => {
                     />
                     <label className={`${styles.openSortBtn} ${styles.eye}`} title={
                         filterParams.is_hide_out_of_stock
-                            ? "Відображаються тільки наявні тканини"
-                            : "Відображаються всі тканини"
+                            ? t('Відображаються тільки наявні тканини')
+                            : t('Відображаються всі тканини')
                     }>
                         {filterParams.is_hide_out_of_stock ? (
                             <img src={eyeClosedIcon} alt="" />
@@ -180,7 +181,7 @@ const Fabrics = () => {
                     </div>
                 )}
                 {fabric?.tags?.length > 0 && (
-                    <FabricChooser handleChange={handleChangeTags} fabricFilters={fabric.tags} selectedFabric={selectedTags} title="Теги тканин:" removeFilters={handleRemoveTypeTags}/>
+                    <FabricChooser handleChange={handleChangeTags} fabricFilters={fabric.tags} selectedFabric={selectedTags} title={t('Теги тканин:')} removeFilters={handleRemoveTypeTags}/>
                 )}
                 {fabric?.fabrics?.length > 0 && (
                     <FabricsContent fabricsAll={fabric.fabrics} totalPages={totalPages}/>
@@ -192,7 +193,7 @@ const Fabrics = () => {
                     <Preloader />
                 )}
                 {isSortPopup && (
-                    <GlobalPopup title={'Сортування тканини:'} {...(isDesktop ? { centeredPopup: true } : {})} onClose={() => setIsSortPopup(false)}>
+                    <GlobalPopup title={t('Сортування тканини:')} {...(isDesktop ? { centeredPopup: true } : {})} onClose={() => setIsSortPopup(false)}>
                         <FabricsSort
                             sortOptions={fabric?.order_by || []}
                             selectedSortParam={filterParams.order_by}

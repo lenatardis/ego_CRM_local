@@ -5,6 +5,7 @@ import {useAppDispatch} from "../../../../hooks/redux";
 import {setOrders} from "../../../../store/main-slice";
 import { getAccessToken } from "../../../../utils/authTokens";
 import { getSearchResult } from "../../../../api/searchApi";
+import { t } from '../../../../i18n';
 
 const OrderSearchFilters = ({setOrdersFilter, searchValue, setSearchValue, filterLabels, setFilterLabels, setPage,
                                 setTotalPages, page, onResetSearchList}) => {
@@ -75,7 +76,7 @@ const OrderSearchFilters = ({setOrdersFilter, searchValue, setSearchValue, filte
     return (
         <>
             <div className={styles.search}>
-                <input type="search" placeholder={'Пошук'} className={'baseInput'} value={searchValue}
+                <input type="search" placeholder={t('Пошук')} className={'baseInput'} value={searchValue}
                        onChange={(e) => setSearchValue(e.target.value)}/>
                 <img src={searchIcon} alt=""/>
             </div>
@@ -90,7 +91,7 @@ const OrderSearchFilters = ({setOrdersFilter, searchValue, setSearchValue, filte
                                     is_warehouse_item: filterLabels.is_warehouse_item
                                 }, 1)
                             }}>
-                        <p>Замовлення</p>
+                        <p>{t('Замовлення')}</p>
                         <span/>
                     </button>
                     <button disabled={isDisabled}
@@ -102,7 +103,7 @@ const OrderSearchFilters = ({setOrdersFilter, searchValue, setSearchValue, filte
                                     is_warehouse_item: filterLabels.is_warehouse_item
                                 }, 1)
                             }}>
-                        <p>Тканини</p>
+                        <p>{t('Тканини')}</p>
                         <span/>
                     </button>
                     <button disabled={isDisabled}
@@ -114,7 +115,7 @@ const OrderSearchFilters = ({setOrdersFilter, searchValue, setSearchValue, filte
                                     is_warehouse_item: !filterLabels.is_warehouse_item
                                 }, 1)
                             }}>
-                        <p>Склад</p>
+                        <p>{t('Склад')}</p>
                         <span/>
                     </button>
                 </div>

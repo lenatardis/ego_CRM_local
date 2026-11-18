@@ -1,10 +1,11 @@
 import React from "react";
 import styles from './SearchInput.module.scss';
 import IconSearch from "../../../../../assets/icons/search.svg";
+import { t } from '../../../../../i18n';
 
 
 const SearchInput = ({order}) => {
-    const invoiceNumber = order?.nova_poshta_delivery?.delivery?.ttn ? `ТТН ${order.nova_poshta_delivery.delivery.ttn}` : order?.ukr_poshta_delivery?.delivery?.ttn ? `ТТН ${order.ukr_poshta_delivery.delivery.ttn}` : `TTH`
+    const invoiceNumber = order?.nova_poshta_delivery?.delivery?.ttn ? `${t('ТТН')} ${order.nova_poshta_delivery.delivery.ttn}` : order?.ukr_poshta_delivery?.delivery?.ttn ? `${t('ТТН')} ${order.ukr_poshta_delivery.delivery.ttn}` : `TTH`
 
     const invoiceNumberRedirect = () => {
         if (order?.nova_poshta_delivery?.delivery?.ttn) {
@@ -16,7 +17,7 @@ const SearchInput = ({order}) => {
     return (
         <label className={styles['search-wrapper']}>
             <input type="text" name="invoice-number" value={invoiceNumber} className="search-input" autoCorrect="off"
-                   spellCheck="false" placeholder="ТТН" disabled/>
+                   spellCheck="false" placeholder={t('ТТН')} disabled/>
             <img src={IconSearch} alt="" onClick={() => invoiceNumberRedirect()}/>
         </label>
     )

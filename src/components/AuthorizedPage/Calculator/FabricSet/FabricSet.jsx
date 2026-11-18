@@ -3,6 +3,7 @@ import styles from './FabricSet.module.scss';
 import FabricSetItem from "./FabricSetItem/FabricSetItem";
 import { removeKitComponent } from "../../../../api/calculatorApi";
 import { getAccessToken } from "../../../../utils/authTokens";
+import { t } from '../../../../i18n';
 
 const FabricSet = ({
                        components,
@@ -130,7 +131,7 @@ const FabricSet = ({
     return (
         <div>
             {components?.length === 0 && customComponents?.length === 0 && (
-                <p className={styles.warning}>Очікуємо доступні комплекти</p>
+                <p className={styles.warning}>{t('Очікуємо доступні комплекти')}</p>
             )}
 
             {Array.isArray(components) && components.length > 0 && (

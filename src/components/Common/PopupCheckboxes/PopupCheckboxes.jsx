@@ -1,6 +1,7 @@
 import React from "react";
 import styles from './PopupCheckboxes.module.scss';
 import Preloader from "../Preloader/Preloader";
+import { t } from '../../../i18n';
 
 const PopupCheckboxes = ({values, setValues, chooseList, isRadio = false, isLoading = false, statusCaption}) => {
     const handleChange = (value) => {
@@ -34,10 +35,10 @@ const PopupCheckboxes = ({values, setValues, chooseList, isRadio = false, isLoad
                                checked={isRadio ? values === item.value || values === item.title : values?.some((element) => element.value === item.value)} />
                         <span/>
                         <p>{item.title}</p>
-                        {item.price && (<>({item.price} грн)</>)}
+                        {item.price && (<>({item.price} {t('грн')})</>)}
 
                         {item.price === 0 && (
-                            <p className={styles.notCheck}>Ви не можете вибрати опцію без ціни, бо вона не вказана в списку цін</p>
+                            <p className={styles.notCheck}>{t('Ви не можете вибрати опцію без ціни, бо вона не вказана в списку цін')}</p>
                         )}
                     </div>
                         {statusCaption && ( item?.value === 'PAY_WAIT' && item?.disabled) && <div className={styles.caption}>{statusCaption}</div>}

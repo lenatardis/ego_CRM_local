@@ -328,6 +328,12 @@
   row-gap: 10px;
 }
 
+// Demo build (2026-11-18): UA / EN switch above "Перейти в ERP" / at the bottom of the customer menu
+.langSwitcher {
+  display: flex;
+  width: 100%;
+}
+
 .ERP {
   padding: 8px 24px;
   border-radius: 4px;

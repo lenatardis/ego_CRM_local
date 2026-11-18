@@ -1,6 +1,7 @@
 import plusSign from "../../../../../assets/icons/plus.svg";
 import styles from "./ComponentsPopup.module.scss";
 import {photoSkeleton} from "../../../../../utils/photoSkeleton";
+import { t } from '../../../../../i18n';
 
 export default function ComponentsList({ components, onAddComponent, defaultFabricImage = '' }) {
     return (
@@ -13,14 +14,14 @@ export default function ComponentsList({ components, onAddComponent, defaultFabr
                         </div>
                         <div className={styles.info}>
                             <p className={styles.info__name}>{component.name}</p>
-                            <p className={styles.info__price}>{component.price} грн</p>
+                            <p className={styles.info__price}>{component.price} {t('грн')}</p>
                         </div>
                     </div>
                     <div className={styles.component__btn}>
                         <button disabled={component.price === 0} className={styles.addBtn} onClick={() => onAddComponent(component)}>
                             <img src={plusSign} alt="" />
                         </button>
-                        <span>Додати</span>
+                        <span>{t('Додати')}</span>
                     </div>
                 </li>
             ))}

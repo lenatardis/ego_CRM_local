@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from './PaymentInfo.module.scss'
 import Attach from "../../../../../assets/icons/attach.svg";
+import { t } from '../../../../../i18n';
 
 const PaymentInfo = ({ receipt, receiptStatus, onReceiptUpload, isUploading = false }) => {
     const [checked, setChecked] = useState(false);
@@ -46,14 +47,14 @@ const PaymentInfo = ({ receipt, receiptStatus, onReceiptUpload, isUploading = fa
 
     return (
         <div>
-          <h3>Повідомити про оплату</h3>
+          <h3>{t('Повідомити про оплату')}</h3>
             <div className={styles.btnGroup}>
                 <label htmlFor="payment_checkbox" className={styles.checkBtn}>
                     <div className={styles.wrap}>
                         <input type="checkbox" className={styles.checkbox} checked={checked}
                             onChange={(e) => setChecked(e.target.checked)} id="payment_checkbox"
                             disabled={!!receipt && receiptStatus !== 'DECLINED'}/>
-                        <span>Я вже оплатив</span>
+                        <span>{t('Я вже оплатив')}</span>
                     </div>
                 </label>
                 <label className={`${styles.fileBtn} ${!checked || (!!receipt && receiptStatus !== 'DECLINED') ? styles.disabled : ''}`}>
@@ -66,15 +67,15 @@ const PaymentInfo = ({ receipt, receiptStatus, onReceiptUpload, isUploading = fa
                     <img src={Attach} alt=""/>
                 </label>
                 <button className={styles.sendBtn} onClick={handleFileUpload} disabled={!checked || !file || isUploading}>
-                    <span>Відправити</span>
+                    <span>{t('Відправити')}</span>
                 </button>
             </div>
             {receipt && receiptStatus === 'IN_PROC' && (
-                 <span className={styles.approvedText}>Чек надіслано, очікуйте зарахування</span>
+                 <span className={styles.approvedText}>{t('Чек надіслано, очікуйте зарахування')}</span>
             )}
             {receipt && receiptStatus === 'DECLINED' && (
                 <span className={`${styles.approvedText} ${styles.declined}`}>
-                    Чек було відхилено менеджером, надішліть повторно або звяжіться з менеджером
+                    {t('Чек було відхилено менеджером, надішліть повторно або звяжіться з менеджером')}
                 </span>
             )}
         </div>

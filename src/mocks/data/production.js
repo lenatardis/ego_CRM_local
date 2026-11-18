@@ -6,6 +6,7 @@
 
 import { getSharedCollection } from '../db';
 import { SEED_PRODUCTION } from '../shared/seed';
+import { t } from '../../i18n';
 
 const PRODUCTION_SEED = SEED_PRODUCTION.map(({ id, order_id, order_product_id, status }) => ({ id, order_id, order_product_id, status }));
 
@@ -26,5 +27,5 @@ export const loadProduction = () => getSharedCollection('production', PRODUCTION
 /** A cart line's `manufacturing` field: { id, status } of its ERP manufacturing order, or null. */
 export const manufacturingOf = (orderProductId, production = loadProduction()) => {
     const record = production.find((p) => p.order_product_id === orderProductId);
-    return record ? { id: record.id, status: STATUS_LABELS[record.status] ?? record.status } : null;
+    return record ? { id: record.id, status: t(STATUS_LABELS[record.status] ?? record.status) } : null;
 };
