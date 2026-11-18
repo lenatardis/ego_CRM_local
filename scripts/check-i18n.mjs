@@ -36,7 +36,7 @@ const untranslated = [];
 for (const file of files) {
     const text = readFileSync(file, 'utf8');
     for (const m of text.matchAll(KEY)) {
-        const key = m[2].replace(/\\(['"\\])/g, '$1');
+        const key = m[2].replace(/\\n/g, '\n').replace(/\\(['"\\])/g, '$1');
         if (CYR.test(key) && !(key in en)) {
             if (!missing.has(key)) missing.set(key, new Set());
             missing.get(key).add(relative(root, file));
