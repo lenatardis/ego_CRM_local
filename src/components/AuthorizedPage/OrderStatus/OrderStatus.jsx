@@ -28,6 +28,7 @@ import { approveReceipt } from "../../../api/receiptApi";
 import { getOrderMessageText } from "../../../utils/getOrderMessageText";
 import { useIsDesktop } from "../../../hooks/useIsDesktop";
 import { t } from '../../../i18n';
+import { getPaidOrderNote } from "../../../utils/getPaidOrderNote";
 
 const OrderStatus = () => {
     const { id: orderId } = useParams();
@@ -72,21 +73,8 @@ const OrderStatus = () => {
     const isMaxBillsCountReached = bills.length >= 2;
 
     // Demo build (at the user's request): a fully paid order can't change its bills or payment status, so instead of
-    // the separate reasons above (several were true at once) it shows one note, by where the order is now
-    const getPaidNote = () => {
-        if (order?.payment?.status !== "PAID") return null;
-        switch (order?.status) {
-            case "IN_PRODUCTION":
-                return t('Замовлення в процесі виготовлення не підлягає редагуванню');
-            case "SHIPMENT_READY":
-                return t('Замовлення готове до відправки і не підлягає редагуванню');
-            case "DELIVERED":
-                return t('Замовлення доставлено і не підлягає редагуванню');
-            default:
-                return t('Замовлення оплачено – рахунки не підлягають редагуванню');
-        }
-    };
-    const paidNote = getPaidNote();
+    // the separate reasons below (several were true at once) it shows one note, under the payment status bar
+    const paidNote = getPaidOrderNote(order, t('Замовлення оплачено – рахунки не підлягають редагуванню'));
 
     // Demo build (at the user's request): bills keep the amount they got when they were set up, so after the order's
     // total changes (discount, products) they can ask for more or less than is left to pay. This finds that and, where
@@ -662,6 +650,7 @@ const OrderStatus = () => {
                             </div>
                         )}
                         {/* Demo build (at the user's request): why the bills and products are locked, right under the status */}
+                        {paidNote && <p className={`infoNote ${styles.statusNote}`}>{paidNote}</p>}
                         {(order?.payment?.status === "PAY_WAIT" || order?.payment?.status === "NOT_PAID") && (
                             <p className={`infoNote ${styles.statusNote}`}>
                                 {t('Для того щоб додати або відредагувати рахунок змініть статус замовлення на "В обробці"')}
@@ -709,7 +698,7 @@ const OrderStatus = () => {
                                 </button>
 
                                 <div className={styles.notes}>
-                                {paidNote ? <p className="infoNote">{paidNote}</p> : <>
+                                {!paidNote && <>
                                 {(
                                     order?.payment?.status === "NOT_PAID" ||
                                     order?.payment?.status === "PAY_WAIT") && <p className="infoNote">{caption}</p>}
@@ -785,7 +774,7 @@ const OrderStatus = () => {
                                         </button>
 
                                         <div className={styles.notes}>
-                                        {paidNote ? <p className="infoNote">{paidNote}</p> : <>
+                                        {!paidNote && <>
                                         {(order?.payment?.status === "PAID" ||
                                             order?.payment?.status === "NOT_PAID" ||
                                             order?.payment?.status === "PAY_WAIT") && <p className="infoNote">{caption}</p>}

@@ -23,6 +23,7 @@ import ArrBack from "../../Common/ArrBack/ArrBack";
 import { ORDER_PARSER_HINT } from "../../Common/Parser/parserHints";
 import { getServerErrorMessage } from "../../../utils/getServerErrorMessage";
 import { t } from '../../../i18n';
+import { getPaidOrderNote } from "../../../utils/getPaidOrderNote";
 
 const OrderCreate = ({ order, sourcesList }) => {
     const manager = useAppSelector(getUser);
@@ -36,7 +37,11 @@ const OrderCreate = ({ order, sourcesList }) => {
     const [popup, setPopup] = useState(null);
     const isDesktop = useIsDesktop();
     const [chosenSource, setChosenSource] = useState(order?.source?.name || '');
-    const statusCaption = isDisabled ? t('Для того щоб відредагувати значення змініть статус замовлення на "В обробці" на сторінці "Статус"') : null;
+    // Demo build: a fully paid order can't go back to "В обробці" – the note says why it is locked instead
+    const statusCaption = isDisabled
+        ? getPaidOrderNote(order, t('Замовлення оплачено і не підлягає редагуванню'))
+            || t('Для того щоб відредагувати значення змініть статус замовлення на "В обробці" на сторінці "Статус"')
+        : null;
     const [serverError, setServerError] = useState('');
     const location = useLocation();
     const isNewOrder = location.state?.isNewOrder;

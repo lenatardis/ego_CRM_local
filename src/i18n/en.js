@@ -389,6 +389,7 @@ const en = {
     'Замовлення в процесі виготовлення не підлягає редагуванню': 'An order in production can\'t be edited',
     'Замовлення готове до відправки і не підлягає редагуванню': 'The order is ready to ship and can\'t be edited',
     'Замовлення доставлено і не підлягає редагуванню': 'The order has been delivered and can\'t be edited',
+    'Замовлення оплачено і не підлягає редагуванню': 'The order is paid and can no longer be edited',
     'Замовлення оплачено – рахунки не підлягають редагуванню': 'The order is paid – its bills can\'t be edited',
     'Оплачено {{paid}} – більше, ніж сума замовлення ({{total}}). Ймовірно, змінилась знижка або товари.':
         'Paid {{paid}} – more than the order total ({{total}}). The discount or the items have probably changed.',
