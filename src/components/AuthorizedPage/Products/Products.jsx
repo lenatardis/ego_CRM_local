@@ -21,6 +21,7 @@ import { Suborder } from "../Main/Order/Suborder";
 import { useIsDesktop } from "../../../hooks/useIsDesktop";
 import GlobalPopup from "../../Common/GlobalPopup/GlobalPopup";
 import { t } from '../../../i18n';
+import { getPaidOrderNote } from "../../../utils/getPaidOrderNote";
 
 const Products = () => {
     const { id } = useParams();
@@ -367,6 +368,13 @@ const Products = () => {
                 </div>
                 <div className={`${styles.grid} ${styles.mobileWrap}`}>
                     <div>
+                        {/* Demo build (at the user's request): why adding / removing products and the discount are locked */}
+                        {isDisabled && (
+                            <p className={`${styles.emptyNote} infoNote`}>
+                                {getPaidOrderNote(order, t('Замовлення оплачено і не підлягає редагуванню'))
+                                    || t('Для внесення змін змініть статус замовлення на "В обробці" на сторінці "Статус"')}
+                            </p>
+                        )}
                         {!warehouseItems.length && <p className={`${styles.emptyNote} infoNote`}>{t('На даний момент немає товарів у замовленні')}</p>}
                         {warehouseItems && (
                             <CartProducts
