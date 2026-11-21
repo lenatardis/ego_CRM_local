@@ -14,6 +14,8 @@ const InfoHint = ({ text, ariaLabel = t('Інформація'), size }) => {
     const [placement, setPlacement] = useState("top");
     const [maxHeight, setMaxHeight] = useState(MAX_TOOLTIP_HEIGHT);
     const [shiftX, setShiftX] = useState(0);
+    // demo build: desktop tooltips open towards the side with more room (set on opening, before it is measured)
+    const [align, setAlign] = useState("start");
     const shiftRef = useRef(0);
 
     const wrapRef = useRef(null);
@@ -95,12 +97,21 @@ const InfoHint = ({ text, ariaLabel = t('Інформація'), size }) => {
         };
     }, [open, text]);
 
+    const toggleOpen = () => {
+        if (!open && wrapRef.current) {
+            const rect = wrapRef.current.getBoundingClientRect();
+            setAlign(rect.left + rect.width / 2 > document.documentElement.clientWidth / 2 ? "end" : "start");
+        }
+        setOpen((prev) => !prev);
+    };
+
     return (
         <span
             ref={wrapRef}
             className={styles.hint}
             data-open={open ? "true" : "false"}
             data-placement={placement}
+            data-align={align}
         >
             {/* Demo build: a span acting as a button, so a locked (disabled) fieldset around it doesn't switch the hint off */}
             <span
@@ -111,13 +122,13 @@ const InfoHint = ({ text, ariaLabel = t('Інформація'), size }) => {
                 style={size ? { width: size, height: size, minWidth: size } : undefined}
                 onClick={(e) => {
                     e.stopPropagation();
-                    setOpen((prev) => !prev);
+                    toggleOpen();
                 }}
                 onKeyDown={(e) => {
                     if (e.key !== 'Enter' && e.key !== ' ') return;
                     e.preventDefault();
                     e.stopPropagation();
-                    setOpen((prev) => !prev);
+                    toggleOpen();
                 }}
             />
 

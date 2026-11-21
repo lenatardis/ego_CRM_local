@@ -32,7 +32,11 @@
 
 .tooltip {
   position: absolute;
-  right: 0;
+  // demo build: opens towards the side with more room – to the right of an icon in the left half of the screen
+  // (it was always right-aligned, so a hint at the start of a label reached over the desktop sidebar), to the left
+  // of one in the right half (data-align, InfoHint.jsx); a tooltip that still sticks out is shifted back in
+  left: 0;
+  right: auto;
 
   display: block;
   min-width: 220px;
@@ -56,6 +60,13 @@
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+@media (min-width: 769px) {
+  .hint[data-align="end"] .tooltip {
+    left: auto;
+    right: 0;
+  }
 }
 
 .hint[data-placement="top"] .tooltip {
