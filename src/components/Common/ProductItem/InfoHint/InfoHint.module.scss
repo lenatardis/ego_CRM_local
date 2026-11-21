@@ -117,9 +117,10 @@
     transform: translateX(-50%) translateY(0);
   }
 
-  // Demo build: a closed tooltip, centred on an icon near the right edge, still stuck out of the screen
-  // (invisible, but it made the page scroll sideways – e.g. Доставка); closed ones take no space now
-  .hint:not([data-open="true"]) .tooltip {
-    display: none;
-  }
+}
+
+// Demo build: a closed tooltip is invisible but still laid out; near the screen's right edge (an icon centred on
+// phones, or opening rightwards on desktop) it made the page scroll sideways – e.g. Доставка. Closed ones take no space.
+.hint:not([data-open="true"]) .tooltip {
+  display: none;
 }
