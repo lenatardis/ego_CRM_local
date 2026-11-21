@@ -188,6 +188,28 @@
   column-gap: 5px;
 }
 
+// Demo build: "+N" for options beyond the first two (FabricSetItemOptions)
+.optionMore {
+  display: flex;
+  flex: 0 0 auto;
+  width: 22px;
+  height: 22px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  border: none;
+  padding: 0;
+  background: #FFFFFF;
+  cursor: pointer;
+
+  span {
+    font-size: 10px;
+    line-height: 12px;
+    font-weight: 700;
+    color: #201827;
+  }
+}
+
 .option, .optionDisabled {
   display: flex;
   padding: 0 12px;

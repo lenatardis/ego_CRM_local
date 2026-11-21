@@ -10,9 +10,21 @@ const FabricSetItemOptions = ({
                                   componentIndex,
                                   onChangeOptions,
                                   setContainerPosition,
-                                  isCustom
+                                  isCustom,
+                                  onShowAll = null,
                               }) => {
     const optionsInfo = item?.options || [];
+
+    // Demo build: at most OPTION_LIMIT option chips on the card; the rest sit behind a round "+N" that opens the
+    // options popup (same as the +≡ button). Chosen options take the visible places first, in the catalog order.
+    const OPTION_LIMIT = 2;
+    const isChosen = (el) => chosenOptions.some((opt) => opt.id === el.id);
+    const visibleOptions = optionsInfo.length <= OPTION_LIMIT || !onShowAll
+        ? optionsInfo
+        : [...optionsInfo.filter(isChosen), ...optionsInfo.filter((el) => !isChosen(el))]
+            .slice(0, OPTION_LIMIT)
+            .sort((a, b) => optionsInfo.indexOf(a) - optionsInfo.indexOf(b));
+    const hiddenOptionsCount = optionsInfo.length - visibleOptions.length;
 
     const noPriceText =
         t('Ви не можете вибрати опцію без ціни, бо вона не вказана в списку цін');
@@ -82,7 +94,7 @@ const FabricSetItemOptions = ({
             {optionsInfo.length > 0 && <span>{t('Опції:')}</span>}
 
             <div className={styles.optionGroup}>
-                {optionsInfo.map((el, index) => {
+                {visibleOptions.map((el, index) => {
                     const isDisabled = Number(el.price) === 0;
                     const isActive = chosenOptions.some((opt) => opt.id === el.id);
 
@@ -98,6 +110,12 @@ const FabricSetItemOptions = ({
                         </button>
                     );
                 })}
+                {hiddenOptionsCount > 0 && (
+                    <button type="button" className={styles.optionMore} aria-label={t('Оберіть опції')}
+                            onClick={() => { setContainerPosition(2); onShowAll(); }}>
+                        <span>+{hiddenOptionsCount}</span>
+                    </button>
+                )}
             </div>
 
             {hint &&

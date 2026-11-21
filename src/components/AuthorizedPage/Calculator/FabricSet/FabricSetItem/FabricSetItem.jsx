@@ -205,7 +205,7 @@ const FabricSetItem = ({
     // Demo build: at most SIZE_LIMIT sizes on the card (the original's leftover `.size__circle` style); the rest sit
     // behind a round "+N" that opens a radio list. The chosen size is always among the visible ones.
     const SIZE_LIMIT = 3;
-    const allSizes = componentSize?.sizes || [];
+    const allSizes = useMemo(() => componentSize?.sizes || [], [componentSize?.sizes]);
     const sizeLabel = (it, idx) => (selectedSizeIndex === idx && customSizeStr ? customSizeStr : it.size);
     const visibleSizeIdx = useMemo(() => {
         const all = allSizes.map((_, idx) => idx);
@@ -372,6 +372,7 @@ const FabricSetItem = ({
                                                     onChangeOptions={onChangeOptions}
                                                     isCustom={isCustom}
                                                     setContainerPosition={setContainerPosition}
+                                                    onShowAll={!inPopup ? handleOptionPopup : null}
                                                 />
                                                 {item?.options?.length > 1 && (
                                                     <OptionButton img={OptionIcon} action={!inPopup ? handleOptionPopup : () => setContainerPosition(2)} />
@@ -400,6 +401,7 @@ const FabricSetItem = ({
                                     onChangeOptions={onChangeOptions}
                                     isCustom={isCustom}
                                     setContainerPosition={setContainerPosition}
+                                    onShowAll={!inPopup ? handleOptionPopup : null}
                                 />
                                 {item?.options?.length > 1 && (
                                     <OptionButton img={OptionIcon} action={!inPopup ? handleOptionPopup : () => setContainerPosition(2)} />

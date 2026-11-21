@@ -663,7 +663,7 @@ const Calculator = () => {
                             <AddComponentButton onClick={openComponentPopup}/>
                         </div>
 
-                        <h2>{t('Опції')}</h2>
+                        <h2>{t('Оберіть опції')}</h2>
                         <FabricOptions
                             options={product.kit_options}
                             selectedOptionIds={selectedOptionIds}

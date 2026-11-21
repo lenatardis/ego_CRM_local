@@ -246,6 +246,7 @@ const en = {
     'Розформувати комплект': 'Split the set',
     'Опції': 'Options',
     'Опції:': 'Options:',
+    'Оберіть опції': 'Choose options',
     'Обрахувати і Зберегти': 'Calculate and save',
     'Комплект уже у виробництві (статус: {{status}}), змінити його не можна':
         'The set is already in production (status: {{status}}) and can\'t be changed',
