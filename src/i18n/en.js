@@ -380,7 +380,7 @@ const en = {
     'Для того щоб додати або відредагувати рахунок змініть статус замовлення на "В обробці"':
         'To add or edit a bill, change the order status to "Processing"',
     'Для того щоб додати новий або відредагувати рахунок змініть статус замовлення на "В обробці"':
-        'To add or edit a bill, change the order status to "Processing"',
+        'To add a new bill or edit one, change the order status to "Processing"',
     'Уся сума замовлення вже розподілена між рахунками – новий рахунок не потрібен':
         'The whole order total is already split between bills – no new bill is needed',
     'Неможливо додати новий рахунок при повному методі оплати': 'A new bill can\'t be added with the full-amount method',
