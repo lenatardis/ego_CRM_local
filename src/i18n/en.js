@@ -14,6 +14,7 @@ const en = {
     'Вхід у CRM': 'Sign in to CRM',
     'Демо-доступ: оберіть менеджера у списку – логін і пароль заповняться самі.':
         'Demo access: pick a manager from the list – the login and password are filled in for you.',
+    'Усі дані вигадані.': 'All data is fictional.',
     'Демо-користувач:': 'Demo user:',
     'Оберіть менеджера': 'Choose a manager',
     'Логін:': 'Login:',

@@ -18,6 +18,7 @@ const Auth = () => {
                 <h1 className={styles.card__title}>{t('Вхід у CRM')}</h1>
                 <p className={styles.card__hint}>
                     {t('Демо-доступ: оберіть менеджера у списку – логін і пароль заповняться самі.')}
+                    <br/>{t('Усі дані вигадані.')}
                 </p>
                 <AuthForm />
             </div>
