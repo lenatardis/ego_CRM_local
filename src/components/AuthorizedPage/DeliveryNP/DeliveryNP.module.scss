@@ -148,3 +148,13 @@
   padding: 0;
   min-width: 0;
 }
+
+// the white controls that don't grey out by themselves when disabled: city / branch pickers, "Хто оплачує Доставку",
+// "Зворотня доставка" (matched by their CSS-module class names – these components take no disabled prop)
+.lockGroup:disabled {
+  :global(.MuiAutocomplete-root),
+  [class*="DeliveryIPay_iPay__"]:not([class*="customCheckbox"]),
+  [class*="backward-delivery_backwardDelivery__"] {
+    opacity: 0.55;
+  }
+}

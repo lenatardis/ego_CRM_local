@@ -578,6 +578,7 @@ const DeliveryNP = ({ deliveryOrder, lastOrderId }) => {
                                 />
                             </div>
                             <PaymentMethod
+                                isDisabled={isDelivered}
                                 paymentMethod={values.payment_method}
                                 onChange={(value) => {
                                     setFieldValue('payment_method', value);

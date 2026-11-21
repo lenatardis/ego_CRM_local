@@ -102,12 +102,20 @@ const InfoHint = ({ text, ariaLabel = t('Інформація'), size }) => {
             data-open={open ? "true" : "false"}
             data-placement={placement}
         >
-            <button
-                type="button"
+            {/* Demo build: a span acting as a button, so a locked (disabled) fieldset around it doesn't switch the hint off */}
+            <span
+                role="button"
+                tabIndex={0}
                 className={styles.icon}
                 aria-label={ariaLabel}
                 style={size ? { width: size, height: size, minWidth: size } : undefined}
                 onClick={(e) => {
+                    e.stopPropagation();
+                    setOpen((prev) => !prev);
+                }}
+                onKeyDown={(e) => {
+                    if (e.key !== 'Enter' && e.key !== ' ') return;
+                    e.preventDefault();
                     e.stopPropagation();
                     setOpen((prev) => !prev);
                 }}

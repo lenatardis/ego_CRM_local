@@ -38,3 +38,9 @@
         }
     }
 }
+
+// Demo build: locked (delivered order) – the choice is dimmed, the label and its hint stay as they are
+.payChanger.disabled .items {
+    opacity: 0.55;
+    pointer-events: none;
+}
