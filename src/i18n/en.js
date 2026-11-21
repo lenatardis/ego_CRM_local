@@ -236,6 +236,7 @@ const en = {
     'Оберіть тип тканини': 'Choose the fabric type',
     'Розмір комплекту': 'Set size',
     'Оберіть розмір комплекту': 'Choose the set size',
+    'Оберіть розмір': 'Choose a size',
     'Варіації комплектів по вибраним параметрам': 'Set variants for the chosen options',
     'Оберіть варіацію комплекту': 'Choose a set variant',
     'Оберіть варіацію комплекту, щоб розрахувати його ціну': 'Choose a set variant to calculate its price',

@@ -12,6 +12,7 @@ import FabricSetItemType from "./FabricSetItemType/FabricSetItemType";
 import FabricSetItemOptions from "./FabricSetItemOptions/FabricSetItemOptions";
 import CustomSizePopup from "../../Popups/CustomSizePopup/CustomSizePopup";
 import OptionPopup from "../../Popups/OptionPopup/OptionPopup";
+import PopupCheckboxes from "../../../../Common/PopupCheckboxes/PopupCheckboxes";
 import { useAppDispatch } from "../../../../../hooks/redux";
 import { setIsActivePopup } from "../../../../../store/main-slice";
 import GlobalPopup from "../../../../Common/GlobalPopup/GlobalPopup";
@@ -201,6 +202,42 @@ const FabricSetItem = ({
         onSelectSize(componentIndex, sizeIndex);
     };
 
+    // Demo build: at most SIZE_LIMIT sizes on the card (the original's leftover `.size__circle` style); the rest sit
+    // behind a round "+N" that opens a radio list. The chosen size is always among the visible ones.
+    const SIZE_LIMIT = 3;
+    const allSizes = componentSize?.sizes || [];
+    const sizeLabel = (it, idx) => (selectedSizeIndex === idx && customSizeStr ? customSizeStr : it.size);
+    const visibleSizeIdx = useMemo(() => {
+        const all = allSizes.map((_, idx) => idx);
+        if (all.length <= SIZE_LIMIT) return all;
+        const first = all.slice(0, SIZE_LIMIT);
+        return selectedSizeIndex !== null && selectedSizeIndex >= SIZE_LIMIT
+            ? [...first.slice(0, SIZE_LIMIT - 1), selectedSizeIndex]
+            : first;
+    }, [allSizes, selectedSizeIndex]);
+    const hiddenSizesCount = allSizes.length - visibleSizeIdx.length;
+    const [showSizesPopup, setShowSizesPopup] = useState(false);
+
+    const openSizesPopup = () => {
+        setContainerPosition(2);
+        setShowSizesPopup(true);
+        dispatch(setIsActivePopup(true));
+    };
+
+    const closeSizesPopup = () => {
+        setShowSizesPopup(false);
+        dispatch(setIsActivePopup(false));
+    };
+
+    // Checkbox look (the user's choice), but a component has one size: ticking another size replaces the chosen one;
+    // unticking the chosen one changes nothing.
+    const handlePickSizeInPopup = (values) => {
+        const picked = values.find((it) => Number(it.value) !== selectedSizeIndex);
+        if (!picked) return;
+        handleSelectSize(Number(picked.value));
+        closeSizesPopup();
+    };
+
     // Demo build: a template kit's own components can't be deleted until the kit is split (original rule) – the bin
     // then explains that instead of being a dead, faded button; a deletable component asks first.
     const canDelete = isKitSplitted || !("is_custom" in item) || !!item?.is_custom;
@@ -287,20 +324,25 @@ const FabricSetItem = ({
                                 <div className={`${styles.row} ${styles.featureRow}`}>
                                     <div className={styles.sizesWrapper}>
                                         {componentSize && componentSize?.sizes?.length > 0 ? (
-                                            componentSize.sizes.map((it, idx) => {
-                                                const isActive = selectedSizeIndex === idx;
-                                                const label = isActive && customSizeStr ? customSizeStr : it.size;
-
-                                                return (
+                                            <>
+                                                {visibleSizeIdx.map((idx) => (
                                                     <FabricSetItemSize
                                                         key={idx}
-                                                        size={label}
-                                                        isActive={isActive}
+                                                        size={sizeLabel(allSizes[idx], idx)}
+                                                        isActive={selectedSizeIndex === idx}
                                                         setContainerPosition={setContainerPosition}
                                                         onSelectSize={() => handleSelectSize(idx)}
                                                     />
-                                                );
-                                            })
+                                                ))}
+                                                {hiddenSizesCount > 0 && (
+                                                    <div className={styles.size}>
+                                                        <div className={styles.size__circle} role="button"
+                                                             aria-label={t('Оберіть розмір')} onClick={openSizesPopup}>
+                                                            <p>+{hiddenSizesCount}</p>
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </>
                                         ) : (
                                             <FabricSetItemSize
                                                 size={customSizeStr || item?.size?.name || item.size}
@@ -407,6 +449,16 @@ const FabricSetItem = ({
             {showCommentPopup && (
                 <GlobalPopup title={t('Коментар')} onClose={closeCommentPopup} {...(isDesktop ? { centeredPopup: true } : {})}>
                     <CommentPopup componentIndex={componentIndex} onChangeOptions={onChangeOptions} form={form} close={closeCommentPopup} isCustom={isCustom} />
+                </GlobalPopup>
+            )}
+
+            {showSizesPopup && (
+                <GlobalPopup title={t('Оберіть розмір')} onClose={closeSizesPopup} {...(isDesktop ? { centeredPopup: true } : {})}>
+                    <PopupCheckboxes
+                        values={allSizes.filter((_, idx) => idx === selectedSizeIndex).map(() => ({ value: String(selectedSizeIndex) }))}
+                        setValues={handlePickSizeInPopup}
+                        chooseList={allSizes.map((it, idx) => ({ value: String(idx), title: sizeLabel(it, idx) }))}
+                    />
                 </GlobalPopup>
             )}
 
