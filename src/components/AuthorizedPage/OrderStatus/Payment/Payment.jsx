@@ -4,7 +4,6 @@ import StatusPay from "./StatusPay";
 import TotalPrice from "../../../Common/TotalPrice/TotalPrice";
 import {getPriceWithDiscount} from "../../../../utils/getPriceWithDiscount";
 import styles from "./payment.module.scss";
-import {useIsDesktop} from "../../../../hooks/useIsDesktop";
 import { t } from '../../../../i18n';
 
 export const Payment = ({payment, handleSaveFinalPrice, handleStatusChange, isPaymentAllowed, orderDiscountCalc = false,
@@ -24,7 +23,6 @@ export const Payment = ({payment, handleSaveFinalPrice, handleStatusChange, isPa
         value: payment.status,
         title: statuses.find((item) => item.value === payment.status)?.title
     } : null;
-    const isDesktop = useIsDesktop();
 
     const handleSubmitDiscount = () => {
         const discountValue = discountType === 'PERC' ? percentInputValue : UAHInputValue;
@@ -50,7 +48,11 @@ export const Payment = ({payment, handleSaveFinalPrice, handleStatusChange, isPa
                     orderDiscountCalc={orderDiscountCalc}
                     orderAmount={orderAmount}
                 />
-                {!isDesktop && (<><StatusPay
+            </div>
+            {/* Demo build (at the user's request): the payment status has its own "Статус" block on phones too, as on desktop */}
+            <h3>{t('Статус')}</h3>
+            <div className={styles.payment}>
+                <StatusPay
                     setPopup={setPopup}
                     popup={popup}
                     status={selectedStatus}
@@ -58,43 +60,18 @@ export const Payment = ({payment, handleSaveFinalPrice, handleStatusChange, isPa
                     updateStatus={handleStatusChange}
                     isDisabled={payment?.status === 'PAID'}
                 />
-                    <div className={styles.total}>
-                        <div className={styles.row}>
-                            <span>{t('До сплати замовнику:')}</span>
-                            <span
-                                className={styles.value}>{(payment?.final_amount - payment?.already_paid_amount) || 0} {t('грн')}</span>
-                        </div>
-                        <div className={styles.row}>
-                            <span>{t('Оплачено замовником:')}</span>
-                            <span className={styles.value}>{payment?.already_paid_amount} {t('грн')}</span>
-                        </div>
+                <div className={styles.total}>
+                    <div className={styles.row}>
+                        <span>{t('До сплати замовнику:')}</span>
+                        <span
+                            className={styles.value}>{(payment?.final_amount - payment?.already_paid_amount) || 0} {t('грн')}</span>
                     </div>
-                </>)}
-            </div>
-            {isDesktop && (
-                <div className={styles.payment}>
-                    <StatusPay
-                        setPopup={setPopup}
-                        popup={popup}
-                        status={selectedStatus}
-                        chooseList={statuses}
-                        updateStatus={handleStatusChange}
-                        isDisabled={payment?.status === 'PAID'}
-                    />
-                    <div className={styles.total}>
-                        <div className={styles.row}>
-                            <span>{t('До сплати замовнику:')}</span>
-                            <span
-                                className={styles.value}>{(payment?.final_amount - payment?.already_paid_amount) || 0} {t('грн')}</span>
-                        </div>
-                        <div className={styles.row}>
-                            <span>{t('Оплачено замовником:')}</span>
-                            <span className={styles.value}>{payment?.already_paid_amount} {t('грн')}</span>
-                        </div>
+                    <div className={styles.row}>
+                        <span>{t('Оплачено замовником:')}</span>
+                        <span className={styles.value}>{payment?.already_paid_amount} {t('грн')}</span>
                     </div>
                 </div>
-            )
-            }
+            </div>
         </>
     )
 }

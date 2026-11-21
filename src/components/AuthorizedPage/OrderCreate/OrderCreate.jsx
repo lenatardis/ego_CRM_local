@@ -36,7 +36,7 @@ const OrderCreate = ({ order, sourcesList }) => {
     const [popup, setPopup] = useState(null);
     const isDesktop = useIsDesktop();
     const [chosenSource, setChosenSource] = useState(order?.source?.name || '');
-    const statusCaption = isDisabled ? t('Для того щоб відредагувати значення змініть статус замовлення на "В обробці"') : null;
+    const statusCaption = isDisabled ? t('Для того щоб відредагувати значення змініть статус замовлення на "В обробці" на сторінці "Статус"') : null;
     const [serverError, setServerError] = useState('');
     const location = useLocation();
     const isNewOrder = location.state?.isNewOrder;

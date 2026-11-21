@@ -661,6 +661,12 @@ const OrderStatus = () => {
                                 </span>
                             </div>
                         )}
+                        {/* Demo build (at the user's request): why the bills and products are locked, right under the status */}
+                        {(order?.payment?.status === "PAY_WAIT" || order?.payment?.status === "NOT_PAID") && (
+                            <p className={`infoNote ${styles.statusNote}`}>
+                                {t('Для того щоб додати або відредагувати рахунок змініть статус замовлення на "В обробці"')}
+                            </p>
+                        )}
 
                         {warehouseItems?.length > 0 &&
                             warehouseItems.map((el, index) => (

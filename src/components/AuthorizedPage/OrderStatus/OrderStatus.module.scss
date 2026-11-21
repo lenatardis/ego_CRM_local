@@ -112,6 +112,10 @@
 }
 
 // Why "Новий рахунок" is unavailable: the info notes (`infoNote`, App.scss) under the button
+.statusNote {
+  margin-bottom: 12px;
+}
+
 .notes {
   display: flex;
   flex-direction: column;

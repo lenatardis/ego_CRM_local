@@ -202,8 +202,8 @@ const en = {
     'Не вдалося створити підзамовлення.': 'Could not create the suborder.',
 
     // ---- order form (OrderCreate)
-    'Для того щоб відредагувати значення змініть статус замовлення на "В обробці"':
-        'To edit the values, change the order status to "Processing"',
+    'Для того щоб відредагувати значення змініть статус замовлення на "В обробці" на сторінці "Статус"':
+        'To edit the values, change the order status to "Processing" on the "Status" page',
     'Не вдалося оновити дані доставки': 'Could not update the delivery data',
     'Посилання на профіль замовника': 'Link to the customer\'s profile',
     'Нік замовника': 'Customer\'s nickname',
@@ -377,6 +377,8 @@ const en = {
     'Роздрукувати ТТН': 'Print waybill',
     'Друк ТТН': 'Print waybill',
     'Завантажуємо ТТН...': 'Loading the waybill…',
+    'Для того щоб додати або відредагувати рахунок змініть статус замовлення на "В обробці"':
+        'To add or edit a bill, change the order status to "Processing"',
     'Для того щоб додати новий або відредагувати рахунок змініть статус замовлення на "В обробці"':
         'To add or edit a bill, change the order status to "Processing"',
     'Уся сума замовлення вже розподілена між рахунками – новий рахунок не потрібен':
