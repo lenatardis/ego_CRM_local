@@ -37,6 +37,9 @@ const DeliveryNP = ({ deliveryOrder, lastOrderId }) => {
     const [oldRequiredNPValues, setOldRequiredNPValues] = useState(null);
     // Demo: 'created' / 'updated' after a successful waybill request – shown until a field changes again
     const [ttnResult, setTtnResult] = useState(null);
+    // Demo build (at the user's request): a delivered order's delivery is final – the form is locked, the TTN can still be copied
+    const [orderStatus, setOrderStatus] = useState(null);
+    const isDelivered = orderStatus === 'DELIVERED';
     const [errors, setErrors] = useState({});
     const [serverError, setServerError] = useState('');
     const isAllRequiredValuesFilled = requiredNPValues?.first_name &&  requiredNPValues?.middle_name && requiredNPValues?.last_name && requiredNPValues?.phone && requiredNPValues?.city && requiredNPValues?.address && requiredNPValues?.specified_weight && requiredNPValues?.estimate_order_price;
@@ -116,6 +119,7 @@ const DeliveryNP = ({ deliveryOrder, lastOrderId }) => {
             getSuborders(accessToken, { general_order: lastOrderId }),
         ])
             .then(([orderResponse, subordersResponse]) => {
+                setOrderStatus(orderResponse?.status ?? null);
                 const generalOrderAmount = getNumberValue(orderResponse?.payment?.final_amount);
 
                 const suborder = Array.isArray(subordersResponse)
@@ -424,6 +428,8 @@ const DeliveryNP = ({ deliveryOrder, lastOrderId }) => {
             <div className={styles.deliveryNPWrap}>
                 <form onSubmit={handleSubmit}>
                     <div className={styles.deliveryNP__content}>
+                        {isDelivered && <p className={`${styles.caption} infoNote`}>{t('Замовлення доставлено і не підлягає редагуванню')}</p>}
+                        <fieldset className={styles.lockGroup} disabled={isDelivered}>
                         <div className={styles.deliveryNP__row}>
                             <div className={styles.inputWrap}>
                                 <label className={styles.formLabel} htmlFor="first_name"><span>{t('Ім\'я')}</span>&nbsp;<span className={styles.desktop_visible}>{t('Отримувача')}</span><span className={styles.requiredMark}>&nbsp;*</span></label>
@@ -643,6 +649,7 @@ const DeliveryNP = ({ deliveryOrder, lastOrderId }) => {
                                 readOnly
                             />
                         </div>
+                        </fieldset>
                         <div className={styles.inputWrap}>
                             <label className={styles.formLabel}>{t('Номер ТТН')}</label>
                             <div className={styles.transportNumber}>
@@ -662,6 +669,7 @@ const DeliveryNP = ({ deliveryOrder, lastOrderId }) => {
                                 </CopyToClipboard>
                             </div>
                         </div>
+                        <fieldset className={styles.lockGroup} disabled={isDelivered}>
                         <div className={styles.inputWrap}>
                             <label className={styles.formLabel}>{t('Коментар до доставки')}</label>
                             <textarea
@@ -677,6 +685,7 @@ const DeliveryNP = ({ deliveryOrder, lastOrderId }) => {
                                 onBlur={(e) => auditDates(e.target.value || null, 'comment')}
                             />
                         </div>
+                        {!isDelivered && (<>
                         {(!values.ttn && !isAllRequiredValuesFilled && !!values.declared_order_price) && (
                             <p className={`${styles.caption} infoNote infoNote--tinted`}>{caption}</p>
                         )}
@@ -692,6 +701,7 @@ const DeliveryNP = ({ deliveryOrder, lastOrderId }) => {
                         {(values.ttn && isAllRequiredValuesFilled && requiredNPValues && oldRequiredNPValues && !areObjectsEqual(requiredNPValues, oldRequiredNPValues) && !serverError) && (
                             <p className={`${styles.caption} infoNote infoNote--tinted`}>{captionSaved}</p>
                         )}
+                        </>)}
                         {serverError && (
                             <p className={styles.serverError}>ERROR: {serverError}</p>
                         )}
@@ -713,9 +723,10 @@ const DeliveryNP = ({ deliveryOrder, lastOrderId }) => {
                                 </button>
                             )}
                         </div>
+                        </fieldset>
                     </div>
                 </form>
-                <Parser
+                {!isDelivered && <Parser
                     values={{
                         first_name: values.first_name,
                         last_name: values.last_name,
@@ -727,7 +738,7 @@ const DeliveryNP = ({ deliveryOrder, lastOrderId }) => {
                     updateData={auditDates}
                     parserStyles={{ backgroundColor: '#F0B5B7' }}
                     hintText={DELIVERY_PARSER_HINT}
-                />
+                />}
 
                 {isDesktop && <ArrBack/>}
             </div>

@@ -58,6 +58,12 @@ const newItemFor = (group) => {
 
 const today = () => nowIso().slice(0, 10);
 
+// Demo build (at the user's request): a delivered order's delivery is final – its fields and waybill can't change
+// (the page locks them too). Creating the empty record of a delivered order without one stays possible.
+const isDeliveredOrder = (orderId) => orderGroup(orderId)?.order.status === 'DELIVERED';
+const deliveredRefusal = () => HttpResponse.json({ detail: t('Замовлення доставлено і не підлягає редагуванню') },
+    { status: 400, statusText: 'Bad Request' });
+
 export const deliveryHandlers = [
     http.get(`${API}/delivery/nova_poshta/item/`, withAuth(async ({ request }) => {
         await loadDirectory();
@@ -76,6 +82,7 @@ export const deliveryHandlers = [
         if (!group) return notFound();
 
         const existing = findNpItem((i) => i.order_id === group.order.id);
+        if (existing && group.order.status === 'DELIVERED') return deliveredRefusal();
         const { item, errors } = applyItemFields(existing ?? newItemFor(group), fields);
         if (errors) return badRequest(errors);
         // a waybill made before `waybill_data` existed (seed, older demo data): until this first change the page
@@ -93,6 +100,7 @@ export const deliveryHandlers = [
         const { nova_poshta_id } = await request.json();
         const item = findNpItem((i) => String(i.id) === String(nova_poshta_id));
         if (!item) return notFound();
+        if (isDeliveredOrder(item.order_id)) return deliveredRefusal();
         const errors = waybillErrors(item);
         if (Object.keys(errors).length) return badRequest(errors);
 
@@ -111,6 +119,7 @@ export const deliveryHandlers = [
         const { nova_poshta_id } = await request.json();
         const item = findNpItem((i) => String(i.id) === String(nova_poshta_id));
         if (!item) return notFound();
+        if (isDeliveredOrder(item.order_id)) return deliveredRefusal();
         if (!item.delivery.ttn) return badRequest({ ttn: [t('ТТН ще не створено.')] });
         const errors = waybillErrors(item);
         if (Object.keys(errors).length) return badRequest(errors);
@@ -137,6 +146,7 @@ export const deliveryHandlers = [
         await loadDirectory();
         const item = findNpItem((i) => String(i.id) === String(params.id));
         if (!item) return notFound();
+        if (isDeliveredOrder(item.order_id)) return deliveredRefusal();
         const next = structuredClone(item);
         Object.assign(next.delivery, { ttn: null, estimate_delivery_price: null });
         next.waybill_data = null;

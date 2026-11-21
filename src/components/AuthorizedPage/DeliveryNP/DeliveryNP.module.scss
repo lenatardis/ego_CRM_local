@@ -140,3 +140,11 @@
   font-size: 14px;
   line-height: 1.4;
 }
+// Demo build: groups of the form locked for a delivered order (DeliveryNP.jsx); no box of their own
+.lockGroup {
+  display: contents;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  min-width: 0;
+}
