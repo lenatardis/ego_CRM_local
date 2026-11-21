@@ -230,8 +230,16 @@
   font-size: 14px;
   line-height: 1.4;
 }
-// Demo build, phones: the source popup's list scrolls inside the top popup (same height as the fabric tags popup, `ChoosePopup`)
+// Demo build, phones: the source popup is a bottom sheet as tall as its list, and the list scrolls only when it doesn't
+// fit the visible screen (dvh – without the browser's address bar; the sheet's header 48 px + padding 2 × 30 px + 23 px
+// gap at the top). Before, it was a 100vh top popup with a 100vh − 190px list, which on phones left an empty band under
+// the list and scrolled even when nearly everything fitted (2026-11-21, at the user's request).
 .sourcePopupList {
-  height: calc(100vh - 190px);
+  max-height: calc(100vh - 131px);
+  max-height: calc(100dvh - 131px);
   overflow: auto;
+
+  > div {
+    margin-bottom: 0; // PopupCheckboxes' own 80 px bottom margin
+  }
 }

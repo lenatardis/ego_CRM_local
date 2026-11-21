@@ -534,7 +534,7 @@ const OrderCreate = ({ order, sourcesList }) => {
                 </div>
             </div>
             {popup === 'source' && (
-                <GlobalPopup title={t('Джерело замовлення')} onClose={() => setPopup(null)}  {...(isDesktop ? { centeredPopup: true } : { topPopup: true })}>
+                <GlobalPopup title={t('Джерело замовлення')} onClose={() => setPopup(null)}  {...(isDesktop ? { centeredPopup: true } : {})}>
                     {/* demo build: on phones a top popup with a scrolling list, like the fabric tags popup – a long list pushed the header off the screen */}
                     <div className={isDesktop ? undefined : styles.sourcePopupList}>
                         <PopupCheckboxes values={chosenSource ?? null} setValues={onChangeSource} chooseList={sources} isRadio />
