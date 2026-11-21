@@ -408,7 +408,9 @@ const OrderCreate = ({ order, sourcesList }) => {
                             </div>
                             <div className={styles.inputWrap}>
                                 <label for="sourceBtn" className={styles.form__label}>{t('Джерело замовлення')}</label>
-                                <button id="sourceBtn" className={`${styles.sourceBox}`} onClick={() => onSourceBtn()}>
+                                {/* Demo build: locked like the other fields (the original left the source editable on a locked order) */}
+                                <button id="sourceBtn" type="button" className={`${styles.sourceBox} ${isDisabled ? styles.disabled : ''}`}
+                                        onClick={() => onSourceBtn()} disabled={isDisabled}>
                                     <span
                                         style={{ 'color': '#201827' }}>{chosenSource ? chosenSource : t('Оберіть джерело замовлення')}</span>
                                     <img src={arrow} alt="" />
@@ -518,12 +520,13 @@ const OrderCreate = ({ order, sourcesList }) => {
                         </div>
                     </div>
                 </form>
-                <Parser
+                {/* Demo build: the parser fills and saves the customer fields, so it is left out while they are locked */}
+                {!isDisabled && <Parser
                     values={values}
                     setValues={(newValues) => setValues(prevValues => ({ ...prevValues, ...newValues }))}
                     updateData={updateData}
                     hintText={ORDER_PARSER_HINT}
-                />
+                />}
                 <div className="globalBtnWrap">
                     <button className="globalBtn button-xs" onClick={nextPage}>
                         <span>{t('Далі')}</span>
