@@ -2,6 +2,8 @@ import { Filter } from "./Filter";
 import styles from "./filters.module.scss";
 import removeFiltersIcon from "../../../../assets/icons/filter-remove-icon.svg";
 import { t } from '../../../../i18n';
+import { useEffect, useRef, useState } from "react";
+import { useIsDesktop } from "../../../../hooks/useIsDesktop";
 
 export const Filters = ({
     filters,
@@ -14,6 +16,21 @@ export const Filters = ({
     eyeClosedIcon,
     inPopup
 }) => {
+    // Demo build (at the user's request, same as Тканини): phones have no hover, so the eye's `title` never shows
+    // there – a tap switches the filter and shows what is displayed now in a bubble under the button for a moment
+    const isDesktop = useIsDesktop();
+    const [eyeHint, setEyeHint] = useState(null);
+    const eyeHintTimer = useRef(null);
+    useEffect(() => () => clearTimeout(eyeHintTimer.current), []);
+    const handleToggleInStock = (e) => {
+        if (!isDesktop) {
+            clearTimeout(eyeHintTimer.current);
+            setEyeHint(!isInStockOnly ? t('Відображаються тільки товари в наявності') : t('Відображаються всі товари'));
+            eyeHintTimer.current = setTimeout(() => setEyeHint(null), 2500);
+        }
+        onToggleInStock(e);
+    };
+
     return (
         <ul className={styles.filters}>
             {filters.map((item, index) => (
@@ -39,8 +56,9 @@ export const Filters = ({
                 <input
                     type="checkbox"
                     checked={isInStockOnly}
-                    onChange={onToggleInStock}
+                    onChange={handleToggleInStock}
                 />
+                {eyeHint && <span className={styles.filters__eyeHint} role="status">{eyeHint}</span>}
             </label>)}
         </ul>
     )
