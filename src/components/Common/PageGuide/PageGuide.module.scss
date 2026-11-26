@@ -1,4 +1,11 @@
 // Demo build: page guide for portfolio visitors (PageGuide.jsx); the box itself is the global .infoNote
+@use "../../../icons" as *;
+
+// a light bulb instead of the note's "i" (doubled class: .infoNote::before is as specific)
+.guide.guide::before {
+  background-image: $icon-bulb;
+}
+
 .guide {
   margin: 10px 0 14px;
 
