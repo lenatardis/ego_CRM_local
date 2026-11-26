@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import styles from './Fabrics.module.scss';
 import {useAppDispatch} from "../../../hooks/redux";
 import FabricChooser from "./FabricChooser/FabricChooserList";
@@ -36,6 +36,18 @@ const Fabrics = () => {
     });
 
     const isDesktop = useIsDesktop();
+
+    // Demo build (at the user's request): phones have no hover, so the eye's `title` never shows there – a tap
+    // switches the filter and shows what is displayed now in a bubble under the button for a moment
+    const [eyeHint, setEyeHint] = useState(null);
+    const eyeHintTimer = useRef(null);
+    useEffect(() => () => clearTimeout(eyeHintTimer.current), []);
+    const showEyeHint = (hideOutOfStock) => {
+        if (isDesktop) return;
+        clearTimeout(eyeHintTimer.current);
+        setEyeHint(hideOutOfStock ? t('Відображаються тільки наявні тканини') : t('Відображаються всі тканини'));
+        eyeHintTimer.current = setTimeout(() => setEyeHint(null), 2500);
+    };
 
     useEffect(() => {
         setIsLoading(true);
@@ -168,8 +180,12 @@ const Fabrics = () => {
                         <input
                             type="checkbox"
                             checked={!!filterParams.is_hide_out_of_stock}
-                            onChange={() => onSendFilters({ ...filterParams, is_hide_out_of_stock: !filterParams.is_hide_out_of_stock })}
+                            onChange={() => {
+                                showEyeHint(!filterParams.is_hide_out_of_stock);
+                                onSendFilters({ ...filterParams, is_hide_out_of_stock: !filterParams.is_hide_out_of_stock });
+                            }}
                         />
+                        {eyeHint && <span className={styles.eyeHint} role="status">{eyeHint}</span>}
                     </label>
                     <button className={styles.openSortBtn} onClick={handleOpenSortPopup}>
                         <img src={arrowIcon} alt="sort filters" />
