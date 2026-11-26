@@ -15,6 +15,7 @@ const en = {
     'Демо-доступ: оберіть менеджера у списку – логін і пароль заповняться самі.':
         'Demo access: pick a manager from the list – the login and password are filled in for you.',
     'Усі дані вигадані.': 'All data is fictional.',
+    'CRM і ERP пов’язані між собою.': 'The CRM and the ERP are linked.',
     'Демо-користувач:': 'Demo user:',
     'Оберіть менеджера': 'Choose a manager',
     'Логін:': 'Login:',
@@ -560,14 +561,8 @@ const en = {
     // ---- visitor guide: login hint and ideas (ClientPage/Auth), page guides (Common/PageGuide); demo build
     'Що можна спробувати':
         'What to try',
-    'CRM і ERP пов’язані між собою. Наприклад:':
-        'The CRM and the ERP are linked. For example:',
-    'Менеджер створює рахунок – бухгалтер бачить його в ERP і підтверджує оплату.':
-        'A manager creates a bill – the accountant sees it in the ERP and approves the payment.',
     'Комплекти, які шиють в ERP, показують тут етап виробництва.':
         'Bedding sets being made in the ERP show their production stage here.',
-    'Ціни й джерела замовлень задають в ERP – калькулятор CRM рахує за ними.':
-        'Prices and order sources are set in the ERP – the CRM calculator uses them.',
     'Менеджер веде замовлення клієнта: товари, доставку й оплату.':
         "A manager handles a customer's order: products, delivery and payment.",
     'Спробуйте: створіть замовлення кнопкою «Замовлення +» і додайте в нього комплект – калькулятор порахує ціну.':
