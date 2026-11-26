@@ -34,6 +34,8 @@ const DiscountField = ({
         return;
     }
 
+    if (popup === 'PERC' && !validateOrderPercentDiscount(percentInputValue)) return;
+
     setPopup(null);
     onSubmit();
 };
@@ -85,9 +87,20 @@ const DiscountField = ({
         return true;
     };
 
+    // Demo build (at the user's request): same rule for a percent discount – none on an order without products
+    const validateOrderPercentDiscount = (value) => {
+        if (!orderDiscountCalc || getMaxOrderDiscount() || !(value > 0)) {
+            setUAHDiscountError('');
+            return true;
+        }
+        setUAHDiscountError(t('Щоб додати знижку, спочатку додайте товари'));
+        return false;
+    };
+
     const handlePercentChange = (e) => {
         const value = e.target.textContent;
         const potentialNewValue = Number(String(percentInputValue) + value);
+        if (!validateOrderPercentDiscount(potentialNewValue)) return;
         if (potentialNewValue <= 100) {
             setPercentInputValue(potentialNewValue);
         }
@@ -96,6 +109,7 @@ const DiscountField = ({
     const handlePercentDelete = () => {
         const newValue = Math.floor(percentInputValue / 10);
         setPercentInputValue(newValue);
+        setUAHDiscountError('');
     };
 
     const handleUAHChange = (e) => {
@@ -169,6 +183,9 @@ const DiscountField = ({
                             />
                             <span>%</span>
                         </div>
+                        {UAHDiscountError && (
+                            <p className={styles.discountError}>{UAHDiscountError}</p>
+                        )}
                     </GlobalCalculator>
                 </GlobalPopup>
             )}
