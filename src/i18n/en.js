@@ -371,6 +371,8 @@ const en = {
     'Р/р': 'Bank transfer',
     'Наложний платіж': 'Cash on delivery',
     'Наложений платіж': 'Cash on delivery',
+    'Для цього замовлення ще не створено ТТН. Створіть її на сторінці "Доставка" – після цього її можна буде роздрукувати.':
+        'No waybill has been created for this order yet. Create it on the "Delivery" page – then it can be printed.',
     'Вибачте, виникла проблема з підключенням до сервісів Нової Пошти. Спробуйте, будь ласка, пізніше.':
         'Sorry, there was a problem connecting to Nova Poshta. Please try again later.',
     'Скопіювати все': 'Copy all',

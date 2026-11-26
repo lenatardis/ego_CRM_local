@@ -17,8 +17,13 @@ const OrderActions = ({ orderUrl, isDisabled, onCopyAll, ttnURL, deliveryInfo, s
     const [isTTNLoading, setIsTTNLoading] = useState(false);
     const [ttnError, setTtnError] = useState('');
 
+    // Demo build (at the user's request): an order without a waybill got the generic "problem connecting to Nova
+    // Poshta" message after "Підтвердити" (the print request is answered "not found"); now the popup says at once
+    // that there is no TTN yet and where to create it. Real errors keep the original message.
+    const noTTNText = t('Для цього замовлення ще не створено ТТН. Створіть її на сторінці "Доставка" – після цього її можна буде роздрукувати.');
+
     const openPopup = () => {
-        setTtnError('');
+        setTtnError(deliveryInfo?.delivery?.ttn ? '' : noTTNText);
         setIsShowPopup(true);
     }
 
