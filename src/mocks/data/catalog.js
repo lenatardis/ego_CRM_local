@@ -1,7 +1,8 @@
 // ERP-owned catalog as the CRM reads it: fabrics, warehouse items (finished products), calculator templates
 // and their prices for an order source. Built from the catalog seed shared with the ERP (../shared/catalog/,
 // identical in both repos) and served read-only (workspace CLAUDE.md, "Cross-app contract"); catalog
-// changes made in the ERP demo are not visible here.
+// changes made in the ERP demo are not visible here – except prices: sources, pricelists and prices are shared
+// collections the ERP edits (steps 7.6a and 11), read live below.
 
 import { DEMO_FABRICS, FABRIC_TAGS, FABRIC_TYPES } from '../shared/catalog/fabrics';
 import { DEMO_PRODUCTS, PRODUCT_CATEGORIES } from '../shared/catalog/products';
@@ -13,6 +14,9 @@ import {
 // so the remainders here are the ones the ERP demo starts with
 import { COMPONENT_WORK } from '../shared/catalog/prices';
 import { fabricTotalLength, priceFor as basePriceFor, productTypeOfFabric } from '../shared/catalog/pricing';
+import { DEMO_PRICELISTS } from '../shared/catalog/pricelists';
+import { DEMO_PRICES } from '../shared/catalog/prices';
+import { getSharedCollection } from '../db';
 import { loadSources } from './sources';
 
 export { DEMO_FABRICS, DEMO_PRODUCTS, DEMO_KIT_TEMPLATES, DEMO_COMPONENT_TEMPLATES, DEMO_KIT_SIZES };
@@ -28,8 +32,22 @@ const findComponentType = (id) => DEMO_COMPONENT_TYPES.find((t) => t.id === id) 
 // priceFor(owner, id, sourceId): source pricelist -> default list -> null; and the fabric -> product type link
 // for kits. Both shared with the seed, which prices the seed orders' carts the same way (../shared/catalog/pricing.js).
 
-// prices follow the live sources (a source moved to another pricelist in the ERP is priced from it): ./sources.js
-export const priceFor = (owner, id, sourceId) => basePriceFor(owner, id, sourceId, loadSources());
+// prices follow the live sources, pricelists and prices the ERP edits (a source moved to another pricelist, a list
+// deactivated or made default, a price changed). One response prices many records, so the three collections are
+// read once and kept until the current task ends – the next request reads them again.
+let live = null;
+const livePricing = () => {
+    if (!live) {
+        live = {
+            sources: loadSources(),
+            pricelists: getSharedCollection('pricelists', DEMO_PRICELISTS),
+            prices: getSharedCollection('prices', DEMO_PRICES),
+        };
+        setTimeout(() => { live = null; }, 0);
+    }
+    return live;
+};
+export const priceFor = (owner, id, sourceId) => basePriceFor(owner, id, sourceId, livePricing());
 export { productTypeOfFabric, fabricTotalLength };
 
 // --- fabrics ---------------------------------------------------------------------------------
