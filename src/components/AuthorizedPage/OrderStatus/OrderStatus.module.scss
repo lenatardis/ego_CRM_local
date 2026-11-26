@@ -25,21 +25,24 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 22px;
+    // Demo build: grows with its text (was a fixed 22 px with 12 px lines – two lines on a phone filled it edge to edge)
+    min-height: 22px;
+    padding: 6px 12px;
     margin-bottom: 10px;
     border-radius: 4px;
     background: #F5E97B;
+    text-align: center;
 
     &.paid {
         background: #07FA64;
       }
-    
+
       &.notPaid {
         background: #DC6666;
       }
     span {
       font-size: 12px;
-      line-height: 12px;
+      line-height: 17px;
     }
   }
 
