@@ -6,6 +6,9 @@
   bottom: 0; // demo build: was 74px, above the old bottom menu (now a top bar)
   left: 16px;
   background: #D9D1E0;
+  // demo build: the bar's popups ("Товар зі складу" …) are drawn inside it, and a fixed bar is a layer of its own –
+  // above the phone top bar (4), so their header and × aren't under it; below the slide-out menu (6 / 7)
+  z-index: 5;
 
 
   .row {
