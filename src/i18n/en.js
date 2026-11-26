@@ -107,6 +107,7 @@ const en = {
     'Знижка': 'Discount',
     'Знижка не може бути більшою або дорівнювати сумі замовлення':
         'The discount can\'t be equal to or greater than the order total',
+    'Щоб додати знижку, спочатку додайте товари': 'Add items first to give a discount',
     'Ціна замовлення:': 'Order price:',
 
     // ---- parser (Common/Parser; labels are runtime, hints below)

@@ -65,7 +65,16 @@ const DiscountField = ({
 
         const maxDiscount = getMaxOrderDiscount();
 
-        if (!maxDiscount) return true;
+        // Demo build (at the user's request): an order without products (total 0) took any discount, which then
+        // made its final price negative; now it takes none until products are added (0 can still be saved)
+        if (!maxDiscount) {
+            if (value > 0) {
+                setUAHDiscountError(t('Щоб додати знижку, спочатку додайте товари'));
+                return false;
+            }
+            setUAHDiscountError('');
+            return true;
+        }
 
         if (value >= maxDiscount) {
             setUAHDiscountError(t('Знижка не може бути більшою або дорівнювати сумі замовлення'));
