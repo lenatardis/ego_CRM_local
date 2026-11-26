@@ -23,6 +23,7 @@ import { getServerErrorMessage } from "../../../utils/getServerErrorMessage";
 import InfoHint from "../../Common/ProductItem/InfoHint/InfoHint";
 import { getOrderInfo, getSuborders } from "../../../api/ordersApi";
 import { t } from '../../../i18n';
+import PageGuide from '../../Common/PageGuide/PageGuide';
 
 
 
@@ -428,6 +429,7 @@ const DeliveryNP = ({ deliveryOrder, lastOrderId }) => {
             <div className={styles.deliveryNPWrap}>
                 <form onSubmit={handleSubmit}>
                     <div className={styles.deliveryNP__content}>
+                        <PageGuide page="delivery"/>
                         {isDelivered && <p className={`${styles.caption} infoNote`}>{t('Замовлення доставлено і не підлягає редагуванню')}</p>}
                         <fieldset className={styles.lockGroup} disabled={isDelivered}>
                         <div className={styles.deliveryNP__row}>

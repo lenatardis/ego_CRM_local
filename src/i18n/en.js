@@ -556,6 +556,76 @@ const en = {
     'Безготівкова': 'Cashless',
     'Зворотна доставка (наложений платіж), грн': 'Cash on delivery, UAH',
     'Орієнтовна вартість доставки, грн': 'Estimated delivery cost, UAH',
+
+    // ---- visitor guide: login hint and ideas (ClientPage/Auth), page guides (Common/PageGuide); demo build
+    'Що можна спробувати':
+        'What to try',
+    'CRM і ERP пов’язані між собою. Наприклад:':
+        'The CRM and the ERP are linked. For example:',
+    'Менеджер створює рахунок – бухгалтер бачить його в ERP і підтверджує оплату.':
+        'A manager creates a bill – the accountant sees it in the ERP and approves the payment.',
+    'Комплекти, які шиють в ERP, показують тут етап виробництва.':
+        'Bedding sets being made in the ERP show their production stage here.',
+    'Ціни й джерела замовлень задають в ERP – калькулятор CRM рахує за ними.':
+        'Prices and order sources are set in the ERP – the CRM calculator uses them.',
+    'ERP відкривається кнопкою «Перейти в ERP» у меню.':
+        'The ERP opens with "Go to ERP" in the menu.',
+    'Менеджер веде замовлення клієнта: товари, доставку й оплату.':
+        "A manager handles a customer's order: products, delivery and payment.",
+    'Спробуйте: створіть замовлення кнопкою «Замовлення +» і додайте в нього комплект – калькулятор порахує ціну.':
+        'Try: create an order with "Order +" and add a bedding set to it – the calculator works out the price.',
+    'Замовлення клієнтів: ваші, усі, нещодавно переглянуті й обрані.':
+        'Customer orders: yours, all, recently viewed and favourites.',
+    '«Замовлення +» – нове замовлення; далі його товари, доставка й оплата – на сторінках «Товари», «Доставка» і «Статус».':
+        '"Order +" – a new order; its products, delivery and payment are then on the "Products", "Delivery" and "Status" pages.',
+    'Пошук знаходить замовлення за клієнтом, телефоном, тканиною чи товаром.':
+        'Search finds orders by customer, phone, fabric or product.',
+    'Оплату й виробництво цих замовлень ведуть в ERP – їхній статус оновлюється тут.':
+        'Payment and production of these orders are handled in the ERP – their status updates here.',
+    'Замовлення: клієнт, джерело, терміновість і коментар.':
+        'Order: customer, source, urgency and comment.',
+    '«Парсер» заповнює дані клієнта з уставленого тексту повідомлення.':
+        "\"Parser\" fills in the customer's details from a pasted message.",
+    'Джерело визначає, за яким прайслистом рахуються товари замовлення.':
+        "The source decides which price list the order's products are priced from.",
+    'Товари замовлення: комплекти постільної білизни й товари зі складу.':
+        "The order's products: bedding sets and stock items.",
+    '«Додати комплект» відкриває калькулятор, «Додати товар зі складу» – готову продукцію.':
+        '"Add a bedding set" opens the calculator, "Add a stock item" – finished goods.',
+    'Калькулятор комплекту: тканина, розмір, варіація й опції – ціна рахується одразу.':
+        'Bedding set calculator: fabric, size, variant and options – the price is worked out at once.',
+    'Ціни беруться з прайслиста джерела замовлення, який задають в ERP.':
+        "Prices come from the order source's price list, set in the ERP.",
+    'Комплект можна розбити на компоненти й додати до нього нові.':
+        'A set can be split into components, and new ones added to it.',
+    'Збережений комплект з’являється на сторінці «Товари».':
+        'A saved set appears on the "Products" page.',
+    'Доставка Новою поштою: отримувач, місто, відділення й посилка.':
+        'Nova Poshta delivery: recipient, city, branch and parcel.',
+    '«Парсер» заповнює дані отримувача з уставленого тексту.':
+        "\"Parser\" fills in the recipient's details from pasted text.",
+    '«Створити ТТН» – накладна для замовлення; роздрукувати її можна на сторінці «Статус».':
+        '"Create waybill" – a waybill for the order; it can be printed on the "Status" page.',
+    'Статус замовлення й оплата: рахунки, квитанції клієнта, ТТН.':
+        'Order status and payment: bills, customer receipts, waybill.',
+    '«Новий рахунок» можна додати, коли замовлення «В обробці».':
+        'A "New bill" can be added while the order is "Processing".',
+    '«Посилання на замовлення» – сторінка для клієнта: там він бачить замовлення, оплачує його й надсилає квитанцію.':
+        '"Order link" – a page for the customer: there they see the order, pay for it and send a receipt.',
+    'Рахунки одразу видно в ERP: бухгалтер підтверджує оплату в «CRM платежі».':
+        'Bills show up in the ERP at once: the accountant approves the payment on "CRM payments".',
+    'Тканини: фото, склад і залишки.':
+        'Fabrics: photos, composition and stock.',
+    'Кнопка з оком – лише тканини в наявності.':
+        'The eye button – only fabrics in stock.',
+    'Посилання на картку тканини з комплектами можна скопіювати й надіслати клієнту.':
+        "A link to a fabric's card with its bedding sets can be copied and sent to a customer.",
+    'Продукція: готові товари зі складу, їх кольори, розміри й залишки.':
+        'Stock items: finished goods, their colours, sizes and quantities.',
+    'Категорії вгорі фільтрують товари, кнопка з оком – лише товари в наявності.':
+        'The categories at the top filter the items, the eye button – only items in stock.',
+    'Посилання на картку товару можна скопіювати й надіслати клієнту.':
+        "A link to an item's card can be copied and sent to a customer.",
 };
 
 export default en;

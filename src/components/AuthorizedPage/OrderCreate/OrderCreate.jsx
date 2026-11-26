@@ -24,6 +24,7 @@ import { ORDER_PARSER_HINT } from "../../Common/Parser/parserHints";
 import { getServerErrorMessage } from "../../../utils/getServerErrorMessage";
 import { t } from '../../../i18n';
 import { getPaidOrderNote } from "../../../utils/getPaidOrderNote";
+import PageGuide from '../../Common/PageGuide/PageGuide';
 
 const OrderCreate = ({ order, sourcesList }) => {
     const manager = useAppSelector(getUser);
@@ -334,6 +335,7 @@ const OrderCreate = ({ order, sourcesList }) => {
         <div className={styles.order}>
             <div className={styles.orderWrap}>
                 <ArrBack/>
+                <PageGuide page="order"/>
                 <form onSubmit={handleSubmit}>
                     <h2 className={styles.order__title}>{t('Замовлення')}</h2>
                     <div className={styles.order__content}>

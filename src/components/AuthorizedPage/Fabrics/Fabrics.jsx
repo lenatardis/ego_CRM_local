@@ -17,6 +17,7 @@ import eyeClosedIcon from "../../../assets/icons/eyeClosed.svg";
 import {useIsDesktop} from "../../../hooks/useIsDesktop";
 import ArrBack from "../../Common/ArrBack/ArrBack";
 import { t } from '../../../i18n';
+import PageGuide from '../../Common/PageGuide/PageGuide';
 
 const Fabrics = () => {
     const dispatch = useAppDispatch();
@@ -161,6 +162,7 @@ const Fabrics = () => {
         <div className={styles.fabrics}>
             <div className={styles.fabricsWrap}>
                 <ArrBack/>
+                <PageGuide page="fabrics"/>
                 <div className={styles.searchWrapper}>
                     <Search
                         searchValue={filterParams.search}

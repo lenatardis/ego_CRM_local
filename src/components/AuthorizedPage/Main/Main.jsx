@@ -12,6 +12,7 @@ import Preloader from "../../Common/Preloader/Preloader";
 import {getAccessToken} from "../../../utils/authTokens";
 import {getOrders, getOrdersRecentViews} from "../../../api/ordersApi";
 import ArrBack from "../../Common/ArrBack/ArrBack";
+import PageGuide from '../../Common/PageGuide/PageGuide';
 
 
 const Main = () => {
@@ -132,6 +133,7 @@ const Main = () => {
         <div className={styles.main}>
             <div className={styles.mainWrap}>
                 <ArrBack/>
+                <PageGuide page="main"/>
                 <div className={styles.upperPanel}>
                     <UserHeader/>
                     <OrderSearchFilters setOrdersFilter={setOrdersFilter} searchValue={searchValue}

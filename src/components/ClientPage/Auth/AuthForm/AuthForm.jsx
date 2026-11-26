@@ -74,6 +74,13 @@ const AuthForm = () => {
                             </option>
                         ))}
                     </select>
+                    {/* Demo build (2026-11-26, at the user's request): what a manager does and what to try (as the ERP's role hints) */}
+                    {demoUserId && (
+                        <p className={styles.demoHint}>
+                            {t('Менеджер веде замовлення клієнта: товари, доставку й оплату.')}
+                            <br/>{t('Спробуйте: створіть замовлення кнопкою «Замовлення +» і додайте в нього комплект – калькулятор порахує ціну.')}
+                        </p>
+                    )}
                 </div>
 
                 <div className={styles.form__field}>

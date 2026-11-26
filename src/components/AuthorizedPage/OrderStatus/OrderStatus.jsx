@@ -29,6 +29,7 @@ import { getOrderMessageText } from "../../../utils/getOrderMessageText";
 import { useIsDesktop } from "../../../hooks/useIsDesktop";
 import { t } from '../../../i18n';
 import { getPaidOrderNote } from "../../../utils/getPaidOrderNote";
+import PageGuide from '../../Common/PageGuide/PageGuide';
 
 const OrderStatus = () => {
     const { id: orderId } = useParams();
@@ -617,6 +618,7 @@ const OrderStatus = () => {
         <div className={styles.orderStatus} style={{ backgroundColor: order?.is_general ? "#D9D1E0" : "#f7eadf" }}>
             <div className={styles.statusWrap}>
                 <ArrBack/>
+                <PageGuide page="status"/>
 
                 <div className={styles.grid}>
                     <div>

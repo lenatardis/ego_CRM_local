@@ -10,6 +10,7 @@ import Search from "../../Common/Search/Search";
 import ArrBack from "../../Common/ArrBack/ArrBack";
 import eyeIcon from "../../../assets/icons/eye.svg";
 import eyeClosedIcon from "../../../assets/icons/eyeClosed.svg";
+import PageGuide from '../../Common/PageGuide/PageGuide';
 
 const Storage = () => {
     const [isLoading, setIsLoading] = useState(false);
@@ -87,6 +88,7 @@ const Storage = () => {
         <div className={styles.storage}>
             <div className={styles.storageWrap}>
                 <ArrBack/>
+                <PageGuide page="storage"/>
                 <div className={styles.storage__search}>
                     <Search
                         searchValue={filterParams.search}

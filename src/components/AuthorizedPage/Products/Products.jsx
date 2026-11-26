@@ -22,6 +22,7 @@ import { useIsDesktop } from "../../../hooks/useIsDesktop";
 import GlobalPopup from "../../Common/GlobalPopup/GlobalPopup";
 import { t } from '../../../i18n';
 import { getPaidOrderNote } from "../../../utils/getPaidOrderNote";
+import PageGuide from '../../Common/PageGuide/PageGuide';
 
 const Products = () => {
     const { id } = useParams();
@@ -362,6 +363,7 @@ const Products = () => {
         <div className={styles.products} style={{ backgroundColor: order?.is_general ? '#D9D1E0' : '#f7eadf' }}>
             <div className={styles.wrap}>
                 <ArrBack/>
+                <PageGuide page="products"/>
                 <div className={styles.grid}>
                     <div><h2 className={styles.products__title}>{t('Товари')}</h2></div>
                     <div></div>

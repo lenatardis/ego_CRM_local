@@ -26,6 +26,7 @@ import GlobalCalculator from "../../Common/GlobalCalculator/GlobalCalculator";
 import {useIsDesktop} from "../../../hooks/useIsDesktop";
 import ArrBack from "../../Common/ArrBack/ArrBack";
 import { t } from '../../../i18n';
+import PageGuide from '../../Common/PageGuide/PageGuide';
 
 const Calculator = () => {
     const {orderId, id} = useParams();
@@ -529,6 +530,7 @@ const Calculator = () => {
         <div className={styles.calculator}>
             <div className={styles.calcWrap}>
                  <ArrBack/>
+                <PageGuide page="calculator"/>
                 {/* a kit in production is read-only: nothing in it can be clicked or focused (see the caption below) */}
                 <div className={manufacturing ? styles.readOnly : undefined} {...(manufacturing ? { inert: '' } : {})}>
                 <h2>{id ? t('Тип тканини') : t('Оберіть тип тканини')}</h2>

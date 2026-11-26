@@ -1,0 +1,43 @@
+// Demo build: page guide for portfolio visitors (PageGuide.jsx); the box itself is the global .infoNote
+.guide {
+  margin: 10px 0 14px;
+
+  &__summary {
+    margin: 0;
+  }
+
+  &__toggle {
+    margin-top: 4px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: #573971;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &__arrow {
+    display: inline-block;
+    margin-left: 4px;
+    transition: transform 0.2s;
+  }
+
+  &__arrowOpen {
+    transform: rotate(180deg);
+  }
+
+  &__tips {
+    margin: 6px 0 0;
+    padding-left: 18px;
+    list-style: disc;
+
+    li + li {
+      margin-top: 4px;
+    }
+  }
+}
