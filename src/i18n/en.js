@@ -568,8 +568,6 @@ const en = {
         'Bedding sets being made in the ERP show their production stage here.',
     'Ціни й джерела замовлень задають в ERP – калькулятор CRM рахує за ними.':
         'Prices and order sources are set in the ERP – the CRM calculator uses them.',
-    'ERP відкривається кнопкою «Перейти в ERP» у меню.':
-        'The ERP opens with "Go to ERP" in the menu.',
     'Менеджер веде замовлення клієнта: товари, доставку й оплату.':
         "A manager handles a customer's order: products, delivery and payment.",
     'Спробуйте: створіть замовлення кнопкою «Замовлення +» і додайте в нього комплект – калькулятор порахує ціну.':

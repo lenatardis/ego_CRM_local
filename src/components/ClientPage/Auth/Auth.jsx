@@ -27,7 +27,6 @@ const CrossAppIdeas = ({t}) => {
                     <ul>
                         {ideas.map((idea) => <li key={idea}>{idea}</li>)}
                     </ul>
-                    <p>{t('ERP відкривається кнопкою «Перейти в ERP» у меню.')}</p>
                 </div>
             )}
         </div>
