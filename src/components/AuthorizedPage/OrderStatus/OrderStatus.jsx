@@ -57,11 +57,15 @@ const OrderStatus = () => {
         productsAmount: (order?.kit_count ?? 0) + (order?.warehouse_item_count ?? 0),
     };
 
+    // Demo build: an empty cart comes back as "0.00" (a truthy string), so check the number – otherwise the
+    // "add products" note never showed and "the whole sum is already split between bills" showed instead
+    const hasTotal = Number(order?.payment?.final_amount) > 0;
+
     const isDisabled =
         order?.payment?.status === "PAID" ||
         order?.payment?.status === "NOT_PAID" ||
         order?.payment?.status === "PAY_WAIT" ||
-        !order?.payment?.final_amount;
+        !hasTotal;
 
     const caption =
         t('Для того щоб додати новий або відредагувати рахунок змініть статус замовлення на "В обробці"');
@@ -703,11 +707,11 @@ const OrderStatus = () => {
                                     order?.payment?.status === "NOT_PAID" ||
                                     order?.payment?.status === "PAY_WAIT") && <p className="infoNote">{caption}</p>}
 
-                                {availableSum <= 0 && order?.payment?.final_amount && !billsCheck ? <p className="infoNote">{caption2}</p> : null}
+                                {availableSum <= 0 && hasTotal && !billsCheck ? <p className="infoNote">{caption2}</p> : null}
 
                                 {bills[0]?.method === "FULL" && <p className="infoNote">{caption3}</p>}
 
-                                {!order?.payment?.final_amount && <p className="infoNote">{caption4}</p>}
+                                {!hasTotal && <p className="infoNote">{caption4}</p>}
                                 {isMaxBillsCountReached && <p className="infoNote">{caption5}</p>}
                                 </>}
                                 </div>
@@ -779,11 +783,11 @@ const OrderStatus = () => {
                                             order?.payment?.status === "NOT_PAID" ||
                                             order?.payment?.status === "PAY_WAIT") && <p className="infoNote">{caption}</p>}
 
-                                        {availableSum <= 0 && order?.payment?.final_amount && !billsCheck ? <p className="infoNote">{caption2}</p> : null}
+                                        {availableSum <= 0 && hasTotal && !billsCheck ? <p className="infoNote">{caption2}</p> : null}
 
                                         {bills[0]?.method === "FULL" && <p className="infoNote">{caption3}</p>}
 
-                                        {!order?.payment?.final_amount && <p className="infoNote">{caption4}</p>}
+                                        {!hasTotal && <p className="infoNote">{caption4}</p>}
 
                                         {isMaxBillsCountReached && <p className="infoNote">{caption5}</p>}
                                         </>}
